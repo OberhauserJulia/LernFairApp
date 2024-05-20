@@ -8,7 +8,7 @@ routes = Blueprint('routes', __name__)
 
 UPLOAD_FOLDER = 'uploads'
 
-@routes.route('/', methods=['GET'])
+@routes.route('/', methods=['POST'])
 def home():
     return safe_homework(request)  
 
