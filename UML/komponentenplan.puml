@@ -1,0 +1,41 @@
+
+@startuml LernFair
+
+
+
+package "Frontend UI React Native" {
+    [LernFair UI React Native]
+}
+
+
+package "Backend API Pyton" {
+  
+    [Chat Mock Service API]
+    [Share Document Person to Person API]
+    [Share Document Person to Archiv API]
+} 
+
+
+database "MongoDB" {
+    [Schüler Datenbank]
+
+    [Lehrer Datenbank]
+
+    [Archiv Datenbank]
+
+    
+
+}
+
+
+
+[LernFair UI React Native] --> [Chat Mock Service API]
+[LernFair UI React Native] --> [Share Document Person to Person API]
+[LernFair UI React Native] --> [Share Document Person to Archiv API]
+[Share Document Person to Person API] --> [Schüler Datenbank]
+[Share Document Person to Archiv API] --> [Archiv Datenbank]
+[Share Document Person to Archiv API] --> [Lehrer Datenbank]
+[Lehrer Datenbank] --> [Schüler Datenbank]
+[Chat Mock Service API] --> [Schüler Datenbank]
+
+@enduml 

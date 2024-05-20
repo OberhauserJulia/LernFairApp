@@ -1,0 +1,42 @@
+@startuml Teilvorgang
+
+title Verschickvorgang
+
+partition FrontendUI {
+  (*) --> "Sucht eine Datei aus"
+  --> "Muss Datei einen Namen geben"
+  --> "Datei Taggen?"
+  --> if " Datei Taggen" then
+    --> ["Taggt Datei"] "Taggen"
+    --> "Datei wird in Lernüberischt sortiert gespeichert"
+    -->  ===S1=== 
+    --> "Datei wird verschickt"
+
+  else 
+     
+    -->["Ohne Taggs verschicken"] "Datei landet im Backlog"
+    --> ===S3=== 
+    --> "Datei wird verschickt"
+    --> "Datei kann in der Chatübersicht gefunden werden (Benchmark WhatsApp)"
+
+--> (*)
+}
+
+partition Backend #LightSkyBlue {
+  === S1 === --> "Erkennt getaggte Datei" 
+  --> ===S2=== 
+  === S3=== --> "Erkennt Ungetaggte Datei"
+  --> ===S4== 
+}
+
+partition Database {
+    S2 --> "Wird in Lernübersicht sortiert"
+    S4 --> "Wird in Backlog sortiert"
+}
+
+
+@enduml
+
+
+
+

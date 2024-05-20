@@ -1,0 +1,37 @@
+@startuml Archiv Hochladen 
+
+
+title Datei ins Archiv Hochladen 
+
+partition "FrontendUI" {
+(*)--> "Lehrer betätigt Button 'Archiv hochladen'"
+--> "Lehrer wählt Datei aus"
+--> "Lehrer gibt Daten zur Datei an"
+if "Daten vollständig?" then 
+--> ["Daten sind vollständig"] "Call to action Button 'Hochladen farbig'"
+--> "Lehrer betätigt Button"
+--> "Datei wird Hochladen"
+-->===S1=== 
+--> "Meldung 'Datei wurde erfolgreich hochgeladen'"
+--> (*)
+else 
+--> ["Daten unvollständig"] "Call to action Button 'Hochladen grau'"
+--> "Datei wird nicht Hochladen"
+--> "Meldung 'Fehlende Angaben'"
+--> "Lehrer gibt Daten zur Datei an"
+} 
+
+partition "Backend" #LightBlue {
+    ===S1=== --> "Daten werden an Backend übergeben"
+    --> "Tags und Queries werden ausgewertet" 
+    --> "Datenbank Call wird erstellt" 
+    --> ===S2=== 
+} 
+
+partition "Datenbank" #LightGreen {
+    ===S2=== --> "Daten werden in 'Archiv' Datenbank gespeichert"
+    --> "Datenbank gibt Erfolgsmeldung zurück"
+}
+
+
+@enduml
