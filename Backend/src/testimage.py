@@ -1,18 +1,37 @@
-import requests
 import base64
+from PIL import Image
+import io
+from bson.objectid import ObjectId
 
-# URL des Bildes, das heruntergeladen werden soll
-image_url = "https://cdn.discordapp.com/attachments/1159897854312198166/1233036853108674631/0screenshot.png?ex=664c980e&is=664b468e&hm=97fcabc402639679be458b96ba8741b7967f73f8de7f74ec24f9c2c4ea48a3ad&" 
+from pymongo import MongoClient
 
-# Herunterladen des Bildes
-response = requests.get(image_url)
+def search_by_id(id):
+    # Erstellen Sie eine Verbindung zum MongoDB-Server
+    client = MongoClient('localhost', 27017)
 
-# Überprüfen, ob das Herunterladen erfolgreich war
-if response.status_code == 200:
-    # Kodieren des heruntergeladenen Bildes in Base64
-    image_base64 = base64.b64encode(response.content).decode('utf-8')
+    # Zugriff auf die Datenbank 'student_database'
+    db = client['homework_database']
 
-    # Ausgabe des Base64-kodierten Bildes
-    print(image_base64)
-else:
-    print("Failed to download the image.")
+    # Zugriff auf die Sammlung 'john_doe'
+    collection = db['John']
+
+    # Suche nach der ID
+    result = collection.find_one({'_id': ObjectId(id)})
+
+    return result
+
+# Bild in Base64 codieren
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
+
+
+def decode_image(base64_string):
+    image_data = base64.b64decode(base64_string)
+    image = Image.open(io.BytesIO(image_data))
+    image.show()
+    return image
+
+data = search_by_id("664c9763eb4cd881ea859066")
+image = decode_image(data['file'])
+
