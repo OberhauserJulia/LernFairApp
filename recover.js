@@ -1,15 +1,10 @@
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from 'axios';
 import { Image, Video } from 'expo-av';
-import { WebView } from 'react-native-webview';
+import * as FileSystem from 'expo-file-system';
+import PDFReader from 'react-native-pdf';
 
 export default function App() {
   const [fileId, setFileId] = useState('');
@@ -19,6 +14,7 @@ export default function App() {
   const [topic , settopic] = useState('');
   const [deletefile_ID , setdeletefile_ID] = useState('');
   const [mediaElement, setMediaElement] = useState(null);
+
 
 
 
@@ -56,14 +52,9 @@ export default function App() {
         style={{ width: 300, height: 300 }}
       />
       } else if (contentType === 'application/pdf') {
-        const pdfUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(fileUrl)}`;
-        mediaElement = (
-          <WebView
-            originWhitelist={['*']}
-            source={{ uri: pdfUrl }}
-            style={{ flex: 1, width: '100%', height: 600 }}
-          />
-        );
+        mediaElement = <View style={{ flex: 1 }}>
+        <PDFReader source={{ uri: fileUrl }} />
+      </View>
       }
     
       // Set the media element in the state
@@ -111,7 +102,7 @@ export default function App() {
 
 
   const deleteFile = () => { 
-    axios.delete(`http://192.168.11.24:8000/deletefile/${deletefile_ID}/${studentname}/${subjectname}`) 
+    axios.delete(`http://192.168.11.24:8000/deletefile/${deletefile_ID}/Test`) 
 
 
 

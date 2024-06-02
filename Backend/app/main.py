@@ -61,8 +61,8 @@ def safe_tags(db : object ,subname, document):
     
 
     
-@app.delete("/deletefile/{file_id}/{student_name}")
-async def delete_file(file_id: str, student_name: str):
+@app.delete("/deletefile/{file_id}/{student_name}/{subject_name}")
+async def delete_file(file_id: str, student_name: str, subject_name: str):
     try:
         # Wähle die Datenbank basierend auf dem Namen des Schülers
         db = client[student_name]
@@ -72,7 +72,7 @@ async def delete_file(file_id: str, student_name: str):
         fs.delete(ObjectId(file_id))
         
         # Lösche das Dokument aus der Sammlung
-        db[student_name].delete_one({"file_id": file_id})
+        db[subject_name].delete_one({"file_id": file_id})
 
         return JSONResponse(content={"message": "File deleted successfully"}, status_code=200)
     except Exception as e:
