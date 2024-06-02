@@ -1,7 +1,14 @@
+
+
+
+
+
+
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput} from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import axios from 'axios';
+import { Image, Video } from 'expo-av';
 
 export default function App() {
   const [fileId, setFileId] = useState('');
@@ -10,6 +17,54 @@ export default function App() {
   const [subjectname , setsubjectname] = useState(''); 
   const [topic , settopic] = useState('');
   const [deletefile_ID , setdeletefile_ID] = useState('');
+  const [mediaElement, setMediaElement] = useState(null);
+
+
+
+
+  const getFile = async () => {
+    try {
+      const response = await axios.get(`http://192.168.11.24:8000/getfile/${deletefile_ID}/${studentname}`, {
+        responseType: 'arraybuffer', // Ensure the response is in a binary format
+      });
+      console.log('File fetched:', response);
+    
+      // Extract the content type
+      const contentType = response.headers['content-type'];
+      let base64EncodedData = btoa(
+        new Uint8Array(response.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          '',
+        ),
+      );
+      let fileUrl = `data:${contentType};base64,${base64EncodedData}`;
+    
+      // Based on the content type, decide what to render
+      let mediaElement;
+      if (contentType.startsWith('image/')) {
+        mediaElement = <Image style={{"width" : 200 , "height" : 200 }} src={fileUrl} alt="Media content" />;
+      } else if (contentType.startsWith('video/')) {
+        mediaElement = <Video
+        source={{ uri: fileUrl }}
+        rate={1.0}
+        volume={1.0}
+        isMuted={false}
+        resizeMode="cover"
+        shouldPlay
+        isLooping
+        style={{ width: 300, height: 300 }}
+      />
+      } else if (contentType === 'application/pdf') {
+        mediaElement = <object data={fileUrl} type="application/pdf" width="100%" height="100%" />;
+      }
+    
+      // Set the media element in the state
+      setMediaElement(mediaElement);
+    
+    } catch (error) {
+      console.error('Error fetching file:', error);
+    }
+  };
 
 
 
@@ -101,6 +156,14 @@ export default function App() {
           <Text style={styles.fileId}>Uploaded File ID: {fileId}</Text>
         </View>
       ) : null}
+    {mediaElement ? (
+      <View>
+        <Text style={styles.title}>Media Content</Text>
+        {mediaElement}
+      </View>
+    ) : null
+  }
+        <Button title="Get File " onPress={getFile} />
 
 
     </View>
