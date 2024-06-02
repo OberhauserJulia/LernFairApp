@@ -8,6 +8,8 @@ export default function App() {
   const [documentname, setdocumentname] = useState('');
   const [studentname , setstudentname] = useState(''); 
   const [subjectname , setsubjectname] = useState(''); 
+  const [topic , settopic] = useState('');
+  const [deletefile_ID , setdeletefile_ID] = useState('');
 
 
 
@@ -26,6 +28,7 @@ export default function App() {
       
       formData.append('documentname', documentname);
       formData.append('subjectname',subjectname);
+      formData.append ("topic",topic); 
 
 
       
@@ -42,6 +45,14 @@ export default function App() {
     }
   };
 
+
+
+  const deleteFile = () => { 
+    axios.delete(`http://192.168.11.24:8000/deletefile/${deletefile_ID}/Test`) 
+
+
+
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>File Uploader and Downloader</Text>
@@ -65,12 +76,33 @@ export default function App() {
         onChangeText={text => setsubjectname(text)}
         value={subjectname}
       />
+      <TextInput
+        style={{ height: 40, borderColor: 'gray', borderWidth: 2, width : 200 }}
+        placeholder="Topic"
+        onChangeText={text => settopic(text)}
+        value={topic}
+      />
       <Button title="Upload File" onPress={uploadFile} />
       {fileId ? (
         <View>
           <Text style={styles.fileId}>Uploaded File ID: {fileId}</Text>
         </View>
       ) : null}
+
+    <TextInput
+        style={{ height: 40, borderColor: 'gray', borderWidth: 2, width : 200 }}
+        placeholder="Delete File ID"
+        onChangeText={text => setdeletefile_ID(text)}
+        value={deletefile_ID}
+      />
+      <Button title="Delete File" onPress={deleteFile} />
+      {fileId ? (
+        <View>
+          <Text style={styles.fileId}>Uploaded File ID: {fileId}</Text>
+        </View>
+      ) : null}
+
+
     </View>
   );
 }

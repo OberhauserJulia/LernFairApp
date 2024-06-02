@@ -34,7 +34,7 @@ def read_root():
 
 
 @app.post("/uploadfile/{student_name}")
-async def upload_file(student_name: str, file: UploadFile = File(...), documentname: str = Form(...), subjectname : str = Form(...)):
+async def upload_file(student_name: str, file: UploadFile = File(...), documentname: str = Form(...), subjectname : str = Form(...) , topic : str = Form(...) ) :
     try:
         # Lies den Dateiinhalt
         file_data = await file.read()
@@ -45,7 +45,7 @@ async def upload_file(student_name: str, file: UploadFile = File(...), documentn
         # Speichere die Datei in GridFS
         file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
 
-        safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname})
+        safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
 
         return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
     except Exception as e:
@@ -72,7 +72,7 @@ async def delete_file(file_id: str, student_name: str):
         fs.delete(ObjectId(file_id))
         
         # Lösche das Dokument aus der Sammlung
-        db["Mathe"].delete_one({"file_id": file_id})
+        db[student_name].delete_one({"file_id": file_id})
 
         return JSONResponse(content={"message": "File deleted successfully"}, status_code=200)
     except Exception as e:
