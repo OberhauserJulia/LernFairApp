@@ -7,6 +7,8 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import pymongo
 from bson import ObjectId
+from bson import json_util
+import json
 
 
 app = FastAPI()
@@ -35,22 +37,39 @@ def read_root():
 
 @app.post("/uploadfile/{student_name}")
 async def upload_file(student_name: str, file: UploadFile = File(...), documentname: str = Form(...), subjectname : str = Form(...) , topic : str = Form(...) ) :
+    # Lies den Dateiinhalt
+    file_data = await file.read()
+    
+    # Wähle die Datenbank basierend auf dem Namen des Schülers
+    db = client[student_name]
+    fs = gridfs.GridFS(db)
+
     try:
-        # Lies den Dateiinhalt
-        file_data = await file.read()
-        
-        # Wähle die Datenbank basierend auf dem Namen des Schülers
-        db = client[student_name]
-        fs = gridfs.GridFS(db)
-        # Speichere die Datei in GridFS
-        file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
+        if  file.filename != "none" and documentname != "none" and subjectname != "none" and topic != "none":
+            # Speichere die Datei in GridFS
+            file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
 
-        safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
+            safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
+            return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
 
-        return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
+        else : 
+            print("Backlog")
+            file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
+
+            taglist = {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic}
+            tagged_attr = {}
+            for key in taglist:
+                if taglist[key] != "none":
+                    tagged_attr[key] = taglist[key]
+                
+
+            tagged_attr["file_id"] = str(file_id)
+            safe_tags(db, "Backlog", tagged_attr)
+            return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
+
+
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
-
+        print(f"An error occurred: {e}")
 
 
 #Speichert File in eine Übersicht geordnet nach Fach
@@ -60,7 +79,6 @@ def safe_tags(db : object ,subname, document):
     return document_id
     
 
-    
 @app.delete("/deletefile/{file_id}/{student_name}/{subject_name}")
 async def delete_file(file_id: str, student_name: str, subject_name: str):
     try:
@@ -113,7 +131,19 @@ def return_whole_doc(file_id:str, db:object):
 
 
 
-
+@app.get("/getfiles/{student_name}/{subject_name}")
+def get_all(student_name : str, subject_name : str):
+    try:
+        db = client[student_name]
+        collection = db[subject_name]
+        files = []
+        for file in collection.find():
+            files.append(json.loads(json_util.dumps(file)))  # Convert ObjectId to string
+        return JSONResponse(content={"files": files}, status_code=200)
+    except Exception as e:
+        print("Fehler: ", e)
+        return JSONResponse(content={"error": str(e)}, status_code=500) 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+

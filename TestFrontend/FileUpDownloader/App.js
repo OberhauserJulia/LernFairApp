@@ -25,7 +25,7 @@ export default function App() {
 
   const getFile = async () => {
     try {
-      const response = await axios.get(`http://192.168.11.24:8000/getfile/${deletefile_ID}/${studentname}`, {
+      const response = await axios.get(`http://172.27.144.1:8000/getfile/${deletefile_ID}/${studentname}`, {
         responseType: 'arraybuffer', // Ensure the response is in a binary format
       });
       console.log('File fetched:', response);
@@ -77,7 +77,17 @@ export default function App() {
 
 
   const uploadFile = async () => {
+    if (!documentname) { 
+      setdocumentname("none"); 
+    } 
+    if (!subjectname) {
+      setsubjectname("none"); 
+    }
+    if (!topic) {
+      settopic("none"); 
+    } 
     try {
+      
       const file = await DocumentPicker.getDocumentAsync({ type: '*/*' });
       console.log(file);
       const formData = new FormData();
@@ -89,18 +99,22 @@ export default function App() {
       });
 
       
+
+
       formData.append('documentname', documentname);
       formData.append('subjectname',subjectname);
       formData.append ("topic",topic); 
 
 
+
       
 
-      const response = await axios.post(`http://192.168.11.24:8000/uploadfile/${studentname} `, formData, {
+      const response = await axios.post(`http://172.27.144.1:8000/uploadfile/${studentname} `, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       });
+
 
       setFileId(response.data.file_id);
     } catch (error) {
@@ -111,7 +125,7 @@ export default function App() {
 
 
   const deleteFile = () => { 
-    axios.delete(`http://192.168.11.24:8000/deletefile/${deletefile_ID}/${studentname}/${subjectname}`) 
+    axios.delete(`http://172.27.144.1:8000/deletefile/${deletefile_ID}/${studentname}/${subjectname}`) 
 
 
 
