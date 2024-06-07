@@ -43,12 +43,12 @@ def safe_chunks_files( student_name : str, file_data : bytes, file : UploadFile)
 async def upload_file(student_name: str, file: UploadFile = File(...), documentname: str = Form(...), subjectname : str = Form(...) , topic : str = Form(...) ) :
     # Lies den Dateiinhalt
     file_data = await file.read()
+    db = client[student_name]
+    fs = gridfs.GridFS(db)
     
     try:
         if  file.filename != "none" and documentname != "none" and subjectname != "none" and topic != "none":
             file_id = safe_chunks_files( student_name, file_data, file)
-            db = client[student_name]
-            fs = gridfs.GridFS(db)
             print(file_id)
             safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
             return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
@@ -132,9 +132,6 @@ def return_whole_doc(file_id:str, db:object):
     return StreamingResponse(file_stream, media_type=file_doc['contentType'])
 
 
-
-
-
 @app.get("/getfiles/{student_name}/{subject_name}")
 def get_all(student_name : str, subject_name : str):
     try:
@@ -151,3 +148,28 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
+
+
+
+#Funktionen für Backlog Barbeitung: 
+
+@app.put("/updatefile/{student_name}/{file_id}")
+async def update_file(student_name: str, file_id: str, documentname: str = Form(...), subjectname: str = Form(...), topic: str = Form(...), filename: str = Form(...)):
+    try:
+        db = client[student_name]
+        
+        # Überprüfen, ob alle Attribute vorhanden sind
+        if subjectname == "none" or documentname == "none" or topic == "none" or filename == "none":
+            return JSONResponse(content={"error": "Missing required attributes"}, status_code=400)
+        
+        # Schlüsseldatei erstellen
+        safe_tags(db, subjectname, {"Fach": subjectname, "file_id": str(file_id), "name": filename, "documentname": documentname, "topic": topic})
+        
+        # File aus dem Backlog löschen
+        deletefile(student_name, "Backlog", file_id)
+        
+        return JSONResponse(content={"message": "File updated successfully"}, status_code=200)
+    
+    except Exception as e:
+        print("Fehler: ", e)
+        return JSONResponse(content={"error": str(e)}, status_code=500)
