@@ -32,22 +32,24 @@ fs = gridfs.GridFS(db)
 def read_root():
     return JSONResponse(content={"message": "Hello World"}, status_code=200)
 
-
+def safe_chunks_files( student_name : str, file_data : bytes, file : UploadFile) : 
+    db = client[student_name]
+    fs = gridfs.GridFS(db)
+    # Speichere die Datei in GridFS
+    file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
+    return file_id
 
 @app.post("/uploadfile/{student_name}")
 async def upload_file(student_name: str, file: UploadFile = File(...), documentname: str = Form(...), subjectname : str = Form(...) , topic : str = Form(...) ) :
     # Lies den Dateiinhalt
     file_data = await file.read()
     
-    # Wähle die Datenbank basierend auf dem Namen des Schülers
-    db = client[student_name]
-    fs = gridfs.GridFS(db)
-
     try:
         if  file.filename != "none" and documentname != "none" and subjectname != "none" and topic != "none":
-            # Speichere die Datei in GridFS
-            file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
-
+            file_id = safe_chunks_files( student_name, file_data, file)
+            db = client[student_name]
+            fs = gridfs.GridFS(db)
+            print(file_id)
             safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
             return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
 
@@ -76,12 +78,9 @@ def safe_tags(db : object ,subname, document):
     collection = db[subname] 
     document_id = collection.insert_one(document).inserted_id
     return document_id
-    
 
-@app.delete("/deletefile/{file_id}/{student_name}/{subject_name}")
-async def delete_file(file_id: str, student_name: str, subject_name: str):
-    try:
-        # Wähle die Datenbank basierend auf dem Namen des Schülers
+def deletefile(student_name : str, collectionname : str, file_id : str): 
+    # Wähle die Datenbank basierend auf dem Namen des Schülers
         db = client[student_name]
         fs = gridfs.GridFS(db)
         
@@ -89,7 +88,13 @@ async def delete_file(file_id: str, student_name: str, subject_name: str):
         fs.delete(ObjectId(file_id))
         
         # Lösche das Dokument aus der Sammlung
-        db[subject_name].delete_one({"file_id": file_id})
+        db[collectionname].delete_one({"file_id": file_id})
+
+
+@app.delete("/deletefile/{file_id}/{student_name}/{subject_name}")
+async def delete_file(file_id: str, student_name: str, subject_name: str):
+    try:
+        deletefile(student_name, subject_name, file_id)
 
         return JSONResponse(content={"message": "File deleted successfully"}, status_code=200)
     except Exception as e:
