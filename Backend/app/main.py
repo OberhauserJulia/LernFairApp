@@ -9,6 +9,7 @@ import pymongo
 from bson import ObjectId
 from bson import json_util
 import json
+import uvicorn
 
 app = FastAPI()
 
@@ -27,10 +28,22 @@ db = client.your_database_name
 # Create a GridFS instance using the selected database
 fs = gridfs.GridFS(db)
 
+#Speichert File in eine Übersicht geordnet nach Fach
+def safe_tags(db : object ,subname, document): 
+    collection = db[subname] 
+    document_id = collection.insert_one(document).inserted_id
+    return document_id
 
-@app.get("/")
-def read_root():
-    return JSONResponse(content={"message": "Hello World"}, status_code=200)
+def deletefile(student_name : str, collectionname : str, file_id : str): 
+    # Wähle die Datenbank basierend auf dem Namen des Schülers
+        db = client[student_name]
+        fs = gridfs.GridFS(db)
+        
+        # Lösche die Datei aus GridFS
+        fs.delete(ObjectId(file_id))
+        
+        # Lösche das Dokument aus der Sammlung
+        db[collectionname].delete_one({"file_id": file_id})
 
 def safe_chunks_files( student_name : str, file_data : bytes, file : UploadFile) : 
     db = client[student_name]
@@ -38,6 +51,29 @@ def safe_chunks_files( student_name : str, file_data : bytes, file : UploadFile)
     # Speichere die Datei in GridFS
     file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
     return file_id
+
+#returtns the file as a streaming response
+def return_whole_doc(file_id:str, db:object): 
+    file_doc = db.fs.files.find_one({ '_id': ObjectId(file_id) })
+    if file_doc is None:
+        raise HTTPException(status_code=404, detail="File not found")
+    chunks = db.fs.chunks.find({ 'files_id': ObjectId(file_id) }).sort([("n", pymongo.ASCENDING)])
+    if chunks is None:
+        raise HTTPException(status_code=404, detail="File chunks not found")
+    
+    # Erstelle einen BytesIO-Stream, um die Datei zurückzugeben
+    file_stream = io.BytesIO()
+    for chunk in chunks:
+        file_stream.write(chunk['data'])
+    
+    file_stream.seek(0)
+    return StreamingResponse(file_stream, media_type=file_doc['contentType'])
+
+
+@app.get("/")
+def read_root():
+    return JSONResponse(content={"message": "Hello World"}, status_code=200)
+
 
 @app.post("/uploadfile/{student_name}")
 async def upload_file(student_name: str, file: UploadFile = File(...), documentname: str = Form(...), subjectname : str = Form(...) , topic : str = Form(...) ) :
@@ -73,24 +109,6 @@ async def upload_file(student_name: str, file: UploadFile = File(...), documentn
         print(f"An error occurred: {e}")
 
 
-#Speichert File in eine Übersicht geordnet nach Fach
-def safe_tags(db : object ,subname, document): 
-    collection = db[subname] 
-    document_id = collection.insert_one(document).inserted_id
-    return document_id
-
-def deletefile(student_name : str, collectionname : str, file_id : str): 
-    # Wähle die Datenbank basierend auf dem Namen des Schülers
-        db = client[student_name]
-        fs = gridfs.GridFS(db)
-        
-        # Lösche die Datei aus GridFS
-        fs.delete(ObjectId(file_id))
-        
-        # Lösche das Dokument aus der Sammlung
-        db[collectionname].delete_one({"file_id": file_id})
-
-
 @app.delete("/deletefile/{file_id}/{student_name}/{subject_name}")
 async def delete_file(file_id: str, student_name: str, subject_name: str):
     try:
@@ -99,8 +117,6 @@ async def delete_file(file_id: str, student_name: str, subject_name: str):
         return JSONResponse(content={"message": "File deleted successfully"}, status_code=200)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
-
-
 
 @app.get("/getfile/{file_id}/{student_name}")
 async def get_file(file_id: str, student_name: str):
@@ -112,24 +128,6 @@ async def get_file(file_id: str, student_name: str):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-#returtns the file as a strrming response
-def return_whole_doc(file_id:str, db:object): 
-    file_doc = db.fs.files.find_one({ '_id': ObjectId(file_id) })
-    if file_doc is None:
-        raise HTTPException(status_code=404, detail="File not found")
-    chunks = db.fs.chunks.find({ 'files_id': ObjectId(file_id) }).sort([("n", pymongo.ASCENDING)])
-    if chunks is None:
-        raise HTTPException(status_code=404, detail="File chunks not found")
-    
-    # Erstelle einen BytesIO-Stream, um die Datei zurückzugeben
-    file_stream = io.BytesIO()
-    for chunk in chunks:
-        file_stream.write(chunk['data'])
-    
-    file_stream.seek(0)
-    return StreamingResponse(file_stream, media_type=file_doc['contentType'])
 
 
 @app.get("/getfiles/{student_name}/{subject_name}")
@@ -144,18 +142,15 @@ def get_all(student_name : str, subject_name : str):
     except Exception as e:
         print("Fehler: ", e)
         return JSONResponse(content={"error": str(e)}, status_code=500) 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
 
 
 #Funktionen für Backlog Barbeitung: 
-
 @app.put("/updatefile/{student_name}/{file_id}")
 async def update_file(student_name: str, file_id: str, documentname: str = Form(...), subjectname: str = Form(...), topic: str = Form(...), filename: str = Form(...)):
     try:
+        print("Update File")
         db = client[student_name]
         
         # Überprüfen, ob alle Attribute vorhanden sind
@@ -173,3 +168,6 @@ async def update_file(student_name: str, file_id: str, documentname: str = Form(
     except Exception as e:
         print("Fehler: ", e)
         return JSONResponse(content={"error": str(e)}, status_code=500)
+    
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
