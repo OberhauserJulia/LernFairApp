@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+
+// import Screens
+import Archiv_Caregory from './screens/archiv_category';
+import Archiv_Student from './screens/archiv_student';
+import Archiv_Teacher from './screens/archiv_teacher';
+import Backlog from './screens/backlog';
+import File_Overview_Category from './screens/file_overview_category';  
+import File_Overview_Chat from './screens/file_overview_chat';
+import File_Overview_Student from './screens/file_overview_student';
+import File_Overview_Teacher from './screens/file_overview_teacher';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Text> Startscreen </Text>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
