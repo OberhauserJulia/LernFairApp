@@ -1,23 +1,36 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-export default function FileOverview() {
+
+interface FileOweviewProps { 
+  dateiname : string ; 
+  subject : string ; 
+  topic : string ; 
+  _id : string ; 
+  file_id : string ; 
+  filename : string ; 
+
+}
+
+export default function FileOverview({dateiname, subject, topic, _id , file_id, filename  } : FileOweviewProps) {
+
+
 
   return (
 
         <View style={styles.file_overview}>
           <View style={[styles.file, styles.shadowProp]}>
             <View style={styles.file_image}>
-              <Image source={require('./assets/file_icon.svg')} />
+              <Image source={require('../assets/file_icon.svg')} />
             </View>
 
             <View style={styles.file_info}>
-              <Text style={styles.headline}>Dateiname</Text>
-              <Text style={styles.text}>Fach | Thema</Text>
+              <Text style={styles.headline}>{dateiname}</Text>
+              <Text style={styles.text}>{subject} | {topic}</Text>
             </View>
 
             <View style={styles.file_actions}>
-              <Image source={require('./assets/file_actions.svg')} />
+              <Image source={require('../assets/file_actions.svg')} />
             </View>
           </View>
         </View>
@@ -56,14 +69,14 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat',
+    // fontFamily: 'Monserat',
     fontWeight: 'medium',
     fontSize: 12,
     color: '#121212',
   },
 
   text: {
-    fontFamily: 'Montserrat',
+    // fontFamily: 'Monserat',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#999999',
