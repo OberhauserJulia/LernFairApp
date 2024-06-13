@@ -54,7 +54,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 style={styles.input}
                 underlineColor="transparent"
               />
-              
+        
               <Text style={styles.labeling}>Fach auswählen *</Text>
               <DropdownComponent
                 open={open2}
