@@ -68,6 +68,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 style={styles.input}
                 underlineColor="transparent"
               />
+        
               <Text style={styles.labeling}>Klasse auswählen *</Text>
               <DropdownComponent
                 open={open}
