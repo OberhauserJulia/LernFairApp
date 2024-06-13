@@ -158,7 +158,7 @@ async def update_file(student_name: str, file_id: str, documentname: str = Form(
             return JSONResponse(content={"error": "Missing required attributes"}, status_code=400)
         
         # Schlüsseldatei erstellen
-        safe_tags(db, subjectname, {"Fach": subjectname, "file_id": str(file_id), "name": filename, "documentname": documentname, "topic": topic})
+        safe_tags(db, subjectname, {"subject": subjectname, "file_id": str(file_id), "name": filename, "documentname": documentname, "topic": topic})
         
         # File aus dem Backlog löschen
         deletefile(student_name, "Backlog", file_id)
