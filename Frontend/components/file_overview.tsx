@@ -13,6 +13,9 @@ interface FileOweviewProps {
 }
 
 export default function FileOverview({dateiname, subject, topic, _id , file_id, filename  } : FileOweviewProps) {
+  const selfID = _id ;
+  const chunkID = file_id ; 
+  const fileName = filename ;  
 
 
 
