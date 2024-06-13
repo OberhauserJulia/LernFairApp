@@ -26,14 +26,6 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
     alignSelf: 'center',
   };
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string | null>(null);
-  const [items, setItems] = useState<Item[]>([
-    { label: '5. Klasse', value: '5' },
-    { label: '6. Klasse', value: '6' },
-    { label: '7. Klasse', value: '7' },
-  ]);
-
   const [open2, setOpen2] = useState<boolean>(false);
   const [value2, setValue2] = useState<string | null>(null);
   const [items2, setItems2] = useState<Item[]>([
@@ -62,18 +54,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 style={styles.input}
                 underlineColor="transparent"
               />
-              <Text style={styles.labeling}>Klasse auswählen *</Text>
-              <DropdownComponent
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Klasse wählen"
-                zIndex={3000}
-                zIndexInverse={1000}
-              />
+              
               <Text style={styles.labeling}>Fach auswählen *</Text>
               <DropdownComponent
                 open={open2}
