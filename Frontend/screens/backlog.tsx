@@ -9,7 +9,6 @@ import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function Backlog() {
   const [studentName, setStudentName] = useState<string>("Elias");

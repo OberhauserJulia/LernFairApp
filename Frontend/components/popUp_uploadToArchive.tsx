@@ -59,6 +59,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   ]);
 
   const [image, setImage] = useState<string | null>(null);
+  const handlearchive = async () => { }
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -139,7 +140,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 zIndexInverse={4000}
               />
 
-              <ButtonComponent hideModal={hideModal} text="Datei speichern" />
+              <ButtonComponent handleButtonClick={handlearchive} hideModal={hideModal} text="Datei speichern" />
             </ScrollView>
           </Modal>
         </Portal>

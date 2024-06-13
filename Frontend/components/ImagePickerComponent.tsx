@@ -1,13 +1,20 @@
 import React from "react";
 import { TouchableOpacity, View, Image, StyleSheet, Text } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
-
+import { useEffect } from "react";
 interface ImagePickerComponentProps {
   image: string | null;
   pickImage: () => void;
 }
 
 const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({ image, pickImage }) => {
+  
+ 
+ useEffect(() => {
+    console.log('image', image);
+  }, [image]);
+  
+ 
   return (
     <>
       {!image && (
@@ -27,6 +34,7 @@ const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({ image, pick
     </>
   );
 }
+
 
 const styles = StyleSheet.create({
   imagePicker: {

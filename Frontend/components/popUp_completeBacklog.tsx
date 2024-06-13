@@ -17,6 +17,12 @@ interface Item {
 }
 
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+  
+  
+  const completeBacklog = async () => {
+    // Add code here
+  } 
+  
   const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
     padding: 20,
@@ -25,6 +31,14 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
     borderRadius: 20,
     alignSelf: 'center',
   };
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string | null>(null);
+  const [items, setItems] = useState<Item[]>([
+    { label: '5. Klasse', value: '5' },
+    { label: '6. Klasse', value: '6' },
+    { label: '7. Klasse', value: '7' },
+  ]);
 
   const [open2, setOpen2] = useState<boolean>(false);
   const [value2, setValue2] = useState<string | null>(null);
@@ -54,7 +68,18 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 style={styles.input}
                 underlineColor="transparent"
               />
-              
+              <Text style={styles.labeling}>Klasse auswählen *</Text>
+              <DropdownComponent
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                placeholder="Klasse wählen"
+                zIndex={3000}
+                zIndexInverse={1000}
+              />
               <Text style={styles.labeling}>Fach auswählen *</Text>
               <DropdownComponent
                 open={open2}
@@ -79,7 +104,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 zIndex={1000}
                 zIndexInverse={3000}
               />
-              <ButtonComponent hideModal={hideModal} text="Datei vervollständigen" />
+              <ButtonComponent handleButtonClick={completeBacklog} hideModal={hideModal} text="Datei vervollständigen" />
             </ScrollView>
           </Modal>
         </Portal>

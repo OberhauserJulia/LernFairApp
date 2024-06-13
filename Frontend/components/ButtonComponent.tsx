@@ -1,16 +1,34 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Button } from "react-native-paper";
+import { useEffect } from "react";
 
-export default function UploadButtonComponent({ hideModal, text }) {
+
+interface UploadButtonComponentProps {
+  hideModal: () => void;
+  text: string;
+  handleButtonClick: () => void;
+}
+
+const UploadButtonComponent: React.FC<UploadButtonComponentProps> = ({ hideModal, text, handleButtonClick }) => {
+  const onButtonClick = () => {
+    handleButtonClick();
+    hideModal();
+  };
+
   return (
     <View style={styles.buttonContainer}>
-      <Button mode="contained" onPress={hideModal} style={styles.button} labelStyle={styles.buttonText}>
+      <Button 
+        mode="contained" 
+        onPress={onButtonClick} 
+        style={styles.button} 
+        labelStyle={styles.buttonText}
+      >
         {text}
       </Button>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -26,7 +44,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#2B4B51',
     fontFamily: 'Montserrat',
-    fontWeight: 'medium',
+    fontWeight: '500', // Changed 'medium' to '500' to correctly use fontWeight
     fontSize: 16,
   },
 });
+
+export default UploadButtonComponent;

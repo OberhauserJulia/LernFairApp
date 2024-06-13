@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import React, { useState , useEffect} from "react";
+import { View, ScrollView, StyleSheet, StyleProp, ViewStyle , Button} from "react-native";
 import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-paper";
 import * as ImagePicker from 'expo-image-picker';
 import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
 import ButtonComponent from "./ButtonComponent";
 import SubButtonComponent from "./SubButtonComponent";
+import axios from 'axios';
+import * as DocumentPicker from 'expo-document-picker';
 
 interface PopUpCompleteFileProps {
   visible: boolean;
@@ -18,6 +20,19 @@ interface Item {
 }
 
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+  const [fileId, setFileId] = useState('');
+  const [documentname, setdocumentname] = useState('');
+  const [studentname , setstudentname] = useState('Elias'); 
+
+
+
+
+
+
+
+
+
+  
   const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
     padding: 20,
@@ -27,45 +42,87 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
     alignSelf: 'center',
   };
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string | null>(null);
-  const [items, setItems] = useState<Item[]>([
-    { label: '5. Klasse', value: '5' },
-    { label: '6. Klasse', value: '6' },
-    { label: '7. Klasse', value: '7' },
-  ]);
+  
 
   const [open2, setOpen2] = useState<boolean>(false);
-  const [value2, setValue2] = useState<string | null>(null);
+  const [subjectname, setsubjectname] = useState<string >("none");
   const [items2, setItems2] = useState<Item[]>([
     { label: 'Option 1', value: '1' },
     { label: 'Option 2', value: '2' },
   ]);
 
   const [open3, setOpen3] = useState<boolean>(false);
-  const [value3, setValue3] = useState<string | null>(null);
+  const [topic, settopic] = useState<string >("none");
   const [items3, setItems3] = useState<Item[]>([
     { label: 'Option 1', value: '1' },
     { label: 'Option 2', value: '2' },
     { label: 'Option 3', value: '3' },
   ]);
 
-  const [image, setImage] = useState<string | null>(null);
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
 
-    console.log(result);
+  const uploadFile = async () => {
+    if (!documentname) { 
+      setdocumentname("none"); 
+    } 
+    if (!subjectname) {
+      setsubjectname("none"); 
+    }
+    if (!topic) {
+      settopic("none"); 
+    } 
+    try {
+      
+      const file = await DocumentPicker.getDocumentAsync({ type: '*/*' });
+      console.log(file);
+      const formData = new FormData();
+      formData.append('file', {
+        uri: file.assets[0].uri, // URI der ausgewählten Datei
+        name: file.assets[0].name, // Name der ausgewählten Datei
+        type: file.assets[0].mimeType, // MIME-Typ der ausgewählten Datei
+        
+      });
 
-    if (!result.canceled) {
-      setImage(result.assets?.[0]?.uri || null);
+      
+
+
+      formData.append('documentname', documentname);
+      formData.append('subjectname',subjectname);
+      formData.append ("topic",topic); 
+
+
+
+      
+
+      const response = await axios.post(`http://172.27.144.1:8000/uploadfile/${studentname} `, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+
+
+      setFileId(response.data.file_id);
+    } catch (error) {
+      console.error('Error uploading file:', error);
     }
   };
+  const [localImage, setLocalImage] = useState("");
+
+
+
+  const pickFile = async () => {
+    let result = await DocumentPicker.getDocumentAsync({ type: '*/*' });
+   
+    setLocalImage(result.assets[0].uri || "TEST");
+    console.log(result || "TEST"); // Hier wird der korrekte Wert von result.assets[0].name oder "TEST" geloggt
+  };
+  
+  useEffect(() => {
+    console.log(localImage); // Loggt den aktuellen Wert von localImage bei jeder Änderung
+  }, [localImage]);
+  
+
+
 
   return (
     <View style={{ width: '100%', height: "100%" }}>
@@ -75,32 +132,26 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
               <Text style={styles.headline}>Datei teilen</Text>
               <Text style={styles.labeling}>Datei auswählen *</Text>
-              <ImagePickerComponent image={image} pickImage={pickImage} />
+              <ImagePickerComponent image={localImage} pickImage={pickFile} /> 
+
+
+
+
               <Text style={styles.labeling}>Name *</Text>
               <TextInput
                 placeholder="Dateiname"
                 style={styles.input}
                 underlineColor="transparent"
-              />
-              <Text style={styles.labeling}>Klasse auswählen</Text>
-              <DropdownComponent
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Klasse wählen"
-                zIndex={3000}
-                zIndexInverse={1000}
-              />
+                onChangeText={text => setdocumentname(text)}              />
+           
+              
               <Text style={styles.labeling}>Fach auswählen</Text>
               <DropdownComponent
                 open={open2}
-                value={value2}
+                value={subjectname}
                 items={items2}
                 setOpen={setOpen2}
-                setValue={setValue2}
+                setValue={setsubjectname}
                 setItems={setItems2}
                 placeholder="Fach wählen"
                 zIndex={2000}
@@ -109,16 +160,18 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
               <Text style={styles.labeling}>Thema auswählen</Text>
               <DropdownComponent
                 open={open3}
-                value={value3}
+                value={topic}
                 items={items3}
                 setOpen={setOpen3}
-                setValue={setValue3}
+                setValue={settopic}
                 setItems={setItems3}
                 placeholder="Thema wählen"
                 zIndex={1000}
                 zIndexInverse={3000}
+
+
               />
-              <ButtonComponent hideModal={hideModal} text="Datei speichern" />
+              <ButtonComponent handleButtonClick={uploadFile} hideModal={hideModal} text="Datei speichern" />
               <SubButtonComponent hideModal={hideModal} />
             </ScrollView>
           </Modal>

@@ -9,10 +9,11 @@ import File_Overview_Category from './screens/file_overview_category';
 import File_Overview_Chat from './screens/file_overview_chat';
 import File_Overview_Student from './screens/file_overview_student';
 import File_Overview_Teacher from './screens/file_overview_teacher';
+import OpenModalComponent from './components/openModalComponent'; // Corrected import
 
 export default function App() {
   return (
-    <Text> Startscreen </Text>
+   <OpenModalComponent />  // Corrected component name
   );
 }
 
