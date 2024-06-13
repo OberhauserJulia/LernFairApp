@@ -7,32 +7,18 @@ import axios from 'axios';
 import Search from '../components/searchbar';
 import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
-
-interface File {
-  _id: { $oid: string };
-  file_id: string;
-  name: string;
-  topic?: string;
-  subject?: string;
-  documentname: string ; 
-}
+import { File } from '../interfaces/Backendfile';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 export default function Backlog() {
   const [studentName, setStudentName] = useState<string>("Elias");
   const [files, setFiles] = useState<File[]>([]);
   const subjectName: string = "Backlog";
 
-  const getBacklogEntries = async () => {
-    try {
-      const response = await axios.get(`http://172.27.144.1:8000/getfiles/${studentName}/${subjectName}`);
-      setFiles(response.data.files);
-    } catch (error) {
-      console.error("Error fetching backlog entries:", error);
-    }
-  };
 
   useEffect(() => {
-    getBacklogEntries();
+    getSubjectEntries(setFiles , studentName, subjectName);
   }, []);
 
   return (

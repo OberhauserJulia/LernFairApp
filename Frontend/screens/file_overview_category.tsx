@@ -6,15 +6,9 @@ import axios from 'axios';
 import Search from '../components/searchbar';
 import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
+import { File } from '../interfaces/Backendfile';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 
-interface File {
-  _id: { $oid: string };
-  file_id: string;
-  name: string;
-  topic?: string;
-  Fach?: string;
-  documentname: string;
-}
 
 interface File_Overview_CategoryProps {
   subjectname: string;
@@ -27,19 +21,10 @@ export default function File_Overview_Category({ subjectname, studentname }: Fil
   const [files, setFiles] = useState<File[]>([]);
   const subjectName: string = subjectname;
 
-  const getSubjectEntries = async () => {
-    try {
-      const response = await axios.get(`http://172.27.144.1:8000/getfiles/${studentName}/${subjectName}`);
-      setFiles(response.data.files);
-      console.log(files)
-    } catch (error) {
-      console.error("Error fetching subject entries:", error);
-    }
-  };
-
+  
   useEffect(() => {
     console.log("Loading");
-    getSubjectEntries();
+    getSubjectEntries(setFiles , studentName, subjectName);
   }, []); // Abhängigkeiten-Array, um sicherzustellen, dass es nur einmal aufgerufen wird
 
   return (
@@ -58,7 +43,7 @@ export default function File_Overview_Category({ subjectname, studentname }: Fil
             _id={file._id.$oid}
             file_id={file.file_id}
             topic={file.topic || 'Unknown Topic'}
-            subject={file.Fach || 'Unknown Subject'}
+            subject={file.subject || 'Unknown Subject'}
             dateiname={file.documentname}
             filename={file.name}
           />

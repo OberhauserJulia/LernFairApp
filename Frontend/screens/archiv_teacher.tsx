@@ -20,7 +20,7 @@ export default function Archiv_Teacher() {
             <Text style={styles.more}>Alle anzeigen</Text>
           </View>
 
-          <FileOverview></FileOverview>
+          <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
           
         </View>
 
@@ -31,8 +31,8 @@ export default function Archiv_Teacher() {
             <Text style={styles.more}>Alle anzeigen</Text>
           </View>
 
-          <FileOverview></FileOverview>
-        </View>
+          <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
+          </View>
 
         <View style={styles.category}>
 
@@ -41,7 +41,7 @@ export default function Archiv_Teacher() {
             <Text style={styles.more}>Alle anzeigen</Text>
           </View>
 
-          <FileOverview></FileOverview>
+          <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
 
         </View>
       </View>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
 
   more: {
-    fontFamily: 'Montserrat',
+    // fontFamily: 'Montserrat',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
