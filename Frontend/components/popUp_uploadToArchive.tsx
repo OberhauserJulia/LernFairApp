@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-paper";
 import * as ImagePicker from 'expo-image-picker';
 import DropdownComponent from "./DropdownComponent";
@@ -7,8 +7,18 @@ import ImagePickerComponent from "./ImagePickerComponent";
 import ButtonComponent from "./ButtonComponent";
 import SubButtonComponent from "./SubButtonComponent";
 
-export default function PopUp_completeFile({ visible, hideModal }) {
-  const containerStyle = {
+interface PopUpCompleteFileProps {
+  visible: boolean;
+  hideModal: () => void;
+}
+
+interface Item {
+  label: string;
+  value: string;
+}
+
+const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+  const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
     padding: 20,
     height: '90%',
@@ -17,38 +27,38 @@ export default function PopUp_completeFile({ visible, hideModal }) {
     alignSelf: 'center',
   };
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
+  const [open, setOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string | null>(null);
+  const [items, setItems] = useState<Item[]>([
     { label: '5. Klasse', value: '5' },
     { label: '6. Klasse', value: '6' },
     { label: '7. Klasse', value: '7' },
   ]);
 
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState(null);
-  const [items2, setItems2] = useState([
+  const [open2, setOpen2] = useState<boolean>(false);
+  const [value2, setValue2] = useState<string | null>(null);
+  const [items2, setItems2] = useState<Item[]>([
     { label: 'Option 1', value: '1' },
     { label: 'Option 2', value: '2' },
   ]);
 
-  const [open3, setOpen3] = useState(false);
-  const [value3, setValue3] = useState(null);
-  const [items3, setItems3] = useState([
-    { label: 'Option 1', value: '1' },
-    { label: 'Option 2', value: '2' },
-    { label: 'Option 3', value: '3' },
-  ]);
-
-  const [open4, setOpen4] = useState(false);
-  const [value4, setValue4] = useState(null);
-  const [items4, setItems4] = useState([
+  const [open3, setOpen3] = useState<boolean>(false);
+  const [value3, setValue3] = useState<string | null>(null);
+  const [items3, setItems3] = useState<Item[]>([
     { label: 'Option 1', value: '1' },
     { label: 'Option 2', value: '2' },
     { label: 'Option 3', value: '3' },
   ]);
 
-  const [image, setImage] = useState(null);
+  const [open4, setOpen4] = useState<boolean>(false);
+  const [value4, setValue4] = useState<string | null>(null);
+  const [items4, setItems4] = useState<Item[]>([
+    { label: 'Option 1', value: '1' },
+    { label: 'Option 2', value: '2' },
+    { label: 'Option 3', value: '3' },
+  ]);
+
+  const [image, setImage] = useState<string | null>(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -75,7 +85,8 @@ export default function PopUp_completeFile({ visible, hideModal }) {
               <Text style={styles.labeling}>Datei auswählen *</Text>
               <ImagePickerComponent image={image} pickImage={pickImage} />
               <Text style={styles.labeling}>Name *</Text>
-              <TextInput placeholder="Dateiname"
+              <TextInput 
+                placeholder="Dateiname"
                 style={styles.input}
                 underlineColor="transparent"
               />
@@ -147,7 +158,6 @@ const styles = StyleSheet.create({
   },
   labeling: {
     fontFamily: 'Montserrat',
-    fontWeight: 'regular',
     fontSize: 16,
     color: '#2B4B51',
     marginBottom: 8,
@@ -167,3 +177,5 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
 });
+
+export default PopUpCompleteFile;

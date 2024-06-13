@@ -2,7 +2,12 @@ import React from "react";
 import { TouchableOpacity, View, Image, StyleSheet, Text } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function ImagePickerComponent({ image, pickImage }) {
+interface ImagePickerComponentProps {
+  image: string | null;
+  pickImage: () => void;
+}
+
+const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({ image, pickImage }) => {
   return (
     <>
       {!image && (
@@ -44,13 +49,13 @@ const styles = StyleSheet.create({
     color: '#2B4B51',
     fontSize: 16,
     fontFamily: 'Montserrat',
-    fontWeight: 'medium',
+    fontWeight: '500', // Use '500' for medium font weight
   },
   imagePickerSubText: {
     color: '#2B4B51',
     fontSize: 12,
     fontFamily: 'Montserrat',
-    fontWeight: 'regular',
+    fontWeight: '400', // Use '400' for regular font weight
   },
   imageContainer: {
     borderWidth: 1,
@@ -65,3 +70,5 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
 });
+
+export default ImagePickerComponent;

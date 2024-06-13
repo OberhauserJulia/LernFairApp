@@ -24,7 +24,7 @@ export default function FileOverview({dateiname, subject, topic, _id , file_id, 
         <View style={styles.file_overview}>
           <View style={[styles.file, styles.shadowProp]}>
             <View style={styles.file_image}>
-              <Image source={require('../assets/file_icon.svg')} />
+              <Image source={require('../assets/file_icon.svg') }  />
             </View>
 
             <View style={styles.file_info}>
