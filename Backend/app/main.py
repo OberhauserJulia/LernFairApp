@@ -86,14 +86,14 @@ async def upload_file(student_name: str, file: UploadFile = File(...), documentn
         if  file.filename != "none" and documentname != "none" and subjectname != "none" and topic != "none":
             file_id = safe_chunks_files( student_name, file_data, file)
             print(file_id)
-            safe_tags(db, subjectname, {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
+            safe_tags(db, subjectname, {"subject" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
             return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
 
         else : 
             print("Backlog")
             file_id = fs.put(file_data, filename=file.filename, content_type=file.content_type)
 
-            taglist = {"Fach" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic}
+            taglist = {"subject" : subjectname , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic}
             tagged_attr = {}
             for key in taglist:
                 if taglist[key] != "none":
