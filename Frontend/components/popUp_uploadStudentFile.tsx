@@ -1,13 +1,13 @@
-import React, { useState , useEffect} from "react";
-import { View, ScrollView, StyleSheet, StyleProp, ViewStyle , Button} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-paper";
-import * as ImagePicker from 'expo-image-picker';
 import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
 import ButtonComponent from "./ButtonComponent";
 import SubButtonComponent from "./SubButtonComponent";
 import axios from 'axios';
 import * as DocumentPicker from 'expo-document-picker';
+import type { DocumentPickerResult } from 'expo-document-picker';
 
 interface PopUpCompleteFileProps {
   visible: boolean;
@@ -19,20 +19,31 @@ interface Item {
   value: string;
 }
 
+interface FileAsset {
+  uri: string;
+  name: string;
+  mimeType: string;
+}
+
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
-  const [fileId, setFileId] = useState('');
-  const [documentname, setdocumentname] = useState('');
-  const [studentname , setstudentname] = useState('Elias'); 
+  const [documentname, setdocumentname] = useState<string>('');
+  const [studentname, setstudentname] = useState<string>('Elias');
+  const [file, setfile] = useState<DocumentPickerResult | null>(null);
+  const [localImage, setLocalImage] = useState<string | null>(null);
+  const [open2, setOpen2] = useState<boolean>(false);
+  const [subjectname, setsubjectname] = useState<string>('none');
+  const [items2, setItems2] = useState<Item[]>([
+    { label: 'Mathe', value: '1' },
+    { label: 'Deutsch', value: '2' },
+  ]);
+  const [open3, setOpen3] = useState<boolean>(false);
+  const [topic, settopic] = useState<string>('none');
+  const [items3, setItems3] = useState<Item[]>([
+    { label: 'Option 1', value: '1' },
+    { label: 'Option 2', value: '2' },
+    { label: 'Option 3', value: '3' },
+  ]);
 
-
-
-
-
-
-
-
-
-  
   const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
     padding: 20,
@@ -42,87 +53,49 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
     alignSelf: 'center',
   };
 
-  
+  const pickFile = async () => {
+    const result = await DocumentPicker.getDocumentAsync({ type: '*/*' });
+    setfile(result);
+    setLocalImage(result.assets?.[0]?.uri || 'TEST');
+    console.log(result || 'TEST');
+  };
 
-  const [open2, setOpen2] = useState<boolean>(false);
-  const [subjectname, setsubjectname] = useState<string >("none");
-  const [items2, setItems2] = useState<Item[]>([
-    { label: 'Option 1', value: '1' },
-    { label: 'Option 2', value: '2' },
-  ]);
-
-  const [open3, setOpen3] = useState<boolean>(false);
-  const [topic, settopic] = useState<string >("none");
-  const [items3, setItems3] = useState<Item[]>([
-    { label: 'Option 1', value: '1' },
-    { label: 'Option 2', value: '2' },
-    { label: 'Option 3', value: '3' },
-  ]);
-
-
+  useEffect(() => {
+    console.log(localImage);
+  }, [localImage]);
 
   const uploadFile = async () => {
-    if (!documentname) { 
-      setdocumentname("none"); 
-    } 
-    if (!subjectname) {
-      setsubjectname("none"); 
+    if (!file) {
+      alert("Bitte wählen Sie eine Datei aus");
+      return;
     }
-    if (!topic) {
-      settopic("none"); 
-    } 
+
+    if (!documentname) setdocumentname("none");
+    if (!subjectname) setsubjectname("none");
+    if (!topic) settopic("none");
+
     try {
-      
-      const file = await DocumentPicker.getDocumentAsync({ type: '*/*' });
-      console.log(file);
       const formData = new FormData();
-      formData.append('file', {
-        uri: file.assets[0].uri, // URI der ausgewählten Datei
-        name: file.assets[0].name, // Name der ausgewählten Datei
-        type: file.assets[0].mimeType, // MIME-Typ der ausgewählten Datei
-        
-      });
-
-      
-
-
+      const fileAsset = file.assets ? file.assets[0] as FileAsset : null;
+      if (fileAsset) {
+        formData.append('file', {
+          uri: fileAsset.uri,
+          name: fileAsset.name,
+          type: fileAsset.mimeType,
+        } as any);
+      }
       formData.append('documentname', documentname);
-      formData.append('subjectname',subjectname);
-      formData.append ("topic",topic); 
+      formData.append('subjectname', subjectname);
+      formData.append("topic", topic);
 
-
-
-      
-
-      const response = await axios.post(`http://172.27.144.1:8000/uploadfile/${studentname} `, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
+      const response = await axios.post(`http://172.27.144.1:8000/uploadfile/${studentname}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-
-
-      setFileId(response.data.file_id);
+      console.log(response.data);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
   };
-  const [localImage, setLocalImage] = useState("");
-
-
-
-  const pickFile = async () => {
-    let result = await DocumentPicker.getDocumentAsync({ type: '*/*' });
-   
-    setLocalImage(result.assets[0].uri || "TEST");
-    console.log(result || "TEST"); // Hier wird der korrekte Wert von result.assets[0].name oder "TEST" geloggt
-  };
-  
-  useEffect(() => {
-    console.log(localImage); // Loggt den aktuellen Wert von localImage bei jeder Änderung
-  }, [localImage]);
-  
-
-
 
   return (
     <View style={{ width: '100%', height: "100%" }}>
@@ -132,19 +105,14 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
               <Text style={styles.headline}>Datei teilen</Text>
               <Text style={styles.labeling}>Datei auswählen *</Text>
-              <ImagePickerComponent image={localImage} pickImage={pickFile} /> 
-
-
-
-
+              <ImagePickerComponent image={localImage} pickImage={pickFile} />
               <Text style={styles.labeling}>Name *</Text>
               <TextInput
                 placeholder="Dateiname"
                 style={styles.input}
                 underlineColor="transparent"
-                onChangeText={text => setdocumentname(text)}              />
-           
-              
+                onChangeText={text => setdocumentname(text)}
+              />
               <Text style={styles.labeling}>Fach auswählen</Text>
               <DropdownComponent
                 open={open2}
@@ -168,8 +136,6 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 placeholder="Thema wählen"
                 zIndex={1000}
                 zIndexInverse={3000}
-
-
               />
               <ButtonComponent handleButtonClick={uploadFile} hideModal={hideModal} text="Datei speichern" />
               <SubButtonComponent hideModal={hideModal} />
