@@ -2,7 +2,7 @@ import React from "react";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { StyleSheet } from "react-native";
 
-export default function DropdownComponent({ open, value, items, setOpen, setValue, setItems, placeholder, zIndex, zIndexInverse }) {
+export default function DropdownComponent({ open, value, items, setOpen, setValue, setItems, placeholder, zIndex, zIndexInverse }: { open: boolean, value: any, items: any[], setOpen: any, setValue: any, setItems: any, placeholder: string, zIndex: number, zIndexInverse: number }) {
   return (
     <DropDownPicker
       open={open}
