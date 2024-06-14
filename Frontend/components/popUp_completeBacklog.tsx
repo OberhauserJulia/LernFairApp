@@ -5,10 +5,13 @@ import * as ImagePicker from 'expo-image-picker';
 import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
 import ButtonComponent from "./ButtonComponent";
-
+import axios from "axios";
 interface PopUpCompleteFileProps {
   visible: boolean;
   hideModal: () => void;
+  file_id : string;  
+  filename : string; 
+
 }
 
 interface Item {
@@ -16,12 +19,44 @@ interface Item {
   value: string;
 }
 
-const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal, file_id , filename}) => {
+  
+  const studentname = 'Elias';
+  const [fileID , setFileID ] = useState<string>(file_id);
+  const [documentname, setDocumentname] = useState<string>('');
+  const [topic, settopic] = useState<string>('');
+  const [subjectname, setsubjectname] = useState<string>('');
+  
   
   
   const completeBacklog = async () => {
-    // Add code here
-  } 
+    if (!documentname && !subjectname && !topic) {
+      return alert('Bitte füllen Sie alle Felder aus!');
+    }
+  
+    let formData = new FormData();
+    formData.append('file_id', fileID);
+    formData.append('filename', filename);
+    formData.append('documentname', documentname);
+    formData.append('subjectname', subjectname || '');
+    formData.append('topic', topic || '');
+  
+    try {
+      const response = await axios.put(
+        `http://172.27.144.1:8000/updatefile/${studentname}/${fileID}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error updating file:', error);
+    }
+  };
+  
   
   const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
@@ -32,20 +67,15 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
     alignSelf: 'center',
   };
 
-  const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string | null>(null);
-  const [items, setItems] = useState<Item[]>([
-    { label: '5. Klasse', value: '5' },
-    { label: '6. Klasse', value: '6' },
-    { label: '7. Klasse', value: '7' },
-  ]);
+ 
 
   const [open2, setOpen2] = useState<boolean>(false);
   const [value2, setValue2] = useState<string | null>(null);
   const [items2, setItems2] = useState<Item[]>([
-    { label: 'Option 1', value: '1' },
-    { label: 'Option 2', value: '2' },
+    { label: 'Mathe', value: 'Mathe' },
+    { label: 'Deutsch', value: 'Deutsch' },
   ]);
+
 
   const [open3, setOpen3] = useState<boolean>(false);
   const [value3, setValue3] = useState<string | null>(null);
@@ -67,27 +97,18 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 placeholder="Dateiname"
                 style={styles.input}
                 underlineColor="transparent"
+                onChangeText={text => setDocumentname(text) }
               />
         
               <Text style={styles.labeling}>Klasse auswählen *</Text>
-              <DropdownComponent
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                placeholder="Klasse wählen"
-                zIndex={3000}
-                zIndexInverse={1000}
-              />
+              
               <Text style={styles.labeling}>Fach auswählen *</Text>
               <DropdownComponent
                 open={open2}
-                value={value2}
+                value={subjectname}
                 items={items2}
                 setOpen={setOpen2}
-                setValue={setValue2}
+                setValue={setsubjectname}
                 setItems={setItems2}
                 placeholder="Fach wählen"
                 zIndex={2000}
@@ -96,10 +117,10 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
               <Text style={styles.labeling}>Thema auswählen *</Text>
               <DropdownComponent
                 open={open3}
-                value={value3}
+                value={topic}
                 items={items3}
                 setOpen={setOpen3}
-                setValue={setValue3}
+                setValue={settopic}
                 setItems={setItems3}
                 placeholder="Thema wählen"
                 zIndex={1000}
