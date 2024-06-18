@@ -23,7 +23,7 @@ export default function openModalComponent() {
       >
         Button Text
       </Button>
-      {modalVisible && <PopUp_addFile file_id='666be4e873fe1303f9bceaa4' filename='IMG_20240603_140500.jpg' visible={modalVisible} hideModal={() => setModalVisible(false)} />}
+      {modalVisible && <PopUp_uploadToArchive visible={modalVisible} hideModal={() => setModalVisible(false)} />}
     </View>
     
   );
