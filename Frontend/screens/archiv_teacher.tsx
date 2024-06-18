@@ -1,10 +1,23 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { useState, useEffect } from 'react'; 
 
 // import components
 import FileOverview from '../components/file_overview';
+import { ArchiveFile } from '../interfaces/Backendfile';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 
-export default function Archiv_Teacher() {
+export default function Archiv_Student() {
+  const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
+  const [workshopFiles, setWorkshopFiles] = useState<ArchiveFile[]>([]);
+  const [tests, setTests] = useState<ArchiveFile[]>([]); 
+  const databaseName = "Archiv"; 
+
+  useEffect(() => {
+    getSubjectEntries(setWorksheets, databaseName, "Uebung");
+    getSubjectEntries(setTests, databaseName, "Pruefungen");
+    getSubjectEntries(setWorkshopFiles, databaseName, "Workshop");
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -12,37 +25,64 @@ export default function Archiv_Teacher() {
       </View>
 
       <View style={styles.content}>
-
         <View style={styles.category}>
-
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Übungsblätter</Text>
             <Text style={styles.more}>Alle anzeigen</Text>
           </View>
 
-          <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
-          
+          {worksheets.slice(0, 3).map(file => (
+            <FileOverview
+              key={file._id.$oid}
+              _id={file._id.$oid}
+              file_id={file.file_id}
+              topic={file.topic || 'Unknown Topic'}
+              subject={file.subject || 'Unknown Subject'}
+              dateiname={file.documentname}
+              filename={file.name}
+              classNumber={file.classNumber}
+            />
+          ))}
         </View>
 
         <View style={styles.category}>
-
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Probeklausuren</Text>
             <Text style={styles.more}>Alle anzeigen</Text>
           </View>
 
-          <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
-          </View>
+          {tests.slice(0, 3).map(file => (
+            <FileOverview
+              key={file._id.$oid}
+              _id={file._id.$oid}
+              file_id={file.file_id}
+              topic={file.topic || 'Unknown Topic'}
+              subject={file.subject || 'Unknown Subject'}
+              dateiname={file.documentname}
+              filename={file.name}
+              classNumber={file.classNumber}
+            />
+          ))}
+        </View>
 
         <View style={styles.category}>
-
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Workshop Unterlagen</Text>
             <Text style={styles.more}>Alle anzeigen</Text>
           </View>
 
-          <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
-
+          {workshopFiles.slice(0, 3).map(file => (
+            <FileOverview
+              key={file._id.$oid}
+              _id={file._id.$oid}
+              file_id={file.file_id}
+              topic={file.topic || 'Unknown Topic'}
+              subject={file.subject || 'Unknown Subject'}
+              dateiname={file.documentname}
+              filename={file.name}
+              classNumber={file.classNumber}
+            />
+          ))}
         </View>
       </View>
     </View>
@@ -80,14 +120,14 @@ const styles = StyleSheet.create({
   },
 
   category_name: {
-    fontFamily: 'Monsterrat',
+    fontFamily: 'Montserrat',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
   },
 
   more: {
-    // fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat',  // Uncommented the fontFamily
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',

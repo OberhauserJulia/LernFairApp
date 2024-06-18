@@ -24,7 +24,7 @@ export default function Filter() {
             <View style={styles.bar}>
               <Text style={styles.headline}> Dateien filtern </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Image style={styles.icon} source={require('./assets/close_icon.svg')} />
+                <Image style={styles.icon} source={require('../assets/close_icon.svg')} />
               </TouchableOpacity>
             </View>
 
