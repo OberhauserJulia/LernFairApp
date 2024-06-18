@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useState, useEffect } from 'react'; 
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
 
 // import components
 import FileOverview from '../components/file_overview';
@@ -10,8 +10,8 @@ import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 export default function Archiv_Student() {
   const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
   const [workshopFiles, setWorkshopFiles] = useState<ArchiveFile[]>([]);
-  const [tests, setTests] = useState<ArchiveFile[]>([]); 
-  const databaseName = "Archiv"; 
+  const [tests, setTests] = useState<ArchiveFile[]>([]);
+  const databaseName = "Archiv";
 
   useEffect(() => {
     getSubjectEntries(setWorksheets, databaseName, "Uebung");
@@ -19,18 +19,21 @@ export default function Archiv_Student() {
     getSubjectEntries(setWorkshopFiles, databaseName, "Workshop");
   }, []);
 
+  const showMore = (fileType: string) => {
+    console.log('Show more ' + fileType);
+  };
+
   return (
     <View style={styles.screen}>
-      <View style={styles.top_bar}>
-      </View>
-
+      <View style={styles.top_bar}></View>
       <View style={styles.content}>
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Übungsblätter</Text>
-            <Text style={styles.more}>Alle anzeigen</Text>
+            <TouchableOpacity  onPress={() => showMore('Uebung')}>
+              <Text style={styles.more}>Alle anzeigen</Text>
+            </TouchableOpacity>
           </View>
-
           {worksheets.slice(0, 3).map(file => (
             <FileOverview
               key={file._id.$oid}
@@ -48,9 +51,10 @@ export default function Archiv_Student() {
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Probeklausuren</Text>
-            <Text style={styles.more}>Alle anzeigen</Text>
+            <TouchableOpacity onPress={() => showMore('Pruefungen')}>
+              <Text style={styles.more}>Alle anzeigen</Text>
+            </TouchableOpacity>
           </View>
-
           {tests.slice(0, 3).map(file => (
             <FileOverview
               key={file._id.$oid}
@@ -68,9 +72,10 @@ export default function Archiv_Student() {
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Workshop Unterlagen</Text>
-            <Text style={styles.more}>Alle anzeigen</Text>
+            <TouchableOpacity onPress={() => showMore('Workshop')}>
+              <Text style={styles.more}>Alle anzeigen</Text>
+            </TouchableOpacity>
           </View>
-
           {workshopFiles.slice(0, 3).map(file => (
             <FileOverview
               key={file._id.$oid}
@@ -94,40 +99,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     flex: 1,
   },
-
   top_bar: {
     height: 48,
     backgroundColor: '#2B4B51',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
   },
-
   content: {
     width: '100%',
     paddingRight: 16,
     paddingLeft: 16,
     paddingTop: 16,
   },
-
   category: {
     marginTop: 16,
   },
-
   text_container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-
   category_name: {
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
   },
-
   more: {
-    fontFamily: 'Montserrat',  // Uncommented the fontFamily
+    fontFamily: 'Montserrat',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
