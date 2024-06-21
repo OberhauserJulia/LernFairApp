@@ -13,7 +13,7 @@ import OpenModalComponent from './components/openModalComponent'; // Corrected i
 
 export default function App() {
   return (
-   <Archiv_Category filtype='Uebung'/>  // Corrected component name
+   <File_Overview_Chat  />  // Corrected component name
   );
 }
 

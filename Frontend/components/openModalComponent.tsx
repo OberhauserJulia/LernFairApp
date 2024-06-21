@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import PopUpCompleteFile from './popUp_completeBacklog';
-
+import Popup_completeStudentFile from './popUp_uploadStudentFile';
 
 
 export default function openModalComponent() {
@@ -23,7 +23,7 @@ export default function openModalComponent() {
       >
         Button Text
       </Button>
-      {modalVisible && <PopUpCompleteFile visible={modalVisible} hideModal={() => setModalVisible(false)} file_id='123' filename='blala'  />}
+      {modalVisible && <Popup_completeStudentFile visible={modalVisible} hideModal={() => setModalVisible(false)}  />}
     </View>
     
   );

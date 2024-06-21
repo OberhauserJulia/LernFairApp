@@ -13,16 +13,21 @@ import { Item } from "../interfaces/PopUpItem";
 import { FileAsset } from "../interfaces/FileAssets";
 
 
-const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+const Popup_completeStudentFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
   const [documentname, setdocumentname] = useState<string>('');
   const [studentname, setstudentname] = useState<string>('Elias');
   const [file, setfile] = useState<DocumentPickerResult | null>(null);
   const [localImage, setLocalImage] = useState<string | null>(null);
   const [open2, setOpen2] = useState<boolean>(false);
   const [subjectname, setsubjectname] = useState<string>('none');
+
+
   const [items2, setItems2] = useState<Item[]>([
-    { label: 'Mathe', value: '1' },
-    { label: 'Deutsch', value: '2' },
+    { label: 'Mathe', value: 'Mathe' },
+    { label: 'Deutsch', value: 'Deutsch' },
+    { label: 'Englisch', value: 'Englisch' },
+    { label: 'Informatik', value: 'Informatik' },
+
   ]);
   const [open3, setOpen3] = useState<boolean>(false);
   const [topic, settopic] = useState<string>('none');
@@ -76,7 +81,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
       formData.append('subjectname', subjectname);
       formData.append("topic", topic);
 
-      const response = await axios.post(`http://172.27.144.1:8000/uploadfile/${studentname}`, formData, {
+      const response = await axios.post(`http://192.168.119.190:8000/uploadfile/${studentname}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       console.log(response.data);
@@ -165,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopUpCompleteFile;
+export default Popup_completeStudentFile;
