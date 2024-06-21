@@ -8,22 +8,10 @@ import SubButtonComponent from "./SubButtonComponent";
 import axios from 'axios';
 import * as DocumentPicker from 'expo-document-picker';
 import type { DocumentPickerResult } from 'expo-document-picker';
+import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
+import { Item } from "../interfaces/PopUpItem";
+import { FileAsset } from "../interfaces/FileAssets";
 
-interface PopUpCompleteFileProps {
-  visible: boolean;
-  hideModal: () => void;
-}
-
-interface Item {
-  label: string;
-  value: string;
-}
-
-interface FileAsset {
-  uri: string;
-  name: string;
-  mimeType: string;
-}
 
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
   const [documentname, setdocumentname] = useState<string>('');

@@ -10,20 +10,10 @@ import axios from "axios";
 import type { DocumentPickerResult } from 'expo-document-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useEffect  } from "react";
-interface PopUpCompleteFileProps {
-  visible: boolean;
-  hideModal: () => void;
-}
+import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
+import { FileAsset } from "../interfaces/FileAssets";
+import { Item } from "../interfaces/PopUpItem";
 
-interface FileAsset {
-  uri: string;
-  name: string;
-  mimeType: string;
-}
-interface Item {
-  label: string;
-  value: string;
-}
 
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
   const containerStyle: StyleProp<ViewStyle> = {

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
-import PopUp_addFile from './popUp_completeBacklog';
-import PopUp_uploadToArchive from './popUp_uploadToArchive';
-import PopUpCompleteFile from './popUp_uploadStudentFile';
+import PopUpCompleteFile from './popUp_completeBacklog';
+
+
 
 export default function openModalComponent() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -23,7 +23,7 @@ export default function openModalComponent() {
       >
         Button Text
       </Button>
-      {modalVisible && <PopUp_uploadToArchive visible={modalVisible} hideModal={() => setModalVisible(false)} />}
+      {modalVisible && <PopUpCompleteFile visible={modalVisible} hideModal={() => setModalVisible(false)} file_id='123' filename='blala'  />}
     </View>
     
   );
