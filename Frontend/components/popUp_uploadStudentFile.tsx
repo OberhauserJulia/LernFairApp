@@ -12,8 +12,12 @@ import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
 import { Item } from "../interfaces/PopUpItem";
 import { FileAsset } from "../interfaces/FileAssets";
 
+interface UploadFileProp{
+  visible : boolean , 
+  hideModal: () => void
+}
 
-const Popup_completeStudentFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModal }) => {
   const [documentname, setdocumentname] = useState<string>('');
   const [studentname, setstudentname] = useState<string>('Elias');
   const [file, setfile] = useState<DocumentPickerResult | null>(null);
@@ -63,11 +67,11 @@ const Popup_completeStudentFile: React.FC<PopUpCompleteFileProps> = ({ visible, 
       return;
     }
 
-    if (!documentname) setdocumentname("none");
     if (!subjectname) setsubjectname("none");
     if (!topic) settopic("none");
 
     try {
+      
       const formData = new FormData();
       const fileAsset = file.assets ? file.assets[0] as FileAsset : null;
       if (fileAsset) {
@@ -77,9 +81,18 @@ const Popup_completeStudentFile: React.FC<PopUpCompleteFileProps> = ({ visible, 
           type: fileAsset.mimeType,
         } as any);
       }
+      
+      if (!documentname ) {
+        alert('Es müssen mindestens eine File und ein Name ausgewählt werden!');
+        return 
+      }
+      if (!file) {
+        alert("Bitte eine File auswählen")
+      }
       formData.append('documentname', documentname);
       formData.append('subjectname', subjectname);
       formData.append("topic", topic);
+
 
       const response = await axios.post(`http://192.168.119.190:8000/uploadfile/${studentname}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }

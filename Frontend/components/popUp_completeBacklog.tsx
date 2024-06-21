@@ -10,6 +10,9 @@ import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
 import { Item } from "../interfaces/PopUpItem";
 
 
+
+
+
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal, file_id , filename}) => {
   
   const studentname = 'Elias';
@@ -65,6 +68,8 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   const [items2, setItems2] = useState<Item[]>([
     { label: 'Mathe', value: 'Mathe' },
     { label: 'Deutsch', value: 'Deutsch' },
+    { label: 'Englisch', value: 'Englisch' },
+    { label: 'Informatik', value: 'Informatik' }
   ]);
 
 
