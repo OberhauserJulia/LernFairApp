@@ -1,7 +1,11 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen'; // Importiere den HomeScreen
 import { StyleSheet, Text } from 'react-native';
 
 // import Screens
-import Archiv_Caregory from './screens/archiv_category';
+import Archiv_Category from './screens/archiv_category';
 import Archiv_Student from './screens/archiv_student';
 import Archiv_Teacher from './screens/archiv_teacher';
 import Backlog from './screens/backlog';
@@ -13,7 +17,8 @@ import OpenModalComponent from './components/openModalComponent'; // Corrected i
 
 export default function App() {
   return (
-   <OpenModalComponent />  // Corrected component name
+   //<OpenModalComponent  />  // Corrected component name
+   <HomeScreen/>
   );
 }
 
