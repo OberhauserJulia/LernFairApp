@@ -1,20 +1,15 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-interface FileOverviewProps { 
-  dateiname: string; 
+interface FileOverviewChatProps { 
   subject: string; 
-  topic: string; 
-  _id: string; 
-  file_id: string; 
-  filename: string; 
-  classNumber?: string; // Optionaler Parameter hinzugefügt
+  
+  filecount : number ; 
 }
 
-export default function FileOverview({dateiname, subject, topic, _id, file_id, filename, classNumber}: FileOverviewProps) {
-  const selfID = _id;
-  const chunkID = file_id;
-  const fileName = filename;
+export default function FileOverviewChat({ subject,  filecount}: FileOverviewChatProps) {
+  
+
 
   return (
     <View style={styles.file_overview}>
@@ -24,8 +19,8 @@ export default function FileOverview({dateiname, subject, topic, _id, file_id, f
         </View>
 
         <View style={styles.file_info}>
-          <Text style={styles.headline}>{dateiname}</Text>
-          <Text style={styles.text}>{subject} | {topic} {classNumber ? `| Klasse: ${classNumber}` : ''}</Text>
+          <Text style={styles.headline}>{subject}</Text>
+          <Text style={styles.text}>{filecount}</Text>
         </View>
 
         <View style={styles.file_actions}>

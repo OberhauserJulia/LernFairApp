@@ -1,0 +1,54 @@
+version: '3.8'
+
+
+services:
+
+  mongodb:
+
+    image: mongo:latest
+
+    container_name: mongodb
+
+    ports:
+
+      - "27017:27017"
+
+    volumes:
+
+      - mongo-data:/data/db
+
+    networks:
+
+      - app-network
+
+
+  artist-srv:
+
+    image: d93df976c5f8
+
+
+    container_name: my_fastapi_container
+
+    depends_on:
+
+      - mongodb
+
+    ports:
+
+      - "8000:8000"
+
+    networks:
+
+      - app-network
+
+
+volumes:
+
+  mongo-data:
+
+
+networks:
+
+  app-network:
+
+    driver: bridge

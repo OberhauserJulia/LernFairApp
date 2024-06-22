@@ -5,8 +5,22 @@ import { StyleSheet, View } from 'react-native';
 import Search from '../components/searchbar';
 import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import { useEffect, useState } from 'react';
+import { ArchiveFile } from '../interfaces/Backendfile';
+interface File_Overview_CategoryProps { 
+  filtype : string; 
 
-export default function Archiv_Caregory() {
+
+} 
+
+
+export default function Archiv_Category( {filtype} : File_Overview_CategoryProps ) {
+  const [files, setFiles] = useState<ArchiveFile[]>([]); 
+
+  useEffect(() => {
+    getSubjectEntries(setFiles, "Archiv", filtype); 
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -19,8 +33,19 @@ export default function Archiv_Caregory() {
           <Filter></Filter>
         </View>
 
-        <FileOverview></FileOverview>
-      </View>
+        {files.map(file => (
+            <FileOverview
+              key={file._id.$oid}
+              _id={file._id.$oid}
+              file_id={file.file_id}
+              topic={file.topic || 'Unknown Topic'}
+              subject={file.subject || 'Unknown Subject'}
+              dateiname={file.documentname}
+              filename={file.name}
+              classNumber={file.classNumber}
+            />
+          ))}      
+          </View>
     </View>
   );
 }

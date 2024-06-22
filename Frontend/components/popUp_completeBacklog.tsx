@@ -6,18 +6,12 @@ import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
 import ButtonComponent from "./ButtonComponent";
 import axios from "axios";
-interface PopUpCompleteFileProps {
-  visible: boolean;
-  hideModal: () => void;
-  file_id : string;  
-  filename : string; 
+import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
+import { Item } from "../interfaces/PopUpItem";
 
-}
 
-interface Item {
-  label: string;
-  value: string;
-}
+
+
 
 const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal, file_id , filename}) => {
   
@@ -74,6 +68,8 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   const [items2, setItems2] = useState<Item[]>([
     { label: 'Mathe', value: 'Mathe' },
     { label: 'Deutsch', value: 'Deutsch' },
+    { label: 'Englisch', value: 'Englisch' },
+    { label: 'Informatik', value: 'Informatik' }
   ]);
 
 

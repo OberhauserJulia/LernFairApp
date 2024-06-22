@@ -7,20 +7,41 @@ import FileOverview from '../components/file_overview';
 import { useState, useEffect } from 'react'; 
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import FileOverviewChat from '../components/FileOverviewChat';
 
 export default function File_Overview_Chat() {
   const [files, setFiles] = useState<File[]>([]);
-
+  const[math , setMath ] = useState<File[]>([]); 
+  const[german , setGerman ] = useState<File[]>([]);
+  const [english , setEnglish ] = useState<File[]>([]);
+  const [computerscience , setComputerscience ] = useState<File[]>([]);
 
   useEffect(() => {
     getSubjectEntries((newFiles) => {
       setFiles((currentFiles) => [...currentFiles, ...newFiles]);
+      setMath(newFiles);
     }, "Elias", "Mathe");
   
     getSubjectEntries((newFiles) => {
       setFiles((currentFiles) => [...currentFiles, ...newFiles]);
+      setGerman(newFiles);
+
     }, "Elias", "Deutsch");
-  }, []);
+
+
+    getSubjectEntries((newFiles) => {
+      setFiles((currentFiles) => [...currentFiles, ...newFiles]);
+      setEnglish(newFiles);
+
+    }, "Elias", "Englisch");
+
+    
+    getSubjectEntries((newFiles) => {
+      setFiles((currentFiles) => [...currentFiles, ...newFiles]);
+      setEnglish(newFiles);
+
+    }, "Elias", "Informatik");
+    }, []);
 
   return (
     <View style={styles.screen}>
@@ -31,17 +52,13 @@ export default function File_Overview_Chat() {
         <View>
           <Search></Search>
         </View>
-        {files.map(file => (
-          <FileOverview 
-            key={file._id.$oid}
-            _id={file._id.$oid}
-            file_id={file.file_id}
-            topic={file.topic || 'Unknown Topic'}
-            subject={file.subject || 'Unknown Subject'}
-            dateiname={file.documentname}
-            filename = {file.name}
-          />
-        ))}
+       
+            <FileOverviewChat subject='Mathe' filecount={math.length}/>
+            <FileOverviewChat subject='Englisch' filecount={english.length}/>
+            <FileOverviewChat subject='Deutsch' filecount={german.length}/>
+            <FileOverviewChat subject='Informatik' filecount={computerscience.length}/>
+
+
 
       </View>
     </View>

@@ -169,5 +169,32 @@ async def update_file(student_name: str, file_id: str, documentname: str = Form(
         print("Fehler: ", e)
         return JSONResponse(content={"error": str(e)}, status_code=500)
     
+
+
+# Funktionen für das Archiv : 
+@app.post("/archivefile/{formular_type}/{documentname}/{subject_name}/{class_number}/{topic}")
+async def archive_upload(   formular_type : str, documentname : str , subject_name : str, class_number : str, topic : str,  file: UploadFile = File(...)):
+    # Lies den Dateiinhalt
+    print("Archiv Upload")
+    file_data = await file.read()
+    db = client["Archiv"]
+    fs = gridfs.GridFS(db)
+    
+    try:
+        
+            file_id = safe_chunks_files( "Archiv", file_data, file)
+            print(file_id)
+            safe_tags(db, formular_type, {"classnumber" : class_number,  "subject" : subject_name , "file_id" : str(file_id), "name" : file.filename, "documentname" : documentname , "topic" : topic})
+            return JSONResponse(content={"file_id": str(file_id)}, status_code=200)
+            
+    except Exception as e:
+        print(f"An error occurred: {e}") 
+    
+
+    
+    
+
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
