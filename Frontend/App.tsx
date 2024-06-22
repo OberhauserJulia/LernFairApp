@@ -1,26 +1,39 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from './screens/HomeScreen'; // Importiere den HomeScreen
-import { StyleSheet, Text } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChatScreen from './screens/ChatScreen';
+import SingleChatScreen from './screens/SingleChatScreen';
+import { RootStackParamList } from './types/navigationTypes';
 
-// import Screens
-import Archiv_Category from './screens/archiv_category';
-import Archiv_Student from './screens/archiv_student';
-import Archiv_Teacher from './screens/archiv_teacher';
-import Backlog from './screens/backlog';
-import File_Overview_Category from './screens/file_overview_category';  
-import File_Overview_Chat from './screens/file_overview_chat';
-import File_Overview_Student from './screens/file_overview_student';
-import File_Overview_Teacher from './screens/file_overview_teacher';
-import OpenModalComponent from './components/openModalComponent'; // Corrected import
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export default function App() {
+const App = () => {
   return (
-   //<OpenModalComponent  />  // Corrected component name
-   <HomeScreen/>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="ChatScreen"
+        screenOptions={{
+          headerStyle: { backgroundColor: '#2b4b51' },
+          headerTintColor: '#ffffff',
+          headerTitleStyle: { fontWeight: 'bold' },
+        }}
+      >
+        <Stack.Screen
+          name="ChatScreen"
+          component={ChatScreen}
+          options={{ title: 'Chat' }}
+        />
+        <Stack.Screen
+          name="SingleChatScreen"
+          component={SingleChatScreen}
+          options={({ route }) => ({
+            title: route.params.name,
+            headerBackTitleVisible: false,
+          })}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-});
+export default App;
