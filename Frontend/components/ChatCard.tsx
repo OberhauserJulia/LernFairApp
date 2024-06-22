@@ -7,7 +7,7 @@ interface ChatCardProps {
   lastMessage: string;
   lastMessageTime: string;
   appointment: string;
-  onPress: () => void; // Hinzufügen der onPress-Eigenschaft
+  onPress: () => void;
 }
 
 const ChatCard: React.FC<ChatCardProps> = ({
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   separator: {
-    height: 1,
-    backgroundColor: '##EDF4F3',
+    height: 2,
+    backgroundColor: '#EDF4F3',
     marginVertical: 12,
     marginHorizontal: 16,
   },
