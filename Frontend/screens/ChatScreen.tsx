@@ -62,8 +62,8 @@ const ChatScreen: React.FC = () => {
     },
   ];
 
-  const handleChatPress = (name: string, lastMessage: string) => {
-    navigation.navigate('SingleChatScreen', { name, lastMessage });
+  const handleChatPress = (name: string, lastMessage: string, lastMessageTime: string) => {
+    navigation.navigate('SingleChatScreen', { name, lastMessage, lastMessageTime });
   };
 
   return (
@@ -77,7 +77,7 @@ const ChatScreen: React.FC = () => {
             lastMessage={chat.lastMessage}
             lastMessageTime={chat.lastMessageTime}
             appointment={chat.appointment}
-            onPress={() => handleChatPress(chat.name, chat.lastMessage)}
+            onPress={() => handleChatPress(chat.name, chat.lastMessage, chat.lastMessageTime)}
           />
         ))}
       </ScrollView>
