@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface ChatCardProps {
-  profileImage: any; // Typisiere das Profilbild entsprechend
+  profileImage: any;
   name: string;
   lastMessage: string;
   lastMessageTime: string;
   appointment: string;
+  onPress: () => void; // Hinzufügen der onPress-Eigenschaft
 }
 
 const ChatCard: React.FC<ChatCardProps> = ({
@@ -15,24 +16,28 @@ const ChatCard: React.FC<ChatCardProps> = ({
   lastMessage,
   lastMessageTime,
   appointment,
+  onPress,
 }) => {
   return (
-    <View style={styles.card}>
-      <View style={styles.cardContent}>
-        <Image source={profileImage} style={styles.profileImage} />
-        <View style={styles.messageContainer}>
-          <View style={styles.row}>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.card}>
+        <View style={styles.cardContent}>
+          <Image source={profileImage} style={styles.profileImage} />
+          <View style={styles.messageContainer}>
             <Text style={styles.name}>{name}</Text>
+            <Text style={styles.appointment}>{appointment}</Text>
+            <Text style={styles.lastMessage}>{lastMessage}</Text>
+          </View>
+          <View style={styles.detailsContainer}>
             <Text style={styles.lastMessageTime}>{lastMessageTime}</Text>
           </View>
-          <Text style={styles.appointment}>{appointment}</Text>
-          <Text style={styles.lastMessage}>{lastMessage}</Text>
         </View>
+        <View style={styles.separator} />
       </View>
-      <View style={styles.separator} />
-    </View>
+    </TouchableOpacity>
   );
 };
+
 
 const styles = StyleSheet.create({
   card: {
@@ -42,7 +47,7 @@ const styles = StyleSheet.create({
   cardContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
+    paddingHorizontal: 16,
   },
   profileImage: {
     width: 80,
@@ -61,24 +66,32 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#2B4B51',
   },
   lastMessageTime: {
     fontSize: 12,
-    color: '#999999',
+    color: '#2B4B51',
   },
   appointment: {
-    fontSize: 12,
-    color: '#999999',
+    fontSize: 14,
+    fontWeight: 'light',
+    color: '#2B4B51',
     marginBottom: 4,
+  },
+  detailsContainer: {
+    alignItems: 'flex-end',
   },
   lastMessage: {
     fontSize: 14,
-    color: '#555555',
+    color: '#2B4B51',
+    opacity: 0.5,
+    fontWeight: 'bold',
   },
   separator: {
     height: 1,
-    backgroundColor: '#dddddd',
-    marginTop: 12,
+    backgroundColor: '##EDF4F3',
+    marginVertical: 12,
+    marginHorizontal: 16,
   },
 });
 
