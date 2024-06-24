@@ -2,8 +2,6 @@ import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
 
 // import components
-import Search from '../components/searchbar';
-import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import { useEffect, useState } from 'react';
@@ -26,10 +24,6 @@ export default function Archiv_Category( {filtype} : File_Overview_CategoryProps
       </View>
 
       <View style={styles.content}>
-        <View style={styles.bar}>
-          <Search></Search>
-          <Filter></Filter>
-        </View>
 
         {files.map(file => (
             <FileOverview
@@ -69,11 +63,4 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
 
-  bar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-    alignItems: 'center',
-    gap: 8,
-  },
 });
