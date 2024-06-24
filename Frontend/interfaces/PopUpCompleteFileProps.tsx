@@ -5,3 +5,11 @@ export interface PopUpCompleteFileProps {
     filename : string; 
   
   }
+
+  export interface PopUpCompleteFilePropsArchive {
+    visible: boolean;
+    hideModal: () => void;
+    file_id ? : string;  
+    filename ? : string; 
+  
+  }

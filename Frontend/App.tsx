@@ -10,10 +10,11 @@ import File_Overview_Chat from './screens/file_overview_chat';
 import File_Overview_Student from './screens/file_overview_student';
 import File_Overview_Teacher from './screens/file_overview_teacher';
 import OpenModalComponent from './components/openModalComponent'; // Corrected import
+import FileOverviewChat from './components/FileOverviewChat';
 
 export default function App() {
   return (
-   <File_Overview_Student />  // Corrected component name
+   <OpenModalComponent />  // Corrected component name
   );
 }
 

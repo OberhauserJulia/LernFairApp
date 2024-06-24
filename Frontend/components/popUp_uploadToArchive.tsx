@@ -10,12 +10,12 @@ import axios from "axios";
 import type { DocumentPickerResult } from 'expo-document-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useEffect  } from "react";
-import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
+import { PopUpCompleteFilePropsArchive } from "../interfaces/PopUpCompleteFileProps";
 import { FileAsset } from "../interfaces/FileAssets";
 import { Item } from "../interfaces/PopUpItem";
 
 
-const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ visible, hideModal }) => {
   const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
     padding: 20,
@@ -215,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopUpCompleteFile;
+export default PopUpCompleteFileArchive;
