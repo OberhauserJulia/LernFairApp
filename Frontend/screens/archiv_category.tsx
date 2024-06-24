@@ -10,8 +10,6 @@ import { useEffect, useState } from 'react';
 import { ArchiveFile } from '../interfaces/Backendfile';
 interface File_Overview_CategoryProps { 
   filtype : string; 
-
-
 } 
 
 
@@ -51,6 +49,7 @@ export default function Archiv_Category( {filtype} : File_Overview_CategoryProps
 }
 
 const styles = StyleSheet.create({
+
   screen: {
     backgroundColor: '#F5F5F5',
     flex: 1,
@@ -72,7 +71,9 @@ const styles = StyleSheet.create({
 
   bar: {
     flexDirection: 'row',
-    width: '100%',
+    justifyContent: 'space-between',
+    flex: 1,
     alignItems: 'center',
+    gap: 8,
   },
 });

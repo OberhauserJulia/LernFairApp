@@ -6,13 +6,13 @@ export default function Filter() {
   const [modalVisible, setModalVisible] = React.useState(false);
 
   return (
-    <View style={styles.screen}>
+    <View>
       <Button mode="contained" onPress={() => setModalVisible(true)} style={styles.openButton}>
-        Filter
+        <Image style={styles.icon_open} source={require('../assets/icons/filter.svg')} resizeMode="contain" />
       </Button>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -24,7 +24,7 @@ export default function Filter() {
             <View style={styles.bar}>
               <Text style={styles.headline}> Dateien filtern </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Image style={styles.icon} source={require('../assets/icons/close_icon.svg')} />
+                <Image style={styles.icon_close} source={require('../assets/icons/close_icon.svg')} />
               </TouchableOpacity>
             </View>
 
@@ -82,19 +82,17 @@ export default function Filter() {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    backgroundColor: '#F5F5F5',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   openButton: {
-    width: 200,
-    height: 50,
+    height: 38,
+    width: 38,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    backgroundColor: '#FEDA50',
+    backgroundColor: '#2B4B51',
+  },
+  icon_open: {
+    height: 13,
+    width: 13,
   },
   modalContainer: {
     flex: 1,
@@ -133,7 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#2B4B51',
   },
-  icon: {
+  icon_close: {
     width: 24,
     height: 24,
   },

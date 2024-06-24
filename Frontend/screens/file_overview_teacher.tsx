@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 
 // import components
 import Search from '../components/searchbar';
+import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
 
 export default function File_Overview_Teacher() {
@@ -13,8 +14,9 @@ export default function File_Overview_Teacher() {
       </View>
 
       <View style={styles.content}>
-        <View>
-          <Search></Search>
+        <View style={styles.bar}>
+          <Search />
+          <Filter />
         </View>
 
         <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
@@ -34,6 +36,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B4B51',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
+  },
+
+  bar: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
   },
 
   content: {

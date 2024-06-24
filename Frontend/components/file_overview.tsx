@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16, 
+    marginBottom: 8, 
   },
   shadowProp: {
     shadowColor: '#171717',
@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     fontWeight: 'medium',
     fontSize: 12,
-    color: '#121212',
+    color: '#2B4B51',
   },
   text: {
     fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 12,
-    color: '#999999',
+    color: '#2B4B51',
     marginTop: 8,
   },
   file_actions: {

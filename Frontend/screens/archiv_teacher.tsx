@@ -6,8 +6,9 @@ import { useState, useEffect } from 'react';
 import FileOverview from '../components/file_overview';
 import { ArchiveFile } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import Search from '../components/searchbar';	
 
-export default function Archiv_Student() {
+export default function Archiv_Teacher() {
   const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
   const [workshopFiles, setWorkshopFiles] = useState<ArchiveFile[]>([]);
   const [tests, setTests] = useState<ArchiveFile[]>([]);
@@ -27,6 +28,10 @@ export default function Archiv_Student() {
     <View style={styles.screen}>
       <View style={styles.top_bar}></View>
       <View style={styles.content}>
+      <View style={styles.bar}>
+          <Search></Search>
+        </View>
+
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Übungsblätter</Text>
@@ -110,6 +115,13 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 16,
     paddingTop: 16,
+  },
+  bar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1,
+    alignItems: 'center',
+    gap: 8,
   },
   category: {
     marginTop: 16,
