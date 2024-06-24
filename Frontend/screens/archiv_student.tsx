@@ -120,14 +120,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
   },
   more: {
-    fontFamily: 'Montserrat',
-    fontWeight: 'regular',
+    fontFamily: 'Montserrat-Regular',
+    fontWeight: 'normal',
     fontSize: 12,
     color: '#2B4B51',
   },

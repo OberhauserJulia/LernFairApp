@@ -13,7 +13,7 @@ import OpenModalComponent from './components/openModalComponent'; // Corrected i
 
 export default function App() {
   return (
-   <OpenModalComponent  />  // Corrected component name
+   <Archiv_Student />  // Corrected component name
   );
 }
 

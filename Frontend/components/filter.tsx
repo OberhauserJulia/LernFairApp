@@ -24,7 +24,7 @@ export default function Filter() {
             <View style={styles.bar}>
               <Text style={styles.headline}> Dateien filtern </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Image style={styles.icon} source={require('../assets/close_icon.svg')} />
+                <Image style={styles.icon} source={require('../assets/icons/close_icon.svg')} />
               </TouchableOpacity>
             </View>
 
@@ -128,8 +128,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#2B4B51',
   },
   headline: {
-    fontSize: 12,
+    fontFamily: 'Monsterrat-Bold',
     fontWeight: 'bold',
+    fontSize: 12,
     color: '#2B4B51',
   },
   icon: {
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Monsterrat',
+    fontFamily: 'Monsterrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     borderColor: '#2B4B51',
-    fontFamily: 'Monsterrat',
+    fontFamily: 'Monsterrat-Regular',
     fontWeight: 'regular',
   },
 

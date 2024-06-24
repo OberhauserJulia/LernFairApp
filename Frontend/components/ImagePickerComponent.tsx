@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
   imagePickerText: {
     color: '#2B4B51',
     fontSize: 16,
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontWeight: '500', // Use '500' for medium font weight
   },
   imagePickerSubText: {
     color: '#2B4B51',
     fontSize: 12,
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontWeight: '400', // Use '400' for regular font weight
   },
   imageContainer: {

@@ -20,7 +20,7 @@ export default function FileOverview({dateiname, subject, topic, _id, file_id, f
     <View style={styles.file_overview}>
       <View style={[styles.file, styles.shadowProp]}>
         <View style={styles.file_image}>
-          <Image source={require('../assets/file_icon.svg')} />
+          <Image source={require('../assets/icons/file_icon.svg')} />
         </View>
 
         <View style={styles.file_info}>
@@ -29,7 +29,7 @@ export default function FileOverview({dateiname, subject, topic, _id, file_id, f
         </View>
 
         <View style={styles.file_actions}>
-          <Image source={require('../assets/file_actions.svg')} />
+          <Image source={require('../assets/icons/file_actions.svg')} />
         </View>
       </View>
     </View>
@@ -62,11 +62,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headline: {
+    fontFamily: 'Montserrat-Medium',
     fontWeight: 'medium',
     fontSize: 12,
     color: '#121212',
   },
   text: {
+    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#999999',
