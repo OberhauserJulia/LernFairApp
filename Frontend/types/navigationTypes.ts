@@ -5,4 +5,13 @@ export type RootStackParamList = {
     lastMessage: string;
     lastMessageTime: string;
   };
+  FileOverviewChat: undefined;
+  FileOverviewStudent: undefined;
+  FileOverviewTeacher: undefined;
+  FileOverviewStudentCategory: undefined;
+  FileOverviewTeacherCategory: undefined;
+  ArchivStudent: undefined;
+  ArchivTeacher: undefined;
+  ArchivCategoryStudent: undefined;
+  ArchivCategoryTeacher: undefined;
 };

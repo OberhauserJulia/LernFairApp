@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 interface FileOverviewChatProps { 
   subject: string; 
@@ -12,7 +12,7 @@ export default function FileOverviewChat({ subject,  filecount}: FileOverviewCha
 
 
   return (
-    <View style={styles.file_overview}>
+    <TouchableOpacity style={styles.file_overview}>
       <View style={[styles.file, styles.shadowProp]}>
         <View style={styles.file_image}>
           <Image source={require('../assets/icons/file_icon.svg')} />
@@ -27,7 +27,7 @@ export default function FileOverviewChat({ subject,  filecount}: FileOverviewCha
           <Image source={require('../assets/icons/file_actions.svg')} />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

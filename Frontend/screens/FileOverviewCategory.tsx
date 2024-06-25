@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 // import components
 import Search from '../components/searchbar';
 import Filter from '../components/filter';
@@ -20,6 +21,7 @@ export default function File_Overview_Category({ subjectname, studentname }: Fil
   const [studentName, setStudentName] = useState<string>(studentname);
   const [files, setFiles] = useState<File[]>([]);
   const subjectName: string = subjectname;
+  const navigation = useNavigation();
 
   
   useEffect(() => {
@@ -30,12 +32,20 @@ export default function File_Overview_Category({ subjectname, studentname }: Fil
   return (
     <View style={styles.screen}>
       <View style={styles.top_bar}>
-      </View>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
+        </TouchableOpacity>
+        <Text style={styles.headline}> Max Musterman </Text>
+        <View style={styles.top_bar_groupe}>
+          <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
+          <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
+        </View>
+      </View>	
 
       <View style={styles.content}>
         <View style={styles.bar}>
           <Search />
-          <Filter />
+          <Filter/>
         </View>
         {files.map(file => (
           <FileOverview
@@ -64,6 +74,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B4B51',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+
+  icon_top_bar: {
+    height: 24,
+    width: 24,
+    color: '#ffffff',
+  },
+
+  headline: {
+    fontFamily: 'Montserrat-Bold',
+    fontWeight: 'bold',
+    fontSize: 16, // Adjust font size to fit better in the top bar
+    color: '#FFFFFF',
+    textAlign: 'center',
+    flex: 1,
+  },
+
+  top_bar_groupe: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16,
   },
 
   content: {
