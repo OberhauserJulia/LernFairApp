@@ -9,6 +9,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
+    //<Archiv_Teacher   />  // Corrected component name
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="ChatScreen"
