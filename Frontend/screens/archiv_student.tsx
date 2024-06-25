@@ -83,18 +83,7 @@ export default function Archiv_Student() {
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
-          {workshopFiles.slice(0, 3).map(file => (
-            <FileOverview
-              key={file._id.$oid}
-              _id={file._id.$oid}
-              file_id={file.file_id}
-              topic={file.topic || 'Unknown Topic'}
-              subject={file.subject || 'Unknown Subject'}
-              dateiname={file.documentname}
-              filename={file.name}
-              classNumber={file.classNumber}
-            />
-          ))}
+          
         </View>
       </View>
     </View>
