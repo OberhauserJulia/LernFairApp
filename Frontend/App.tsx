@@ -14,7 +14,7 @@ import FileOverviewChat from './components/FileOverviewChat';
 
 export default function App() {
   return (
-   <OpenModalComponent />  // Corrected component name
+   <File_Overview_Teacher   />  // Corrected component name
   );
 }
 

@@ -3,11 +3,28 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 
 // import components
 import Search from '../components/searchbar';
-import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
+import { useState, useEffect } from 'react'; 
+import { File } from '../interfaces/Backendfile';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import FileOverviewChat from '../components/FileOverviewChat';
 
-export default function File_Overview_Student() {
-  
+export default function File_Overview_Chat() {
+  const [files, setFiles] = useState<File[]>([]);
+  const[math , setMath ] = useState<File[]>([]); 
+  const[german , setGerman ] = useState<File[]>([]);
+  const [english , setEnglish ] = useState<File[]>([]);
+  const [computerscience , setComputerscience ] = useState<File[]>([]);
+
+  useEffect(() => {
+    getSubjectEntries(setMath , "Elias", "Mathe");
+    getSubjectEntries(setGerman , "Elias", "Deutsch");
+    getSubjectEntries(setEnglish , "Elias", "Englisch");
+    getSubjectEntries(setComputerscience , "Elias", "Informatik");
+    getSubjectEntries(setComputerscience , "Elias", "Informatik");
+
+    
+    }, []);
 
   return (
     <View style={styles.screen}>
@@ -15,16 +32,22 @@ export default function File_Overview_Student() {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.bar}>
-          <Search />
-          <Filter />
+        <View>
+          <Search></Search>
         </View>
+       
+            <FileOverviewChat subject='Mathe' filecount={math.length}/>
+            <FileOverviewChat subject='Englisch' filecount={english.length}/>
+            <FileOverviewChat subject='Deutsch' filecount={german.length}/>
+            <FileOverviewChat subject='Informatik' filecount={computerscience.length}/>
 
-        <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
+
+
       </View>
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   screen: {

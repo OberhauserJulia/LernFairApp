@@ -37,7 +37,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   
     try {
       const response = await axios.put(
-        `http://172.27.144.1:8000/updatefile/${studentname}/${fileID}`,
+        `http://192.168.119.190:8000/updatefile/${studentname}/${fileID}`,
         formData,
         {
           headers: {

@@ -14,33 +14,19 @@ export default function File_Overview_Chat() {
   const[math , setMath ] = useState<File[]>([]); 
   const[german , setGerman ] = useState<File[]>([]);
   const [english , setEnglish ] = useState<File[]>([]);
+  const [Backlog , setBacklog ] = useState<File[]>([]);
   const [computerscience , setComputerscience ] = useState<File[]>([]);
 
   useEffect(() => {
-    getSubjectEntries((newFiles) => {
-      setFiles((currentFiles) => [...currentFiles, ...newFiles]);
-      setMath(newFiles);
-    }, "Elias", "Mathe");
-  
-    getSubjectEntries((newFiles) => {
-      setFiles((currentFiles) => [...currentFiles, ...newFiles]);
-      setGerman(newFiles);
-
-    }, "Elias", "Deutsch");
-
-
-    getSubjectEntries((newFiles) => {
-      setFiles((currentFiles) => [...currentFiles, ...newFiles]);
-      setEnglish(newFiles);
-
-    }, "Elias", "Englisch");
+    getSubjectEntries(setMath , "Elias", "Mathe");
+    getSubjectEntries(setGerman , "Elias", "Deutsch");
+    getSubjectEntries(setEnglish , "Elias", "Englisch");
+    getSubjectEntries(setComputerscience , "Elias", "Informatik");
+    getSubjectEntries(setComputerscience , "Elias", "Informatik");
+    getSubjectEntries(setBacklog , "Elias", "Backlog");
 
     
-    getSubjectEntries((newFiles) => {
-      setFiles((currentFiles) => [...currentFiles, ...newFiles]);
-      setEnglish(newFiles);
 
-    }, "Elias", "Informatik");
     }, []);
 
   return (
@@ -53,11 +39,61 @@ export default function File_Overview_Chat() {
           <Search></Search>
         </View>
        
-            <FileOverviewChat subject='Mathe' filecount={math.length}/>
-            <FileOverviewChat subject='Englisch' filecount={english.length}/>
-            <FileOverviewChat subject='Deutsch' filecount={german.length}/>
-            <FileOverviewChat subject='Informatik' filecount={computerscience.length}/>
-
+        {math.map(file => (
+          <FileOverview
+            key={file._id.$oid}
+            _id={file._id.$oid}
+            file_id={file.file_id}
+            topic={file.topic || 'Unknown Topic'}
+            subject={file.subject || 'Unknown Subject'}
+            dateiname={file.documentname}
+            filename={file.name}
+          />
+        ))}
+         {english.map(file => (
+          <FileOverview
+            key={file._id.$oid}
+            _id={file._id.$oid}
+            file_id={file.file_id}
+            topic={file.topic || 'Unknown Topic'}
+            subject={file.subject || 'Unknown Subject'}
+            dateiname={file.documentname}
+            filename={file.name}
+          />
+        ))}
+         {german.map(file => (
+          <FileOverview
+            key={file._id.$oid}
+            _id={file._id.$oid}
+            file_id={file.file_id}
+            topic={file.topic || 'Unknown Topic'}
+            subject={file.subject || 'Unknown Subject'}
+            dateiname={file.documentname}
+            filename={file.name}
+          />
+        ))}
+         {computerscience.map(file => (
+          <FileOverview
+            key={file._id.$oid}
+            _id={file._id.$oid}
+            file_id={file.file_id}
+            topic={file.topic || 'Unknown Topic'}
+            subject={file.subject || 'Unknown Subject'}
+            dateiname={file.documentname}
+            filename={file.name}
+          />
+        ))}
+         {Backlog.map(file => (
+          <FileOverview
+            key={file._id.$oid}
+            _id={file._id.$oid}
+            file_id={file.file_id}
+            topic={file.topic || 'Unknown Topic'}
+            subject={file.subject || 'Unknown Subject'}
+            dateiname={file.documentname}
+            filename={file.name}
+          />
+        ))}
 
 
       </View>
