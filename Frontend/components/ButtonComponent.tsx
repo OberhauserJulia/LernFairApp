@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#2B4B51',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Medium',
     fontWeight: '500', // Changed 'medium' to '500' to correctly use fontWeight
     fontSize: 16,
   },

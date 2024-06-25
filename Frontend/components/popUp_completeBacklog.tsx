@@ -37,7 +37,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   
     try {
       const response = await axios.put(
-        `http://172.27.144.1:8000/updatefile/${studentname}/${fileID}`,
+        `http://192.168.119.190:8000/updatefile/${studentname}/${fileID}`,
         formData,
         {
           headers: {
@@ -133,14 +133,15 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
 
 const styles = StyleSheet.create({
   headline: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#121212',
     marginBottom: 16,
   },
   labeling: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
+    fontWeight: 'regular',
     fontSize: 16,
     color: '#2B4B51',
     marginBottom: 8,

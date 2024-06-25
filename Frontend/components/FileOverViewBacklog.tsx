@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
-interface FileOverviewProps { 
+interface FileOverviewBacklogProps { 
   dateiname: string; 
   subject: string; 
   topic: string; 
@@ -9,12 +10,35 @@ interface FileOverviewProps {
   file_id: string; 
   filename: string; 
   classNumber?: string; // Optionaler Parameter hinzugefügt
+  handleDelete: () => void;
 }
 
-export default function FileOverview({dateiname, subject, topic, _id, file_id, filename, classNumber}: FileOverviewProps) {
+export default function FileOverviewBacklog({ dateiname, subject, topic, _id, file_id, filename, classNumber, handleDelete }: FileOverviewBacklogProps) {
   const selfID = _id;
   const chunkID = file_id;
   const fileName = filename;
+
+  const deleteFile = async () => {
+    try {
+      // Senden des POST-Requests an den Server
+      await axios.delete(`http://192.168.119.190:8000/deletefile/${file_id}/Elias/Backlog`);
+      
+      // Behandlung der Antwort
+      console.log('File successfully deleted');
+      
+      // Aufruf des handleDelete Callback
+      handleDelete();
+    } catch (error) {
+      // Fehlerbehandlung
+      console.error('Error deleting file:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    // Hier können Sie Initialisierungen vornehmen, die nur einmalig beim ersten Rendern ausgeführt werden sollen
+    // Beispiel: Laden von Daten vom Server
+    // getFiles();
+  }, []);
 
   return (
     <View style={styles.file_overview}>
@@ -22,14 +46,17 @@ export default function FileOverview({dateiname, subject, topic, _id, file_id, f
         <View style={styles.file_image}>
           <Image source={require('../assets/icons/file_icon.svg')} />
         </View>
-
         <View style={styles.file_info}>
           <Text style={styles.headline}>{dateiname}</Text>
-          <Text style={styles.text}>{subject} | {topic} {classNumber ? `| Klasse: ${classNumber}` : ''}</Text>
+          <Text style={styles.text}>{subject} | {topic} </Text>
         </View>
-
         <View style={styles.file_actions}>
           <Image source={require('../assets/icons/file_actions.svg')} />
+        </View>
+        <View>
+          <TouchableOpacity onPress={deleteFile}>
+            <Text> Löschen </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

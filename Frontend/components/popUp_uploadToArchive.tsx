@@ -10,12 +10,12 @@ import axios from "axios";
 import type { DocumentPickerResult } from 'expo-document-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useEffect  } from "react";
-import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
+import { PopUpCompleteFilePropsArchive } from "../interfaces/PopUpCompleteFileProps";
 import { FileAsset } from "../interfaces/FileAssets";
 import { Item } from "../interfaces/PopUpItem";
 
 
-const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModal }) => {
+const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ visible, hideModal }) => {
   const containerStyle: StyleProp<ViewStyle> = {
     backgroundColor: 'white',
     padding: 20,
@@ -100,7 +100,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
         } as any);
       }
       
-      const response = await axios.post(`http://192.168.119.191:8000/archivefile/${formularType}/${documentname}/${subject}/${classNumber}/${topic}`, formData, {
+      const response = await axios.post(`http://192.168.119.190:8000/archivefile/${formularType}/${documentname}/${subject}/${classNumber}/${topic}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       console.log(response.data);
@@ -187,14 +187,14 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
 
 const styles = StyleSheet.create({
   headline: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#121212',
     marginBottom: 16,
   },
   labeling: {
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontSize: 16,
     color: '#2B4B51',
     marginBottom: 8,
@@ -215,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopUpCompleteFile;
+export default PopUpCompleteFileArchive;

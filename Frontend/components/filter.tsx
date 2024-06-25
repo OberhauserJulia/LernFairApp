@@ -1,30 +1,43 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Modal, TouchableOpacity } from 'react-native';
 import { Chip, Button } from 'react-native-paper';
 
 export default function Filter() {
-  const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // State to manage whether each chip is enabled or disabled
+  const [chipsEnabled, setChipsEnabled] = useState({
+    1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
+    7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
+    Mathematik: false, Stochastik: false,
+  });
+
+  const handleChipPress = (key) => {
+    // Toggle the enabled state of the chip
+    setChipsEnabled(prevState => ({
+      ...prevState,
+      [key]: !prevState[key]
+    }));
+  };
 
   return (
-    <View style={styles.screen}>
+    <View>
       <Button mode="contained" onPress={() => setModalVisible(true)} style={styles.openButton}>
-        Filter
+        <Image style={styles.icon_open} source={require('../assets/icons/filter.svg')} resizeMode="contain" />
       </Button>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
+        onRequestClose={() => setModalVisible(!modalVisible)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.content}>
             <View style={styles.bar}>
               <Text style={styles.headline}> Dateien filtern </Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Image style={styles.icon} source={require('../assets/close_icon.svg')} />
+                <Image style={styles.icon_close} source={require('../assets/icons/close_icon.svg')} />
               </TouchableOpacity>
             </View>
 
@@ -34,19 +47,18 @@ export default function Filter() {
                 <Text style={styles.category_name}>Klasse</Text>
               </View>
               <View style={styles.chip_container}>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 1 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 2 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 3 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 4 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 5 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 6 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 7 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 8 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 9 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 10 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 11 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 12 </Chip>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> 13 </Chip>
+                {[...Array(13).keys()].map(number => (
+                  <Chip
+                    key={number + 1}
+                    mode="outlined"
+                    style={[styles.chip, !chipsEnabled[number + 1] && styles.chipDisabled]}
+                    textStyle={[styles.chipText, !chipsEnabled[number + 1] && styles.chipTextDisabled]}
+                    onPress={() => handleChipPress(number + 1)}
+                    disabled={false} // Chips are initially not disabled
+                  >
+                    {number + 1}
+                  </Chip>
+                ))}
               </View>
             </View>
 
@@ -56,7 +68,15 @@ export default function Filter() {
                 <Text style={styles.category_name}>Fach</Text>
               </View>
               <View style={styles.chip_container}>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> Mathematik </Chip>
+                <Chip
+                  mode="outlined"
+                  style={[styles.chip, !chipsEnabled['Mathematik'] && styles.chipDisabled]}
+                  textStyle={[styles.chipText, !chipsEnabled['Mathematik'] && styles.chipTextDisabled]}
+                  onPress={() => handleChipPress('Mathematik')}
+                  disabled={false} // Chips are initially not disabled
+                >
+                  Mathematik
+                </Chip>
               </View>
             </View>
 
@@ -66,13 +86,21 @@ export default function Filter() {
                 <Text style={styles.category_name}>Thema</Text>
               </View>
               <View style={styles.chip_container}>
-                <Chip mode="outlined" style={styles.chip} textStyle={styles.chipText} onPress={() => console.log('Pressed')}> Stochastik </Chip>
+                <Chip
+                  mode="outlined"
+                  style={[styles.chip, !chipsEnabled['Stochastik'] && styles.chipDisabled]}
+                  textStyle={[styles.chipText, !chipsEnabled['Stochastik'] && styles.chipTextDisabled]}
+                  onPress={() => handleChipPress('Stochastik')}
+                  disabled={false} // Chips are initially not disabled
+                >
+                  Stochastik
+                </Chip>
               </View>
             </View>
 
             <View style={styles.buttons}>
-              <Button mode="outlined" onPress={() => console.log('Pressed')} style={styles.button_reset}> Filter zurücksetzen </Button>
-              <Button mode="contained" onPress={() => console.log('Pressed')} style={styles.button_apply}> Filter anwenden </Button>
+              <Button mode="outlined" onPress={() => console.log('Pressed')} style={styles.button_reset} labelStyle={styles.button_reset_text}> Filter zurücksetzen </Button>
+              <Button mode="contained" onPress={() => console.log('Pressed')} style={styles.button_apply} labelStyle={styles.button_apply_text}> Filter anwenden </Button>
             </View>
           </View>
         </View>
@@ -82,19 +110,17 @@ export default function Filter() {
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    backgroundColor: '#F5F5F5',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   openButton: {
-    width: 200,
-    height: 50,
+    height: 38,
+    width: 38,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 12,
-    backgroundColor: '#FEDA50',
+    backgroundColor: '#2B4B51',
+  },
+  icon_open: {
+    height: 13,
+    width: 13,
   },
   modalContainer: {
     flex: 1,
@@ -128,13 +154,14 @@ const styles = StyleSheet.create({
     borderBottomColor: '#2B4B51',
   },
   headline: {
-    fontSize: 12,
+    fontFamily: 'Monsterrat-Bold',
     fontWeight: 'bold',
+    fontSize: 12,
     color: '#2B4B51',
   },
-  icon: {
-    width: 24,
-    height: 24,
+  icon_close: {
+    width: 10,
+    height: 10,
   },
   category: {
     paddingLeft: 16,
@@ -150,7 +177,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Monsterrat',
+    fontFamily: 'Monsterrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
@@ -169,14 +196,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 4,
+    backgroundColor: '#2B4B51',
+    borderColor: '#2B4B51',
   },
 
   chipText: {
     textAlign: 'center',
     fontSize: 12,
     borderColor: '#2B4B51',
-    fontFamily: 'Monsterrat',
+    fontFamily: 'Monsterrat-Regular',
     fontWeight: 'regular',
+    color: 'white',
+  },
+
+  chipTextDisabled: {
+    color: '#2B4B51',
+  },
+
+  chipDisabled: {
+    backgroundColor: 'white',
+    borderColor: '#2B4B51',
   },
 
   buttons: {
@@ -197,6 +236,12 @@ const styles = StyleSheet.create({
     borderColor: '#FEDA50',
   },
 
+  button_reset_text: {
+    color: '#2B4B51',
+    fontFamily: 'Monsterrat-Bold',
+    fontWeight: 'bold',
+  },
+
   button_apply: {
     width: '48%',
     height: 38,
@@ -205,5 +250,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#FEDA50',
     backgroundColor: '#FEDA50',
+  },
+
+  button_apply_text: {
+    color: '#2B4B51',
+    fontFamily: 'Monsterrat-Bold',
+    fontWeight: 'bold',
   },
 });

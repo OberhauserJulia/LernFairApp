@@ -2,12 +2,12 @@ import * as React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
 interface FileOverviewChatProps { 
-  subject: string; 
-  
-  filecount : number ; 
+  studentname: string; 
+  classNumber : string ;
+  countryname : string ; 
 }
 
-export default function FileOverviewChat({ subject,  filecount}: FileOverviewChatProps) {
+export default function FileOverViewTeacherCart({studentname, classNumber, countryname}: FileOverviewChatProps) {
   
 
 
@@ -19,8 +19,8 @@ export default function FileOverviewChat({ subject,  filecount}: FileOverviewCha
         </View>
 
         <View style={styles.file_info}>
-          <Text style={styles.headline}>{subject}</Text>
-          <Text style={styles.text}>Anzahl der Dateien: {filecount}</Text>
+          <Text style={styles.headline}>{studentname}</Text>
+          <Text style={styles.text}>{countryname} | Klassenstufe {classNumber} </Text>
         </View>
 
         <View style={styles.file_actions}>

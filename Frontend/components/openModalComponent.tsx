@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import PopUpCompleteFile from './popUp_completeBacklog';
 import Popup_completeStudentFile from './popUp_uploadStudentFile';
+import PopUpCompleteFileArchive from './popUp_uploadToArchive';
 
 
 export default function openModalComponent() {

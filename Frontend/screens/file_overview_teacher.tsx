@@ -4,8 +4,18 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 // import components
 import Search from '../components/searchbar';
 import FileOverview from '../components/file_overview';
+import { useState, useEffect } from 'react'; 
+import { File } from '../interfaces/Backendfile';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import FileOverviewChat from '../components/FileOverviewChat';
+import FileOverViewTeacherCart from '../components/FileOverViewTeacherCard';
+export default function File_Overview_Chat() {
+  const [files, setFiles] = useState<File[]>([]);
+  const[math , setMath ] = useState<File[]>([]); 
+  const[german , setGerman ] = useState<File[]>([]);
+  const [english , setEnglish ] = useState<File[]>([]);
+  const [computerscience , setComputerscience ] = useState<File[]>([]);
 
-export default function File_Overview_Teacher() {
 
   return (
     <View style={styles.screen}>
@@ -16,8 +26,15 @@ export default function File_Overview_Teacher() {
         <View>
           <Search></Search>
         </View>
+       <FileOverViewTeacherCart studentname='Elias' countryname="Bayern"  classNumber="4"/>
+       <FileOverViewTeacherCart studentname='Julia' countryname="Bayern"  classNumber="4"/>
+       <FileOverViewTeacherCart studentname='Tatjana' countryname="Bayern"  classNumber="10"/>
+       <FileOverViewTeacherCart studentname='Hannah' countryname="Bayern"  classNumber="2"/>
+       <FileOverViewTeacherCart studentname='Schiffner' countryname="Bayern"  classNumber="13"/>
 
-        <FileOverview dateiname='Dummy Datei' subject='Dummy Subj' topic='Dummy Topic' _id='1234' file_id='567' filename='Dummy filename '></FileOverview>
+           
+
+
       </View>
     </View>
   );

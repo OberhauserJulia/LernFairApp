@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: '#2B4B51',
-    fontFamily: 'Montserrat',
+    fontFamily: 'Montserrat-Regular',
     fontWeight: '400', // Use '400' for regular font weight
     fontSize: 16,
     marginTop: 16,
