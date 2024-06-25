@@ -100,7 +100,9 @@ export default function Archiv_Teacher() {
         </View>
       </View>
 
-      
+      <TouchableOpacity style={styles.bottom_button} onPress={() => console.log('Button Pressed')}>
+        <Image source={require('../assets/icons/plus.svg')} />
+      </TouchableOpacity>
 
     </View>
   );
@@ -167,5 +169,17 @@ const styles = StyleSheet.create({
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
+  },
+  bottom_button: {
+    position: 'absolute',
+    height: 48,
+    width: 48,
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#2B4B51',
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -55,7 +55,7 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
         </View>
         <View>
           <TouchableOpacity onPress={deleteFile}>
-            <Text> Löschen </Text>
+            <Image source={require('../assets/icons/delete.svg')} style={styles.icon} />
           </TouchableOpacity>
         </View>
       </View>
@@ -104,5 +104,9 @@ const styles = StyleSheet.create({
   file_actions: {
     height: 16,
     marginLeft: 16,
+  },
+  icon: {
+    width: 16,
+    height: 16,
   },
 });
