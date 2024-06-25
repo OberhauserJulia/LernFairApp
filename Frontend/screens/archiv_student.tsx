@@ -76,15 +76,7 @@ export default function Archiv_Student() {
           ))}
         </View>
 
-        <View style={styles.category}>
-          <View style={styles.text_container}>
-            <Text style={styles.category_name}>Workshop Unterlagen</Text>
-            <TouchableOpacity onPress={() => showMore('Workshop')}>
-              <Text style={styles.more}>Alle anzeigen</Text>
-            </TouchableOpacity>
-          </View>
-          
-        </View>
+        
       </View>
     </View>
   );
