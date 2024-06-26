@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { useState, useEffect } from 'react';
 
 // import components
 import FileOverview from '../components/file_overview';
 import { ArchiveFile } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
-import Search from '../components/searchbar';	
+import Search from '../components/searchbar';
 
 export default function Archiv_Teacher() {
   const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
@@ -26,16 +26,20 @@ export default function Archiv_Teacher() {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.top_bar}></View>
+      <View style={styles.top_bar}>
+        <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
+        <Text style={styles.headline}> Archiv </Text>
+        <TouchableOpacity>
+          <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
+        </TouchableOpacity>
+      </View>
+      
       <View style={styles.content}>
-      <View style={styles.bar}>
-          <Search></Search>
-        </View>
 
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Übungsblätter</Text>
-            <TouchableOpacity  onPress={() => showMore('Uebung')}>
+            <TouchableOpacity onPress={() => showMore('Uebung')}>
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
@@ -95,6 +99,11 @@ export default function Archiv_Teacher() {
           ))}
         </View>
       </View>
+
+      <TouchableOpacity style={styles.bottom_button} onPress={() => console.log('Button Pressed')}>
+        <Image source={require('../assets/icons/plus.svg')} />
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -109,19 +118,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B4B51',
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+  },
+
+  icon_top_bar: {
+    height: 24,
+    width: 24,
+    color: '#ffffff',
+  },
+
+  headline: {
+    fontFamily: 'Montserrat-Bold',
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: '#FFFFFF',
+    textAlign: 'center',
+    flex: 1,
+  },
+
+  top_bar_groupe: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16,
   },
   content: {
     width: '100%',
     paddingRight: 16,
     paddingLeft: 16,
     paddingTop: 16,
-  },
-  bar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
-    alignItems: 'center',
-    gap: 8,
   },
   category: {
     marginTop: 16,
@@ -142,5 +169,17 @@ const styles = StyleSheet.create({
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
+  },
+  bottom_button: {
+    position: 'absolute',
+    height: 48,
+    width: 48,
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#2B4B51',
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
