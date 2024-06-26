@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { View, ScrollView, StyleSheet, StyleProp, ViewStyle, Alert } from "react-native";
 import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-paper";
-import * as ImagePicker from 'expo-image-picker';
 import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
-import ButtonComponent from "./ButtonComponent";
-import SubButtonComponent from "./SubButtonComponent";
 import axios from "axios";
 import type { DocumentPickerResult } from 'expo-document-picker';
 import * as DocumentPicker from 'expo-document-picker';
@@ -27,9 +24,10 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
   };
   const [localImage, setLocalImage] = useState<string | null>(null);
   const [documentname , setDocumentname] = useState<string>('');
-  const [file, setfile] = useState<DocumentPickerResult | null>(null);
+  const [file, setfile] = useState<DocumentPickerResult | null | undefined>(null);
   const [open, setOpen] = useState<boolean>(false);
   const [classNumber, setClassNumber] = useState<string | null>(null);
+  const [audioPreview, setAudioPreview] = useState<string | null>(null);
 
 
   
@@ -80,9 +78,23 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
   const pickFile = async () => {
     const result = await DocumentPicker.getDocumentAsync({ type: '*/*' });
     setfile(result);
-    setLocalImage(result.assets?.[0]?.uri || 'TEST');
-    console.log(result || 'TEST');
+    let displayContent = result.assets?.[0]?.name; 
+  
+    const uri = result.assets?.[0]?.uri as string | undefined;
+    const fileType = uri?.split('.').pop();
+  
+    if (fileType !== 'mp3' && fileType !== 'mp4') {
+      displayContent = uri;
+    }
+  
+    setLocalImage(displayContent || null);
+  
+    if (result && 'type' in result && result.type === 'success') {
+    }
   };
+  
+  
+  
 
   const uploadFile = async () => {
     if (!file) {
@@ -127,7 +139,7 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
               <Text style={styles.headline}>Datei im Archiv hochladen</Text>
               <Text style={styles.labeling}>Datei auswählen *</Text>
-              <ImagePickerComponent image={localImage} pickImage={pickFile} />
+              <ImagePickerComponent image={audioPreview || localImage} pickImage={pickFile} />
               <Text style={styles.labeling}>Name *</Text>
               <TextInput 
                 placeholder="Dateiname"
