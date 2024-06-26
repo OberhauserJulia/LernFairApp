@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { View, ScrollView, StyleSheet, StyleProp, ViewStyle, Alert } from "react-native";
 import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-paper";
 import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
-import ButtonComponent from "./ButtonComponent";
+import UploadButtonComponent from "./UploadButtonComponent";
 import SubButtonComponent from "./SubButtonComponent";
 import axios from 'axios';
 import * as DocumentPicker from 'expo-document-picker';
@@ -12,9 +12,9 @@ import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
 import { Item } from "../interfaces/PopUpItem";
 import { FileAsset } from "../interfaces/FileAssets";
 
-interface UploadFileProp{
-  visible : boolean , 
-  hideModal: () => void
+interface UploadFileProp {
+  visible: boolean;
+  hideModal: () => void;
 }
 
 const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModal }) => {
@@ -24,7 +24,6 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
   const [localImage, setLocalImage] = useState<string | null>(null);
   const [open2, setOpen2] = useState<boolean>(false);
   const [subjectname, setsubjectname] = useState<string>('none');
-
 
   const [items2, setItems2] = useState<Item[]>([
     { label: 'Mathe', value: 'Mathe' },
@@ -62,16 +61,23 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
   }, [localImage]);
 
   const uploadFile = async () => {
-    if (!file) {
-      alert("Bitte wählen Sie eine Datei aus");
+    if (!documentname) {
+      Alert.alert("Fehler", "Bitte geben Sie einen Dateinamen ein.");
       return;
     }
 
-    if (!subjectname) setsubjectname("none");
-    if (!topic) settopic("none");
+    if (!file) {
+      Alert.alert("Fehler", "Bitte wählen Sie eine Datei aus.");
+      return;
+    }
+
+    if (subjectname === 'none' || topic === 'none') {
+      hideModal();
+      Alert.alert("Hinweis", "Die Datei ist gespeicheichert. Um Informationen zu verfolständigen ist sie im Backlog einzusehen.");
+      return;
+    }
 
     try {
-      
       const formData = new FormData();
       const fileAsset = file.assets ? file.assets[0] as FileAsset : null;
       if (fileAsset) {
@@ -81,23 +87,18 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
           type: fileAsset.mimeType,
         } as any);
       }
-      
-      if (!documentname ) {
-        alert('Es müssen mindestens eine File und ein Name ausgewählt werden!');
-        return 
-      }
-      if (!file) {
-        alert("Bitte eine File auswählen")
-      }
+
       formData.append('documentname', documentname);
       formData.append('subjectname', subjectname);
       formData.append("topic", topic);
-
 
       const response = await axios.post(`http://192.168.119.190:8000/uploadfile/${studentname}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       console.log(response.data);
+
+      hideModal();
+      Alert.alert("Erfolg", "Die Datei wurde erfolgreich gespeichert.");
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -143,7 +144,7 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
                 zIndex={1000}
                 zIndexInverse={3000}
               />
-              <ButtonComponent handleButtonClick={uploadFile} hideModal={hideModal} text="Datei speichern" />
+              <UploadButtonComponent handleButtonClick={uploadFile} text="Datei speichern" />
               <SubButtonComponent hideModal={hideModal} />
             </ScrollView>
           </Modal>
