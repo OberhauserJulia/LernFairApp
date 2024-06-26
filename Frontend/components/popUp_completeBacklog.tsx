@@ -8,6 +8,7 @@ import ButtonComponent from "./ButtonComponent";
 import axios from "axios";
 import { PopUpCompleteFileProps } from "../interfaces/PopUpCompleteFileProps";
 import { Item } from "../interfaces/PopUpItem";
+import UploadButtonComponent from "./UploadButtonComponent";
 
 
 
@@ -122,7 +123,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 zIndex={1000}
                 zIndexInverse={3000}
               />
-              <ButtonComponent handleButtonClick={completeBacklog} hideModal={hideModal} text="Datei vervollständigen" />
+              <UploadButtonComponent handleButtonClick={completeBacklog} text="Datei speichern" />
             </ScrollView>
           </Modal>
         </Portal>

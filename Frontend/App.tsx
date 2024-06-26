@@ -17,8 +17,15 @@ import Archiv_Student from './screens/ArchivStudent';
 import Archiv_Teacher from './screens/ArchivTeacher';
 import Archiv_Category from './screens/ArchivCategory';
 import Backlog from './screens/backlog';
+import OpenModalComponent from './components/openModalComponent'; 
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+export default function App() {
+  return (
+   <OpenModalComponent />  // Corrected component name
+  );
+}
+
+/*const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createMaterialBottomTabNavigator();
 
 const ChatStack = () => {
@@ -196,4 +203,4 @@ export default App;
 // }
 
 // const styles = StyleSheet.create({
-// });
+// });*/

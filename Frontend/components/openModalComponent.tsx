@@ -24,7 +24,7 @@ export default function openModalComponent() {
       >
         Button Text
       </Button>
-      {modalVisible && <Popup_completeStudentFile visible={modalVisible} hideModal={() => setModalVisible(false)}  />}
+      {modalVisible && <PopUpCompleteFileArchive visible={modalVisible} hideModal={() => setModalVisible(false)}  />}
     </View>
     
   );

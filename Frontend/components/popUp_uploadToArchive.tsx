@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { View, ScrollView, StyleSheet, StyleProp, ViewStyle, Alert } from "react-native";
 import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-paper";
 import * as ImagePicker from 'expo-image-picker';
 import DropdownComponent from "./DropdownComponent";
@@ -13,6 +13,7 @@ import { useEffect  } from "react";
 import { PopUpCompleteFilePropsArchive } from "../interfaces/PopUpCompleteFileProps";
 import { FileAsset } from "../interfaces/FileAssets";
 import { Item } from "../interfaces/PopUpItem";
+import UploadButtonComponent from "./UploadButtonComponent";
 
 
 const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ visible, hideModal }) => {
@@ -85,8 +86,15 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
 
   const uploadFile = async () => {
     if (!file) {
-      alert("Bitte wählen Sie eine Datei aus");
+      Alert.alert("Fehler", "Bitte wählen Sie eine Datei aus.");
       return;
+    }
+    if (!documentname || !classNumber || !subject || !topic || !formularType) {
+      Alert.alert("Fehler", "Bitte geben Sie alle notwendigen Informationen ein.");
+      return;
+    } else {
+      hideModal();
+      Alert.alert("Erfolg", "Datei erfolgreich hochgeladen.");
     }
 
     try {
@@ -176,7 +184,7 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
                 zIndexInverse={4000}
               />
 
-              <ButtonComponent handleButtonClick={uploadArchive} hideModal={hideModal} text="Datei speichern" />
+              <UploadButtonComponent handleButtonClick={uploadArchive} text="Datei speichern" />
             </ScrollView>
           </Modal>
         </Portal>
