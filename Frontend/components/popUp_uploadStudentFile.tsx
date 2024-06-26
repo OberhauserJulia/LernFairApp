@@ -92,7 +92,7 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
       formData.append('subjectname', subjectname);
       formData.append("topic", topic);
 
-      const response = await axios.post(`http://192.168.119.190:8000/uploadfile/${studentname}`, formData, {
+      const response = await axios.post(`${process.env.IP_ADRESS}/uploadfile/${studentname}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       console.log(response.data);

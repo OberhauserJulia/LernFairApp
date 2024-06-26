@@ -21,7 +21,7 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
   const deleteFile = async () => {
     try {
       // Senden des POST-Requests an den Server
-      await axios.delete(`http://192.168.119.190:8000/deletefile/${file_id}/Elias/Backlog`);
+      await axios.delete(`${process.env.IP_ADRESS}/deletefile/${file_id}/Elias/Backlog`);
       
       // Behandlung der Antwort
       console.log('File successfully deleted');

@@ -108,7 +108,7 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
         } as any);
       }
       
-      const response = await axios.post(`http://192.168.119.190:8000/archivefile/${formularType}/${documentname}/${subject}/${classNumber}/${topic}`, formData, {
+      const response = await axios.post(`${process.env.IP_ADRESS}/archivefile/${formularType}/${documentname}/${subject}/${classNumber}/${topic}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       console.log(response.data);

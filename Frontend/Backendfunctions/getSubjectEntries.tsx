@@ -8,7 +8,7 @@ export const getSubjectEntries = async (
     subjectName: string
   ) => {
     try {
-      const response = await axios.get(`http://192.168.119.190:8000/getfiles/${studentName}/${subjectName}`);
+      const response = await axios.get(`${process.env.IP_ADRESS}/getfiles/${studentName}/${subjectName}`);
       setFiles(response.data.files);
     } catch (error) {
       console.error("Error fetching backlog entries:", error);
