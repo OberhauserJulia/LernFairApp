@@ -13,15 +13,25 @@ import FileOverviewChat from '../components/FileOverviewChat';
 import FileOverviewBacklog from '../components/FileOverViewBacklog';
 import { useNavigation } from '@react-navigation/native';
 
+const initialAttributes = {
+  Fächer: ['Englisch', 'Mathe', 'Deutsch', 'Informatik', 'Unknown'],
+};
+
+const initialChipsState = {
+  Englisch: false, Mathe: false, Deutsch: false, Informatik: false, Unknown: false,
+};
+
 export default function Backlog() {
   const [studentName, setStudentName] = useState<string>("Elias");
   const [files, setFiles] = useState<File[]>([]);
   const subjectName: string = "Backlog";
   const [fileDetele, setFileDelete] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterQuery, setFilterQuery] = useState<string[]>([]);
   const navigation = useNavigation();
 
   useEffect(() => {
-    getSubjectEntries(setFiles , studentName, subjectName);
+    getSubjectEntries(setFiles, studentName, subjectName);
   }, []);
 
   const handleDelete = () => {
@@ -32,8 +42,26 @@ export default function Backlog() {
 
   useEffect(() => {
     console.log("Loading");
-    getSubjectEntries(setFiles , studentName, subjectName);
+    getSubjectEntries(setFiles, studentName, subjectName);
   }, [fileDetele]);
+
+  const searchbarfunction = (query: string) => {
+    setSearchQuery(query);
+    console.log(query);
+  };
+
+  const filterfunction = (query: string) => {
+    console.log("Filtered for", query);
+    setFilterQuery(query ? query.split(',').map(item => item.trim()) : []);
+  };
+
+  const filteredFiles = files.filter(file => {
+    const matchesSearchQuery = file.documentname.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilterQuery = filterQuery.length === 0 || filterQuery.some(filter => 
+      (file.subject || 'Unknown').toLowerCase() === filter.toLowerCase()
+    );
+    return matchesSearchQuery && matchesFilterQuery;
+  });
 
   return (
     <View style={styles.screen}>
@@ -49,9 +77,13 @@ export default function Backlog() {
 
       <View style={styles.content}>
         <View style={styles.bar}>
-          <Search />
+          <Search searchbarfunction={searchbarfunction} />
+          <Filter filterFunction={filterfunction}
+            initialAttributes={initialAttributes} 
+            initialChipsState={initialChipsState} />
         </View>
-        {files.map(file => (
+
+        {filteredFiles.map(file => (
           <FileOverviewBacklog
             handleDelete={handleDelete}
             key={file._id.$oid}
