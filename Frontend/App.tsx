@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -19,12 +19,24 @@ import Archiv_Category from './screens/ArchivCategory';
 import Backlog from './screens/backlog';
 import OpenModalComponent from './components/openModalComponent'; 
 
+
+
+
+
 export default function App() {
+  useEffect(() => {
+
+console.log(process.env.IP_ADRESS)
+  } , []) 
+
   return (
-   <OpenModalComponent />  // Corrected component name
+   <OpenModalComponent /> 
   );
 }
 
+/* <NavigationContainer> 
+<OpenModalComponent /> 
+</NavigationContainer> 
 /*const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createMaterialBottomTabNavigator();
 
