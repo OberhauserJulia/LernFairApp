@@ -15,7 +15,7 @@ interface File_Overview_CategoryProps {
   studentname: string;
 }
 
-export default function File_Overview_Category_Teacher({ subjectname, studentname }: File_Overview_CategoryProps) {
+export default function File_Overview_Category_Student({ subjectname, studentname }: File_Overview_CategoryProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [studentName, setStudentName] = useState<string>(studentname);
   const [files, setFiles] = useState<File[]>([]);
@@ -44,7 +44,7 @@ export default function File_Overview_Category_Teacher({ subjectname, studentnam
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
         </TouchableOpacity>
-        <Text style={styles.headline}> Max Musterman </Text>
+        <Text style={styles.headline}> {subjectname} </Text>
         <View style={styles.top_bar_groupe}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
           <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />

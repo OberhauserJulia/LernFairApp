@@ -18,7 +18,11 @@ const initialChipsState = {
   Mathematik: false, Englisch: false, Deutsch: false, Informatik: false,
 };
 
-export default function File_Overview_Category_Student() {
+interface File_Overview_CategoryProps {
+  studentName: string;
+}
+
+export default function File_Overview_Category_Teacher({ studentName }: File_Overview_CategoryProps) {
   const [files, setFiles] = useState<File[]>([]);
   const navigation = useNavigation();
 
@@ -30,10 +34,10 @@ export default function File_Overview_Category_Student() {
       let allFiles: File[] = [];
 
       await Promise.all([
-        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Mathe"),
-        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Deutsch"),
-        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Englisch"),
-        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Informatik"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, studentName, "Mathe"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, studentName, "Deutsch"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, studentName, "Englisch"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, studentName, "Informatik"),
       ]);
 
       setFiles(allFiles);
@@ -66,7 +70,7 @@ export default function File_Overview_Category_Student() {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
         </TouchableOpacity>
-        <Text style={styles.headline}> Elias </Text>
+        <Text style={styles.headline}> {studentName} </Text>
       </View>  
 
       <View style={styles.content}>
