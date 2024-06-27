@@ -8,28 +8,52 @@ import { useEffect, useState } from 'react';
 import { ArchiveFile } from '../interfaces/Backendfile';
 import { useNavigation } from '@react-navigation/native';
 import Search from '../components/searchbar';
+import Filter from '../components/filter';
+
 interface File_Overview_CategoryProps { 
-  filtype : string; 
+  filtype: string; 
 } 
 
+const initialAttributes = {
+  Klassen: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  Fächer: ['Mathematik', 'Englisch', 'Deutsch', 'Informatik'],
+};
 
-export default function Archiv_Category( {filtype} : File_Overview_CategoryProps ) {
+const initialChipsState = {
+  1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
+  7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
+  Mathematik: false, Englisch: false, Deutsch: false, Informatik: false,
+};
+
+export default function Archiv_Category({ filtype }: File_Overview_CategoryProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [filterQuery, setFilterQuery] = React.useState<string[]>([]);
 
   const [files, setFiles] = useState<ArchiveFile[]>([]); 
   const navigation = useNavigation();
 
   useEffect(() => {
     getSubjectEntries(setFiles, "Archiv", filtype); 
-  }, []);
+  }, [filtype]);
 
   const searchbarfunction = (query: string) => { 
     setSearchQuery(query);
     console.log(query);
   }
-  const filteredFiles = files.filter(file =>
-    file.documentname.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+
+  const filterfunction = (query: string) => {
+    console.log("Filtered for", query);
+    setFilterQuery(query ? query.split(',').map(item => item.trim()) : []);
+  }
+
+  const filteredFiles = files.filter(file => {
+    const matchesSearchQuery = file.documentname.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilterQuery = filterQuery.length === 0 || filterQuery.some(filter => 
+      file.classNumber === filter || file.subject?.toLowerCase() === filter.toLowerCase()
+    );
+    return matchesSearchQuery && matchesFilterQuery;
+  });
+
   return (
     <View style={styles.screen}>
       <View style={styles.top_bar}>
@@ -43,31 +67,33 @@ export default function Archiv_Category( {filtype} : File_Overview_CategoryProps
       </View>
 
       <View style={styles.content}>
-      <View style={styles.bar}>
+        <View style={styles.bar}>
           <Search searchbarfunction={searchbarfunction}/>
+          <Filter filterFunction={filterfunction}
+            initialAttributes={initialAttributes} 
+            initialChipsState={initialChipsState}/>
         </View>
         <View style={styles.bar}>
         </View>
 
         {filteredFiles.map(file => (
-            <FileOverview
-              key={file._id.$oid}
-              _id={file._id.$oid}
-              file_id={file.file_id}
-              topic={file.topic || 'Unknown Topic'}
-              subject={file.subject || 'Unknown Subject'}
-              dateiname={file.documentname}
-              filename={file.name}
-              classNumber={file.classNumber}
-            />
-          ))}      
-          </View>
+          <FileOverview
+            key={file._id.$oid}
+            _id={file._id.$oid}
+            file_id={file.file_id}
+            topic={file.topic || 'Unknown Topic'}
+            subject={file.subject || 'Unknown Subject'}
+            dateiname={file.documentname}
+            filename={file.name}
+            classNumber={file.classNumber}
+          />
+        ))}      
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-
   screen: {
     backgroundColor: '#F5F5F5',
     flex: 1,
@@ -117,5 +143,4 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-
 });
