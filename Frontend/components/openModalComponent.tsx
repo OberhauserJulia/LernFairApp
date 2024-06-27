@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
 import PopUp_addFile from './popUp_completeBacklog';
 import PopUp_uploadToArchive from './popUp_uploadToArchive';
 import PopUpCompleteFile from './popUp_uploadStudentFile';
 
-export default function openModalComponent() {
+export default function OpenModalComponent({ modalType, renderTrigger }: { modalType: string, renderTrigger: (openModal: () => void) => React.ReactNode }) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const openModal = () => setModalVisible(true);
+  const renderModal = () => {
+    switch (modalType) {
+      case 'addFile':
+        return <PopUp_addFile file_id='666be4e873fe1303f9bceaa4' filename='IMG_20240603_140500.jpg' visible={modalVisible} hideModal={() => setModalVisible(false)} />;
+      case 'uploadToArchive':
+        return <PopUp_uploadToArchive visible={modalVisible} hideModal={() => setModalVisible(false)} />;
+      case 'completeFile':
+        return <PopUpCompleteFile visible={modalVisible} hideModal={() => setModalVisible(false)} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Button
-        mode="contained"
-        onPress={openModal}
-        style={{
-        position: 'absolute', 
-        }}
-      >
-        Button Text
-      </Button>
-      {modalVisible && <PopUpCompleteFile /*file_id='666be4e873fe1303f9bceaa4' filename='IMG_20240603_140500.jpg'*/ visible={modalVisible} hideModal={() => setModalVisible(false)} />}
+      {renderTrigger(() => setModalVisible(true))}
+      {modalVisible && renderModal()}
     </View>
-    
   );
 }
 

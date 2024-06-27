@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from './types/navigationTypes';
+import { Button } from 'react-native-paper';
 
 // Import Screens
 import ChatScreen from './screens/ChatScreen';
@@ -21,7 +22,18 @@ import OpenModalComponent from './components/openModalComponent';
 
 export default function App() {
   return (
-   <OpenModalComponent />  // Corrected component name
+    <OpenModalComponent 
+    modalType='addFile'
+    renderTrigger={(openModal) => (
+      <Button
+        mode="contained"
+        onPress={openModal}
+        style={{ position: 'absolute' }}
+      >
+        Öffne Modal
+      </Button>
+    )}
+  />
   );
 }
 
