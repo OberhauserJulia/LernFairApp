@@ -71,11 +71,7 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
       return;
     }
 
-    if (subjectname === 'none' || topic === 'none') {
-      hideModal();
-      Alert.alert("Hinweis", "Die Datei ist gespeicheichert. Um Informationen zu verfolständigen ist sie im Backlog einzusehen.");
-      return;
-    }
+    
 
     try {
       const formData = new FormData();
@@ -96,6 +92,12 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       console.log(response.data);
+      if (subjectname === 'none' || topic === 'none') {
+     
+        Alert.alert("Hinweis", "Die Datei ist gespeicheichert. Um Informationen zu verfolständigen ist sie im Backlog einzusehen.");
+        hideModal();
+        return ; 
+      }
 
       hideModal();
       Alert.alert("Erfolg", "Die Datei wurde erfolgreich gespeichert.");
