@@ -20,11 +20,6 @@ const initialChipsState = {
 
 export default function File_Overview_Chat() {
   const [files, setFiles] = useState<File[]>([]);
-  const[math , setMath ] = useState<File[]>([]); 
-  const[german , setGerman ] = useState<File[]>([]);
-  const [english , setEnglish ] = useState<File[]>([]);
-  const [backlog , setBacklog ] = useState<File[]>([]);
-  const [computerscience , setComputerscience ] = useState<File[]>([]);
   const navigation = useNavigation();
 
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -32,13 +27,17 @@ export default function File_Overview_Chat() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getSubjectEntries(setMath,"Elias", "Mathe");
-       await getSubjectEntries(setGerman, "Elias", "Deutsch");
-       await getSubjectEntries(setEnglish, "Elias", "Englisch");
-       await getSubjectEntries(setComputerscience, "Elias", "Informatik");
-     await getSubjectEntries(setBacklog, "Elias", "Backlog");
+      let allFiles: File[] = [];
 
-      setFiles([...math, ...german, ...english, ...computerscience, ...backlog]);
+      await Promise.all([
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Mathe"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Deutsch"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Englisch"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Informatik"),
+        getSubjectEntries((data: File[]) => { allFiles = [...allFiles, ...data]; }, "Elias", "Backlog")
+      ]);
+
+      setFiles(allFiles);
     };
 
     fetchData();
@@ -81,7 +80,7 @@ export default function File_Overview_Chat() {
         <View style={styles.bar}>
         </View>
        
-        {files.map(file => (
+        {filteredFiles.map(file => (
           <FileOverview
             key={file._id.$oid}
             _id={file._id.$oid}
