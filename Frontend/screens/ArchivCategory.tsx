@@ -7,12 +7,15 @@ import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import { useEffect, useState } from 'react';
 import { ArchiveFile } from '../interfaces/Backendfile';
 import { useNavigation } from '@react-navigation/native';
+import Search from '../components/searchbar';
 interface File_Overview_CategoryProps { 
   filtype : string; 
 } 
 
 
 export default function Archiv_Category( {filtype} : File_Overview_CategoryProps ) {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
   const [files, setFiles] = useState<ArchiveFile[]>([]); 
   const navigation = useNavigation();
 
@@ -20,6 +23,13 @@ export default function Archiv_Category( {filtype} : File_Overview_CategoryProps
     getSubjectEntries(setFiles, "Archiv", filtype); 
   }, []);
 
+  const searchbarfunction = (query: string) => { 
+    setSearchQuery(query);
+    console.log(query);
+  }
+  const filteredFiles = files.filter(file =>
+    file.documentname.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <View style={styles.screen}>
       <View style={styles.top_bar}>
@@ -33,10 +43,13 @@ export default function Archiv_Category( {filtype} : File_Overview_CategoryProps
       </View>
 
       <View style={styles.content}>
+      <View style={styles.bar}>
+          <Search searchbarfunction={searchbarfunction}/>
+        </View>
         <View style={styles.bar}>
         </View>
 
-        {files.map(file => (
+        {filteredFiles.map(file => (
             <FileOverview
               key={file._id.$oid}
               _id={file._id.$oid}
