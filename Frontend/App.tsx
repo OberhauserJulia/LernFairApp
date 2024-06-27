@@ -1,40 +1,35 @@
+// App.tsx
+
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ChatScreen from './screens/ChatScreen';
-import SingleChatScreen from './screens/SingleChatScreen';
-import { RootStackParamList } from './types/navigationTypes';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './screens/HomeScreen';
+import { StudentNavigation, TeacherNavigation } from './components/BottomTabNavigation';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const RootStack = createBottomTabNavigator();
 
-const App = () => {
-  return (
-    //<Archiv_Teacher   />  // Corrected component name
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="ChatScreen"
-        screenOptions={{
-          headerStyle: { backgroundColor: '#2b4b51' },
-          headerTintColor: '#ffffff',
-          headerTitleStyle: { fontWeight: 'bold' },
-        }}
-      >
-        <Stack.Screen
-          name="ChatScreen"
-          component={ChatScreen}
-          options={{ title: 'Chat' }}
-        />
-        <Stack.Screen
-          name="SingleChatScreen"
-          component={SingleChatScreen}
-          options={({ route }) => ({
-            title: route.params.name,
-            headerBackTitleVisible: false,
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+const App = () => (
+  <NavigationContainer theme={NavigationTheme}>
+    <RootStack.Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { display: 'none' },
+      }}
+    >
+      <RootStack.Screen name="Home" component={HomeScreen} />
+      <RootStack.Screen name="StudentNavigation" component={StudentNavigation} />
+      <RootStack.Screen name="TeacherNavigation" component={TeacherNavigation} />
+    </RootStack.Navigator>
+  </NavigationContainer>
+);
+
+const NavigationTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#ffffff',
+  },
 };
 
 export default App;

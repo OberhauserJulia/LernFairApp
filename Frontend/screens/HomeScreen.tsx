@@ -1,15 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import RoleSelectionButton from '../components/RoleSelectionButton';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 
-const HomeScreen = () => {
+interface Props {
+  navigation: any; // Typisierung für die Navigation anpassen, falls verfügbar
+}
 
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const handleTeacherMode = () => {
-    alert('Lehrer-Modus aktiviert');
+    navigation.navigate('TeacherNavigation'); // Navigiere zur Lehrer-Navigation
   };
 
   const handleStudentMode = () => {
-    alert('Schüler-Modus aktiviert');
+    navigation.navigate('StudentNavigation'); // Navigiere zur Schüler-Navigation
   };
 
   return (
@@ -27,12 +29,16 @@ const HomeScreen = () => {
         <Text style={styles.subHeaderText}>Melde dich hier mit deiner entsprechenden Rolle in der App an.</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <RoleSelectionButton text="Lehrer" handleButtonClick={handleTeacherMode} />
-        <RoleSelectionButton text="Schüler" handleButtonClick={handleStudentMode} />
+        <TouchableOpacity style={styles.button} onPress={handleTeacherMode}>
+          <Text style={styles.buttonText}>Lehrer</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleStudentMode}>
+          <Text style={styles.buttonText}>Schüler</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -42,13 +48,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 16,
   },
-
   imageContainer: {
     flex: 2,
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-
   imageCircle: {
     width: 110,
     height: 110,
@@ -57,18 +61,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   imageHeader: {
     width: '65%',
     height: '65%',
   },
-
   textContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   headerText: {
     color: '#fff',
     fontSize: 24,
@@ -77,19 +78,32 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 20,
   },
-
   subHeaderText: {
     color: '#fff',
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 24,
   },
-
   buttonContainer: {
     flex: 2,
     width: '100%',
     alignItems: 'center',
-  }
+    justifyContent: 'center',
+  },
+  button: {
+    backgroundColor: '#FEDA50',
+    height: 50,
+    width: 150,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 16,
+  },
+  buttonText: {
+    color: '#2C4A52',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
 
 export default HomeScreen;
