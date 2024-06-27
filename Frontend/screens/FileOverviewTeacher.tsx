@@ -3,19 +3,50 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 // import components
 import Search from '../components/searchbar';
-import FileOverview from '../components/file_overview';
-import { useState, useEffect } from 'react'; 
-import { File } from '../interfaces/Backendfile';
-import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
-import FileOverviewChat from '../components/FileOverviewChat';
+import Filter from '../components/filter';
 import FileOverViewTeacherCart from '../components/FileOverViewTeacherCard';
-export default function File_Overview_Chat() {
-  const [files, setFiles] = useState<File[]>([]);
-  const[math , setMath ] = useState<File[]>([]); 
-  const[german , setGerman ] = useState<File[]>([]);
-  const [english , setEnglish ] = useState<File[]>([]);
-  const [computerscience , setComputerscience ] = useState<File[]>([]);
+import { useState } from 'react';
 
+const initialAttributes = {
+  Klassen: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+  Bundesländer: ['Bayern', 'Berlin', 'Hamburg', 'Hessen', 'Nordrhein-Westfalen', 'Sachsen']
+};
+
+const initialChipsState = {
+  1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
+  7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
+  Bayern: false, Berlin: false, Hamburg: false, Hessen: false, 'Nordrhein-Westfalen': false, Sachsen: false,
+};
+
+export default function FileOverviewTeacher() {
+  const [studentArray, setStudentArray] = useState([
+    { name: "Elias", country: "Bayern", classNumber: 4 },
+    { name: "Julia", country: "Berlin", classNumber: 4 },
+    { name: "Tatjana", country: "Hamburg", classNumber: 10 },
+    { name: "Hannah", country: "Hessen", classNumber: 2 },
+    { name: "Schiffner", country: "Sachsen", classNumber: 13 }
+  ]);
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterQuery, setFilterQuery] = useState<string[]>([]);
+
+  const searchbarfunction = (query: string) => {
+    setSearchQuery(query);
+    console.log(query);
+  };
+
+  const filterfunction = (query: string) => {
+    console.log("Filtered for", query);
+    setFilterQuery(query ? query.split(',').map(item => item.trim()) : []);
+  };
+
+  const filteredStudents = studentArray.filter(student => {
+    const matchesSearchQuery = student.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesFilterQuery = filterQuery.length === 0 || filterQuery.some(filter => 
+      student.classNumber.toString() === filter || student.country.toLowerCase() === filter.toLowerCase()
+    );
+    return matchesSearchQuery && matchesFilterQuery;
+  });
 
   return (
     <View style={styles.screen}>
@@ -33,18 +64,22 @@ export default function File_Overview_Chat() {
       </View>	
 
       <View style={styles.content}>
-        <View>
-          <Search></Search>
+      <View style={styles.bar}>
+          <Search searchbarfunction={searchbarfunction}/>
+          <Filter filterFunction={filterfunction}
+            initialAttributes={initialAttributes} 
+            initialChipsState={initialChipsState}/>
         </View>
-       <FileOverViewTeacherCart studentname='Elias' countryname="Bayern"  classNumber="4"/>
-       <FileOverViewTeacherCart studentname='Julia' countryname="Bayern"  classNumber="4"/>
-       <FileOverViewTeacherCart studentname='Tatjana' countryname="Bayern"  classNumber="10"/>
-       <FileOverViewTeacherCart studentname='Hannah' countryname="Bayern"  classNumber="2"/>
-       <FileOverViewTeacherCart studentname='Schiffner' countryname="Bayern"  classNumber="13"/>
+        
 
-           
-
-
+        {filteredStudents.map((student, index) => (
+          <FileOverViewTeacherCart
+            key={index}
+            studentname={student.name}
+            countryname={student.country}
+            classNumber={student.classNumber.toString()}
+          />
+        ))}
       </View>
     </View>
   );
@@ -76,7 +111,7 @@ const styles = StyleSheet.create({
   headline: {
     fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
-    fontSize: 16, // Adjust font size to fit better in the top bar
+    fontSize: 16,
     color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
@@ -87,11 +122,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 16,
   },
-
   content: {
     width: '100%',
     paddingRight: 16,
     paddingLeft: 16,
     paddingTop: 16,
+  },
+  bar: {
+    flexDirection: 'row',
+    width: '100%',
+    alignItems: 'center',
   },
 });
