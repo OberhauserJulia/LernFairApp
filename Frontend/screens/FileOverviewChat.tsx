@@ -81,7 +81,7 @@ export default function File_Overview_Chat() {
         <View style={styles.bar}>
         </View>
        
-        {filteredFiles.map(file => (
+        {files.map(file => (
           <FileOverview
             key={file._id.$oid}
             _id={file._id.$oid}
