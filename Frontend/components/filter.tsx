@@ -2,22 +2,42 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, Modal, TouchableOpacity } from 'react-native';
 import { Chip, Button } from 'react-native-paper';
 
-export default function Filter() {
+type ChipKey = number | string;
+
+type ChipsEnabledState = {
+  [key: ChipKey]: boolean;
+};
+
+interface FilterProps { 
+  filterFunction: (searchQuery: string) => void;
+}
+
+const initialChipsState: ChipsEnabledState = {
+  1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
+  7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
+  Mathematik: false, Stochastik: false,
+};
+
+export default function Filter({ filterFunction }: FilterProps) {
+  const [chipsEnabled, setChipsEnabled] = useState<ChipsEnabledState>(initialChipsState);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // State to manage whether each chip is enabled or disabled
-  const [chipsEnabled, setChipsEnabled] = useState({
-    1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
-    7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
-    Mathematik: false, Stochastik: false,
-  });
-
-  const handleChipPress = (key) => {
-    // Toggle the enabled state of the chip
+  const handleChipPress = (key: ChipKey) => {
     setChipsEnabled(prevState => ({
       ...prevState,
       [key]: !prevState[key]
     }));
+  };
+
+  const applyFilter = () => {
+    const enabledChips = Object.keys(chipsEnabled).filter(key => chipsEnabled[key as ChipKey]);
+    filterFunction(enabledChips.join(', '));
+    setModalVisible(false);
+  };
+
+  const resetFilter = () => {
+    setChipsEnabled(initialChipsState);
+    filterFunction('');
   };
 
   return (
@@ -35,7 +55,7 @@ export default function Filter() {
         <View style={styles.modalContainer}>
           <View style={styles.content}>
             <View style={styles.bar}>
-              <Text style={styles.headline}> Dateien filtern </Text>
+              <Text style={styles.headline}>Dateien filtern</Text>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Image style={styles.icon_close} source={require('../assets/icons/close_icon.svg')} />
               </TouchableOpacity>
@@ -54,7 +74,7 @@ export default function Filter() {
                     style={[styles.chip, !chipsEnabled[number + 1] && styles.chipDisabled]}
                     textStyle={[styles.chipText, !chipsEnabled[number + 1] && styles.chipTextDisabled]}
                     onPress={() => handleChipPress(number + 1)}
-                    disabled={false} // Chips are initially not disabled
+                    disabled={false}
                   >
                     {number + 1}
                   </Chip>
@@ -73,25 +93,16 @@ export default function Filter() {
                   style={[styles.chip, !chipsEnabled['Mathematik'] && styles.chipDisabled]}
                   textStyle={[styles.chipText, !chipsEnabled['Mathematik'] && styles.chipTextDisabled]}
                   onPress={() => handleChipPress('Mathematik')}
-                  disabled={false} // Chips are initially not disabled
+                  disabled={false}
                 >
                   Mathematik
                 </Chip>
-              </View>
-            </View>
-
-            {/* Thema */}
-            <View style={styles.category}>
-              <View style={styles.text_container}>
-                <Text style={styles.category_name}>Thema</Text>
-              </View>
-              <View style={styles.chip_container}>
                 <Chip
                   mode="outlined"
                   style={[styles.chip, !chipsEnabled['Stochastik'] && styles.chipDisabled]}
                   textStyle={[styles.chipText, !chipsEnabled['Stochastik'] && styles.chipTextDisabled]}
                   onPress={() => handleChipPress('Stochastik')}
-                  disabled={false} // Chips are initially not disabled
+                  disabled={false}
                 >
                   Stochastik
                 </Chip>
@@ -99,8 +110,8 @@ export default function Filter() {
             </View>
 
             <View style={styles.buttons}>
-              <Button mode="outlined" onPress={() => console.log('Pressed')} style={styles.button_reset} labelStyle={styles.button_reset_text}> Filter zurücksetzen </Button>
-              <Button mode="contained" onPress={() => console.log('Pressed')} style={styles.button_apply} labelStyle={styles.button_apply_text}> Filter anwenden </Button>
+              <Button mode="outlined" onPress={resetFilter} style={styles.button_reset} labelStyle={styles.button_reset_text}>Filter zurücksetzen</Button>
+              <Button mode="contained" onPress={applyFilter} style={styles.button_apply} labelStyle={styles.button_apply_text}>Filter anwenden</Button>
             </View>
           </View>
         </View>
@@ -154,7 +165,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#2B4B51',
   },
   headline: {
-    fontFamily: 'Monsterrat-Bold',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
@@ -177,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Monsterrat-Bold',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
@@ -188,7 +199,6 @@ const styles = StyleSheet.create({
     gap: 8,
     marginTop: 8,
   },
-
   chip: {
     height: 38,
     borderRadius: 12,
@@ -199,25 +209,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B4B51',
     borderColor: '#2B4B51',
   },
-
   chipText: {
     textAlign: 'center',
     fontSize: 12,
     borderColor: '#2B4B51',
-    fontFamily: 'Monsterrat-Regular',
+    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     color: 'white',
   },
-
   chipTextDisabled: {
     color: '#2B4B51',
   },
-
   chipDisabled: {
     backgroundColor: 'white',
     borderColor: '#2B4B51',
   },
-
   buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -226,7 +232,6 @@ const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
-  
   button_reset: {
     width: '48%',
     height: 38,
@@ -235,13 +240,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#FEDA50',
   },
-
   button_reset_text: {
     color: '#2B4B51',
-    fontFamily: 'Monsterrat-Bold',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
   },
-
   button_apply: {
     width: '48%',
     height: 38,
@@ -251,10 +254,9 @@ const styles = StyleSheet.create({
     borderColor: '#FEDA50',
     backgroundColor: '#FEDA50',
   },
-
   button_apply_text: {
     color: '#2B4B51',
-    fontFamily: 'Monsterrat-Bold',
+    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
   },
 });
