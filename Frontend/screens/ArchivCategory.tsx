@@ -49,7 +49,7 @@ export default function Archiv_Category({ filtype }: File_Overview_CategoryProps
   const filteredFiles = files.filter(file => {
     const matchesSearchQuery = file.documentname.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilterQuery = filterQuery.length === 0 || filterQuery.some(filter => 
-      file.classNumber === filter || file.subject?.toLowerCase() === filter.toLowerCase()
+      file.classnumber === filter || file.subject?.toLowerCase() === filter.toLowerCase()
     );
     return matchesSearchQuery && matchesFilterQuery;
   });
@@ -85,7 +85,7 @@ export default function Archiv_Category({ filtype }: File_Overview_CategoryProps
             subject={file.subject || 'Unknown Subject'}
             dateiname={file.documentname}
             filename={file.name}
-            classNumber={file.classNumber}
+            classNumber={file.classnumber}
           />
         ))}      
       </View>

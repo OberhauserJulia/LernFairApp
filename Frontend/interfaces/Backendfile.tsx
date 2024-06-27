@@ -18,5 +18,5 @@
     topic?: string;
     subject?: string;
     documentname: string;
-    classNumber: string;
+    classnumber: string;
   }

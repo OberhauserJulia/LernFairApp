@@ -28,7 +28,7 @@ console.log(process.env.IP_ADRESS)
 
   return (
     <NavigationContainer> 
-      <Backlog /> 
+      <Archiv_Category filtype='Workshop' /> 
     </NavigationContainer> 
   );
 }
