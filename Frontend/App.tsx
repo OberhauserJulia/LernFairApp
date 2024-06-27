@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from './types/navigationTypes';
+import { Button } from 'react-native-paper';
 
 // Import Screens
 import ChatScreen from './screens/ChatScreen';
@@ -19,10 +20,6 @@ import Archiv_Category from './screens/ArchivCategory';
 import Backlog from './screens/backlog';
 import OpenModalComponent from './components/openModalComponent'; 
 
-
-
-
-
 export default function App() {
   useEffect(() => {
 
@@ -30,13 +27,12 @@ console.log(process.env.IP_ADRESS)
   } , []) 
 
   return (
-   <OpenModalComponent /> 
+    <NavigationContainer> 
+      <Backlog /> 
+    </NavigationContainer> 
   );
 }
 
-/* <NavigationContainer> 
-<OpenModalComponent /> 
-</NavigationContainer> 
 /*const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createMaterialBottomTabNavigator();
 

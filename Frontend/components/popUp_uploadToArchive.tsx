@@ -139,7 +139,7 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
               <Text style={styles.headline}>Datei im Archiv hochladen</Text>
               <Text style={styles.labeling}>Datei auswählen *</Text>
-              <ImagePickerComponent image={audioPreview || localImage} pickImage={pickFile} />
+              <ImagePickerComponent image={localImage} pickImage={pickFile} />
               <Text style={styles.labeling}>Name *</Text>
               <TextInput 
                 placeholder="Dateiname"

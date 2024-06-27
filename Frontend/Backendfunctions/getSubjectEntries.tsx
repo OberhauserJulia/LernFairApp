@@ -8,6 +8,7 @@ export const getSubjectEntries = async (
     subjectName: string
   ) => {
     try {
+      console.log("Fetching entries for", studentName, subjectName, process.env.IP_ADRESS);
       const response = await axios.get(`${process.env.IP_ADRESS}/getfiles/${studentName}/${subjectName}`);
       setFiles(response.data.files);
     } catch (error) {

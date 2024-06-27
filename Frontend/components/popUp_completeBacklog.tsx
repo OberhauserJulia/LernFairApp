@@ -96,8 +96,6 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 underlineColor="transparent"
                 onChangeText={text => setDocumentname(text) }
               />
-        
-              <Text style={styles.labeling}>Klasse auswählen *</Text>
               
               <Text style={styles.labeling}>Fach auswählen *</Text>
               <DropdownComponent
