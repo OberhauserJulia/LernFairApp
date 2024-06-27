@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, Modal, TouchableOpacity } from 'react-native';
 import { Chip, Button } from 'react-native-paper';
 
 type ChipKey = number | string;
+
+type AttributeGroup = {
+  [key: string]: ChipKey[];
+};
 
 type ChipsEnabledState = {
   [key: ChipKey]: boolean;
@@ -10,17 +14,17 @@ type ChipsEnabledState = {
 
 interface FilterProps { 
   filterFunction: (searchQuery: string) => void;
+  initialAttributes: AttributeGroup;
+  initialChipsState: ChipsEnabledState;
 }
 
-const initialChipsState: ChipsEnabledState = {
-  1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
-  7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
-  Mathematik: false, Stochastik: false,
-};
-
-export default function Filter({ filterFunction }: FilterProps) {
+export default function Filter({ filterFunction, initialAttributes, initialChipsState }: FilterProps) {
   const [chipsEnabled, setChipsEnabled] = useState<ChipsEnabledState>(initialChipsState);
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    setChipsEnabled(initialChipsState);
+  }, [initialChipsState]);
 
   const handleChipPress = (key: ChipKey) => {
     setChipsEnabled(prevState => ({
@@ -38,6 +42,21 @@ export default function Filter({ filterFunction }: FilterProps) {
   const resetFilter = () => {
     setChipsEnabled(initialChipsState);
     filterFunction('');
+  };
+
+  const renderChips = (group: ChipKey[]) => {
+    return group.map((key) => (
+      <Chip
+        key={key}
+        mode="outlined"
+        style={[styles.chip, !chipsEnabled[key] && styles.chipDisabled]}
+        textStyle={[styles.chipText, !chipsEnabled[key] && styles.chipTextDisabled]}
+        onPress={() => handleChipPress(key)}
+        disabled={false}
+      >
+        {key}
+      </Chip>
+    ));
   };
 
   return (
@@ -61,53 +80,16 @@ export default function Filter({ filterFunction }: FilterProps) {
               </TouchableOpacity>
             </View>
 
-            {/* Klasse */}
-            <View style={styles.category}>
-              <View style={styles.text_container}>
-                <Text style={styles.category_name}>Klasse</Text>
+            {Object.keys(initialAttributes).map(attribute => (
+              <View style={styles.category} key={attribute}>
+                <View style={styles.text_container}>
+                  <Text style={styles.category_name}>{attribute}</Text>
+                </View>
+                <View style={styles.chip_container}>
+                  {renderChips(initialAttributes[attribute])}
+                </View>
               </View>
-              <View style={styles.chip_container}>
-                {[...Array(13).keys()].map(number => (
-                  <Chip
-                    key={number + 1}
-                    mode="outlined"
-                    style={[styles.chip, !chipsEnabled[number + 1] && styles.chipDisabled]}
-                    textStyle={[styles.chipText, !chipsEnabled[number + 1] && styles.chipTextDisabled]}
-                    onPress={() => handleChipPress(number + 1)}
-                    disabled={false}
-                  >
-                    {number + 1}
-                  </Chip>
-                ))}
-              </View>
-            </View>
-
-            {/* Fach */}
-            <View style={styles.category}>
-              <View style={styles.text_container}>
-                <Text style={styles.category_name}>Fach</Text>
-              </View>
-              <View style={styles.chip_container}>
-                <Chip
-                  mode="outlined"
-                  style={[styles.chip, !chipsEnabled['Mathematik'] && styles.chipDisabled]}
-                  textStyle={[styles.chipText, !chipsEnabled['Mathematik'] && styles.chipTextDisabled]}
-                  onPress={() => handleChipPress('Mathematik')}
-                  disabled={false}
-                >
-                  Mathematik
-                </Chip>
-                <Chip
-                  mode="outlined"
-                  style={[styles.chip, !chipsEnabled['Stochastik'] && styles.chipDisabled]}
-                  textStyle={[styles.chipText, !chipsEnabled['Stochastik'] && styles.chipTextDisabled]}
-                  onPress={() => handleChipPress('Stochastik')}
-                  disabled={false}
-                >
-                  Stochastik
-                </Chip>
-              </View>
-            </View>
+            ))}
 
             <View style={styles.buttons}>
               <Button mode="outlined" onPress={resetFilter} style={styles.button_reset} labelStyle={styles.button_reset_text}>Filter zurücksetzen</Button>
