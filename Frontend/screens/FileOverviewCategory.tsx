@@ -10,7 +10,6 @@ import FileOverview from '../components/file_overview';
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 
-
 interface File_Overview_CategoryProps {
   subjectname: string;
   studentname: string;
@@ -23,11 +22,21 @@ export default function File_Overview_Category({ subjectname, studentname }: Fil
   const subjectName: string = subjectname;
   const navigation = useNavigation();
 
-  
+  const searchbarfunction = (query: string) => { 
+    setSearchQuery(query);
+    console.log(query);
+  }
+ 
+
   useEffect(() => {
     console.log("Loading");
     getSubjectEntries(setFiles , studentName, subjectName);
   }, []); // Abhängigkeiten-Array, um sicherzustellen, dass es nur einmal aufgerufen wird
+
+  // Filter files based on the searchQuery
+  const filteredFiles = files.filter(file =>
+    file.documentname.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <View style={styles.screen}>
@@ -44,10 +53,9 @@ export default function File_Overview_Category({ subjectname, studentname }: Fil
 
       <View style={styles.content}>
         <View style={styles.bar}>
-          <Search />
-          <Filter/>
+          <Search searchbarfunction={searchbarfunction}/>
         </View>
-        {files.map(file => (
+        {filteredFiles.map(file => (
           <FileOverview
             key={file._id.$oid}
             _id={file._id.$oid}
