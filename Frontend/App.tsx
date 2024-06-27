@@ -12,13 +12,14 @@ import SingleChatScreen from './screens/SingleChatScreen';
 import FileOverviewChat from './screens/FileOverviewChat';
 import FileOverviewStudent from './screens/FileOverviewStudent';
 import FileOverviewTeacher from './screens/FileOverviewTeacher';
-import FileOverviewCategoryStudent from './screens/FileOverviewCategory';
-import FileOverviewCategoryTeacher from './screens/FileOverviewCategory';
-import Archiv_Student from './screens/ArchivStudent';
+import File_Overview_CategoryTeacher from './screens/FileOverviewCategoryTeacher';
+ import Archiv_Student from './screens/ArchivStudent';
 import Archiv_Teacher from './screens/ArchivTeacher';
 import Archiv_Category from './screens/ArchivCategory';
 import Backlog from './screens/backlog';
 import OpenModalComponent from './components/openModalComponent'; 
+import File_Overview_Category_Teacher from './screens/FileOverviewCategoryTeacher';
+import File_Overview_Category_Student from './screens/FileOverviewCategoryStudent';
 
 export default function App() {
   useEffect(() => {
@@ -28,7 +29,7 @@ console.log(process.env.IP_ADRESS)
 
   return (
     <NavigationContainer> 
-      <Archiv_Category filtype='Workshop' /> 
+      <FileOverviewStudent /> 
     </NavigationContainer> 
   );
 }

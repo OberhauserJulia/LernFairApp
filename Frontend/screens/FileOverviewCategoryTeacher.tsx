@@ -15,7 +15,7 @@ interface File_Overview_CategoryProps {
   studentname: string;
 }
 
-export default function File_Overview_Category({ subjectname, studentname }: File_Overview_CategoryProps) {
+export default function File_Overview_Category_Teacher({ subjectname, studentname }: File_Overview_CategoryProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [studentName, setStudentName] = useState<string>(studentname);
   const [files, setFiles] = useState<File[]>([]);
