@@ -76,6 +76,7 @@ const ChatScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Chat </Text>
@@ -109,7 +110,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
-
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
+  },
   top_bar: {
     height: 48,
     backgroundColor: '#2B4B51',

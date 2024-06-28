@@ -31,6 +31,7 @@ export default function Archiv_Student() {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Archiv </Text>
@@ -97,6 +98,10 @@ const styles = StyleSheet.create({
   screen: {
     backgroundColor: '#F5F5F5',
     flex: 1,
+  },
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
   },
   top_bar: {
     height: 48,

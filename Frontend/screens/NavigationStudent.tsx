@@ -110,8 +110,8 @@ const NavigationStudent = () => {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#102E0C',
-          tabBarInactiveTintColor: '#BFDABE',
+          tabBarActiveTintColor: '#2B4B51',
+          tabBarInactiveTintColor: '#2B4B51',
           tabBarStyle: { backgroundColor: 'white' },
           tabBarShowLabel: false,
         })}

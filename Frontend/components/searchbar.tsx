@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'stretch',
+        marginRight: 16,
     },
     searchbar: {
         backgroundColor: '#EDF4F3',

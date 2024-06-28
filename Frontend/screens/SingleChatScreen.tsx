@@ -39,6 +39,7 @@ const SingleChatScreen: React.FC = () => {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
@@ -87,6 +88,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
   },
   top_bar: {
     height: 48,

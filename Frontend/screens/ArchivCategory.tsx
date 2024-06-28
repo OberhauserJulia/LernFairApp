@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -61,6 +61,7 @@ export default function ArchivCategory() {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
@@ -86,18 +87,20 @@ export default function ArchivCategory() {
         <View style={styles.bar}>
         </View>
 
-        {filteredFiles.map(file => (
-          <FileOverview
-            key={file._id.$oid}
-            _id={file._id.$oid}
-            file_id={file.file_id}
-            topic={file.topic || 'Unknown Topic'}
-            subject={file.subject || 'Unknown Subject'}
-            dateiname={file.documentname}
-            filename={file.name}
-            classNumber={file.classnumber}
-          />
-        ))}      
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {filteredFiles.map(file => (
+            <FileOverview
+              key={file._id.$oid}
+              _id={file._id.$oid}
+              file_id={file.file_id}
+              topic={file.topic || 'Unknown Topic'}
+              subject={file.subject || 'Unknown Subject'}
+              dateiname={file.documentname}
+              filename={file.name}
+              classNumber={file.classnumber}
+            />
+          ))}     
+        </ScrollView> 
       </View>
     </View>
   );
@@ -108,7 +111,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     flex: 1,
   },
-
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
+  },
   top_bar: {
     height: 48,
     backgroundColor: '#2B4B51',
@@ -151,5 +157,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingVertical: 8,
   },
 });

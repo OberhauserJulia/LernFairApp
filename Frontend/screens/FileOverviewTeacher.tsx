@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 
@@ -55,6 +55,7 @@ export default function FileOverviewTeacher() {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Dateiübersicht </Text>
@@ -76,20 +77,22 @@ export default function FileOverviewTeacher() {
       <View style={styles.content}>
       <View style={styles.bar}>
           <Search searchbarfunction={searchbarfunction}/>
-          <Filter filterFunction={filterfunction}
+          {/* <Filter filterFunction={filterfunction}
             initialAttributes={initialAttributes} 
-            initialChipsState={initialChipsState}/>
+            initialChipsState={initialChipsState}/> */}
         </View>
         
-
-        {filteredStudents.map((student, index) => (
-          <FileOverViewTeacherCart
-            key={index}
-            studentname={student.name}
-            countryname={student.country}
-            classNumber={student.classNumber.toString()}
-          />
-        ))}
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {filteredStudents.map((student, index) => (
+            <FileOverViewTeacherCart
+              key={index}
+              studentname={student.name}
+              countryname={student.country}
+              classNumber={student.classNumber.toString()}
+            />
+          ))}
+        </ScrollView>
+        
       </View>
     </View>
   );
@@ -100,7 +103,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     flex: 1,
   },
-
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
+  },
   top_bar: {
     height: 48,
     backgroundColor: '#2B4B51',
@@ -141,5 +147,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
 });

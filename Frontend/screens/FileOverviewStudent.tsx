@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -43,6 +43,7 @@ export default function FileOverviewStudent() {
 
   return (
     <View style={styles.screen}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Dateiübersicht </Text>
@@ -62,21 +63,23 @@ export default function FileOverviewStudent() {
       />
 
       <View style={styles.content}>
-        <View>
+        <View style={styles.bar}>
           <Search searchbarfunction={searchbarfunction} />
         </View>
-        {filteredSubjects.math.length > 0 && (
-          <FileOverviewChat subject='Mathe' filecount={filteredSubjects.math.length} />
-        )}
-        {filteredSubjects.english.length > 0 && (
-          <FileOverviewChat subject='Englisch' filecount={filteredSubjects.english.length} />
-        )}
-        {filteredSubjects.german.length > 0 && (
-          <FileOverviewChat subject='Deutsch' filecount={filteredSubjects.german.length} />
-        )}
-        {filteredSubjects.computerscience.length > 0 && (
-          <FileOverviewChat subject='Informatik' filecount={filteredSubjects.computerscience.length} />
-        )}
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {filteredSubjects.math.length > 0 && (
+            <FileOverviewChat subject='Mathe' filecount={filteredSubjects.math.length} />
+          )}
+          {filteredSubjects.english.length > 0 && (
+            <FileOverviewChat subject='Englisch' filecount={filteredSubjects.english.length} />
+          )}
+          {filteredSubjects.german.length > 0 && (
+            <FileOverviewChat subject='Deutsch' filecount={filteredSubjects.german.length} />
+          )}
+          {filteredSubjects.computerscience.length > 0 && (
+            <FileOverviewChat subject='Informatik' filecount={filteredSubjects.computerscience.length} />
+          )}
+        </ScrollView>
       </View>
     </View>
   );
@@ -87,7 +90,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     flex: 1,
   },
-
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
+  },
   top_bar: {
     height: 48,
     backgroundColor: '#2B4B51',
@@ -130,5 +136,10 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     paddingLeft: 16,
     paddingTop: 16,
+  },
+
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingVertical: 8,
   },
 });

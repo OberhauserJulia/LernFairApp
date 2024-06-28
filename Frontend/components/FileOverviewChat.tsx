@@ -1,22 +1,27 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
+import Entypo from '@expo/vector-icons/Entypo';
 
 interface FileOverviewChatProps { 
   subject: string; 
-  
   filecount : number ; 
 }
 
 export default function FileOverviewChat({ subject,  filecount}: FileOverviewChatProps) {
-  
+  const navigation = useNavigation();
 
 
   return (
-    <TouchableOpacity style={styles.file_overview}>
+    <TouchableOpacity style={styles.file_overview} onPress={() => navigation.navigate('FileOverviewStudentCategory', {
+      Subject: subject,
+      Filecount: filecount,
+    })}>
       <View style={[styles.file, styles.shadowProp]}>
         <View style={styles.file_image}>
-          <Image source={require('../assets/icons/file_icon.svg')} />
+          <AntDesign name="filetext1" size={24} color="#FEDA50" />
         </View>
 
         <View style={styles.file_info}>
@@ -25,7 +30,7 @@ export default function FileOverviewChat({ subject,  filecount}: FileOverviewCha
         </View>
 
         <View style={styles.file_actions}>
-          <Image source={require('../assets/icons/file_actions.svg')} />
+        <Entypo name="dots-three-vertical" size={20} color="#2B4B51" />
         </View>
       </View>
     </TouchableOpacity>

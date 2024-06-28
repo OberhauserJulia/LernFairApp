@@ -1,27 +1,21 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { Image } from 'expo-image';
+import { StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 // import components
 import Search from '../components/searchbar';
-import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import NotificationModal from '../components/popUp_notification';
 
-interface File_Overview_CategoryProps {
-  subjectname: string;
-  studentname: string;
-}
+export default function FileOverviewStudentCategory() {
+  const route = useRoute();
+  const { Subject, Filecount } = route.params;
 
-export default function File_Overview_Category_Student({ subjectname, studentname }: File_Overview_CategoryProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [studentName, setStudentName] = useState<string>(studentname);
   const [files, setFiles] = useState<File[]>([]);
-  const subjectName: string = subjectname;
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -29,11 +23,10 @@ export default function File_Overview_Category_Student({ subjectname, studentnam
     setSearchQuery(query);
     console.log(query);
   }
- 
 
   useEffect(() => {
     console.log("Loading");
-    getSubjectEntries(setFiles , studentName, subjectName);
+    getSubjectEntries(setFiles, "Elias", Subject);
   }, []); // Abhängigkeiten-Array, um sicherzustellen, dass es nur einmal aufgerufen wird
 
   // Filter files based on the searchQuery
@@ -43,11 +36,12 @@ export default function File_Overview_Category_Student({ subjectname, studentnam
 
   return (
     <View style={styles.screen}>
+      <View style={styles.status_bar}/>
       <View style={styles.top_bar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
         </TouchableOpacity>
-        <Text style={styles.headline}> {subjectname} </Text>
+        <Text style={styles.headline}> {Subject} </Text>
         <View style={styles.top_bar_groupe}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
           <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -65,17 +59,20 @@ export default function File_Overview_Category_Student({ subjectname, studentnam
         <View style={styles.bar}>
           <Search searchbarfunction={searchbarfunction}/>
         </View>
-        {filteredFiles.map(file => (
-          <FileOverview
-            key={file._id.$oid}
-            _id={file._id.$oid}
-            file_id={file.file_id}
-            topic={file.topic || 'Unknown Topic'}
-            subject={file.subject || 'Unknown Subject'}
-            dateiname={file.documentname}
-            filename={file.name}
-          />
-        ))}
+
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+          {filteredFiles.map(file => (
+            <FileOverview
+              key={file._id.$oid}
+              _id={file._id.$oid}
+              file_id={file.file_id}
+              topic={file.topic || 'Unknown Topic'}
+              subject={file.subject || 'Unknown Subject'}
+              dateiname={file.documentname}
+              filename={file.name}
+            />
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
@@ -86,7 +83,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     flex: 1,
   },
-
+  status_bar: {
+    height: 30,
+    backgroundColor: '#2B4B51',
+  },
   top_bar: {
     height: 48,
     backgroundColor: '#2B4B51',
@@ -129,5 +129,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
+  },
+
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingVertical: 8,
   },
 });
