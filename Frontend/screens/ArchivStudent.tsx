@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,6 +9,7 @@ import FileOverview from '../components/file_overview';
 import { ArchiveFile } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import Search from '../components/searchbar';
+import NotificationModal from '../components/popUp_notification';
 
 export default function Archiv_Student() {
   const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
@@ -15,6 +17,7 @@ export default function Archiv_Student() {
   const [tests, setTests] = useState<ArchiveFile[]>([]);
   const databaseName = "Archiv";
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getSubjectEntries(setWorksheets, databaseName, "Uebung");
@@ -31,17 +34,22 @@ export default function Archiv_Student() {
       <View style={styles.top_bar}>
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Archiv </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
         </TouchableOpacity>
       </View>
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
 
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Übungsblätter</Text>
-            <TouchableOpacity onPress={() => showMore('Uebungen')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ArchivCategory', { filtype: "Uebung" })}>
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
@@ -62,7 +70,7 @@ export default function Archiv_Student() {
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Probeklausuren</Text>
-            <TouchableOpacity onPress={() => showMore('Pruefungen')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ArchivCategory', { filtype: "Pruefungen" })}>
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
@@ -79,7 +87,6 @@ export default function Archiv_Student() {
             />
           ))}
         </View>
-
 
       </View>
     </View>
@@ -109,7 +116,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',
@@ -137,13 +143,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
   },
   more: {
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'normal',
     fontSize: 12,
     color: '#2B4B51',

@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
+import { useNavigation } from '@react-navigation/native';
 
 // import components
 import Search from '../components/searchbar';
 import Filter from '../components/filter';
 import FileOverViewTeacherCart from '../components/FileOverViewTeacherCard';
 import { useState } from 'react';
+import NotificationModal from '../components/popUp_notification';
 
 const initialAttributes = {
   Klassen: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
@@ -29,6 +32,8 @@ export default function FileOverviewTeacher() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterQuery, setFilterQuery] = useState<string[]>([]);
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const searchbarfunction = (query: string) => {
     setSearchQuery(query);
@@ -54,14 +59,19 @@ export default function FileOverviewTeacher() {
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Dateiübersicht </Text>
         <View style={styles.top_bar_groupe}>
-          <TouchableOpacity>
-            <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
+          <TouchableOpacity  onPress={() => navigation.navigate('BacklogScreen')}>
+            <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain"/>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
           </TouchableOpacity>
         </View>
       </View>	
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
       <View style={styles.bar}>
@@ -109,7 +119,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',

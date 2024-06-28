@@ -1,5 +1,6 @@
 import React from "react";
-import { TouchableOpacity, View, Image, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
+import { Image } from 'expo-image';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect } from "react";
 interface ImagePickerComponentProps {
@@ -56,13 +57,11 @@ const styles = StyleSheet.create({
   imagePickerText: {
     color: '#2B4B51',
     fontSize: 16,
-    fontFamily: 'Montserrat-Medium',
     fontWeight: '500', // Use '500' for medium font weight
   },
   imagePickerSubText: {
     color: '#2B4B51',
     fontSize: 12,
-    fontFamily: 'Montserrat-Regular',
     fontWeight: '400', // Use '400' for regular font weight
   },
   imageContainer: {

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 
 interface FileOverviewChatProps { 
   subject: string; 
@@ -57,13 +58,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headline: {
-    fontFamily: 'Montserrat-Medium',
     fontWeight: 'medium',
     fontSize: 12,
     color: '#2B4B51',
   },
   text: {
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',

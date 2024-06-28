@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import Popup_completeStudentFile from './popUp_uploadStudentFile';
 
 interface ChatInputProps {
   newMessage: string;
@@ -9,6 +10,8 @@ interface ChatInputProps {
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({ newMessage, setNewMessage, sendMessage }) => {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -26,13 +29,26 @@ const ChatInput: React.FC<ChatInputProps> = ({ newMessage, setNewMessage, sendMe
           <TouchableOpacity>
             <FontAwesome name="microphone" style={styles.icon} />
           </TouchableOpacity>
-          <TouchableOpacity>
+
+          {/* Reihenfolge der Icons ändern und Büroklammer rechts hinzufügen */}
+          <TouchableOpacity onPress={() => setIsModalVisible(true)}>
             <FontAwesome name="paperclip" style={styles.icon} />
           </TouchableOpacity>
         </View>
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
           <FontAwesome name="send" style={styles.sendButtonText} />
         </TouchableOpacity>
+
+        <Modal
+          visible={isModalVisible}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setIsModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <Popup_completeStudentFile visible={isModalVisible} hideModal={() => setIsModalVisible(false)} />
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -57,6 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     flex: 1,
     paddingHorizontal: 10,
+    justifyContent: 'flex-end', // Icons am Ende der Box ausrichten
   },
   textInput: {
     flex: 1,
@@ -82,6 +99,12 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: '#2B4B51',
     fontSize: 24,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

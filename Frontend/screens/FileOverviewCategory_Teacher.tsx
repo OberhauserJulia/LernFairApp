@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 
 // import components
 import Search from '../components/searchbar';
@@ -8,7 +9,8 @@ import FileOverview from '../components/file_overview';
 import { useState, useEffect } from 'react'; 
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import NotificationModal from '../components/popUp_notification';
 
 const initialAttributes = {
   Fächer: ['Mathematik', 'Englisch', 'Deutsch', 'Informatik'],
@@ -22,9 +24,12 @@ interface File_Overview_CategoryProps {
   studentName: string;
 }
 
-export default function File_Overview_Category_Teacher({ studentName }: File_Overview_CategoryProps) {
+export default function File_Overview_Category_Teacher({}: File_Overview_CategoryProps) {
   const [files, setFiles] = useState<File[]>([]);
   const navigation = useNavigation();
+  const route = useRoute();
+  const [modalVisible, setModalVisible] = useState(false);
+  const { studentName } = route.params as { studentName: string };
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [filterQuery, setFilterQuery] = React.useState<string[]>([]);
@@ -71,7 +76,20 @@ export default function File_Overview_Category_Teacher({ studentName }: File_Ove
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
         </TouchableOpacity>
         <Text style={styles.headline}> {studentName} </Text>
+        <View style={styles.top_bar_groupe}>
+          <TouchableOpacity  onPress={() => navigation.navigate('BacklogScreen')}>
+            <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain"/>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
+          </TouchableOpacity>
+        </View>
       </View>  
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
         <View style={styles.bar}>
@@ -123,12 +141,17 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
+  },
+
+  top_bar_groupe: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16,
   },
 
   content: {

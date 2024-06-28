@@ -83,7 +83,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   ]);
 
   return (
-    <View style={{ width: '100%', height: "100%" }}>
+    <View style={{ width: '100%', height: "100%", position: 'absolute'  }}>
       <PaperProvider>
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
@@ -132,14 +132,12 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
 
 const styles = StyleSheet.create({
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#121212',
     marginBottom: 16,
   },
   labeling: {
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 16,
     color: '#2B4B51',

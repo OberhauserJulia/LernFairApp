@@ -12,6 +12,8 @@ export type RootStackParamList = {
   FileOverviewTeacherCategory: undefined;
   ArchivStudent: undefined;
   ArchivTeacher: undefined;
-  ArchivCategoryStudent: undefined;
-  ArchivCategoryTeacher: undefined;
+  ArchivCategory: undefined;
+  Backlog: undefined
+  NavigationStudent: undefined;
+  NavigationTeacher: undefined;
 };

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../types/navigationTypes';
 import ChatInput from '../components/ChatInput';
+import OpenModalComponent from '../components/openModalComponent';
 
 type SingleChatScreenRouteProp = RouteProp<RootStackParamList, 'SingleChatScreen'>;
 
@@ -44,9 +46,9 @@ const SingleChatScreen: React.FC = () => {
         <Text style={styles.headline}> Max Musterman </Text>
         <View style={styles.top_bar_groupe}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/search.svg')} resizeMode="contain" />
-          <TouchableOpacity>
-            <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('FileOverviewChat')}>
+              <Image style={styles.icon_top_bar}  source={require('../assets/icons/menu.svg')} resizeMode="contain" />
+            </TouchableOpacity>
         </View>
       </View>	
 
@@ -104,7 +106,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',

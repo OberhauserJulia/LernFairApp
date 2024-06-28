@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Image, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { Chip, Button } from 'react-native-paper';
 
 type ChipKey = number | string;
@@ -147,7 +148,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#2B4B51',
   },
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
@@ -195,7 +194,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 12,
     borderColor: '#2B4B51',
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     color: 'white',
   },
@@ -224,7 +222,6 @@ const styles = StyleSheet.create({
   },
   button_reset_text: {
     color: '#2B4B51',
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
   },
   button_apply: {
@@ -238,7 +235,6 @@ const styles = StyleSheet.create({
   },
   button_apply_text: {
     color: '#2B4B51',
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
   },
 });

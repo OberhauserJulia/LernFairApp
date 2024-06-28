@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
+import { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 // import components
 import FileOverview from '../components/file_overview';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
-import { useEffect, useState } from 'react';
 import { ArchiveFile } from '../interfaces/Backendfile';
-import { useNavigation } from '@react-navigation/native';
 import Search from '../components/searchbar';
 import Filter from '../components/filter';
+import NotificationModal from '../components/popUp_notification';
 
 interface File_Overview_CategoryProps { 
   filtype: string; 
@@ -25,12 +27,15 @@ const initialChipsState = {
   Mathematik: false, Englisch: false, Deutsch: false, Informatik: false,
 };
 
-export default function Archiv_Category({ filtype }: File_Overview_CategoryProps) {
+export default function ArchivCategory() {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [filterQuery, setFilterQuery] = React.useState<string[]>([]);
-
   const [files, setFiles] = useState<ArchiveFile[]>([]); 
+
   const navigation = useNavigation();
+  const route = useRoute();
+  const [modalVisible, setModalVisible] = useState(false);
+  const { filtype } = route.params as File_Overview_CategoryProps;
 
   useEffect(() => {
     getSubjectEntries(setFiles, "Archiv", filtype); 
@@ -60,11 +65,16 @@ export default function Archiv_Category({ filtype }: File_Overview_CategoryProps
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
         </TouchableOpacity>
-        <Text style={styles.headline}> Übungsblätter </Text>
-        <TouchableOpacity>
+        <Text style={styles.headline}> {filtype} </Text>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
         </TouchableOpacity>
       </View>
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
         <View style={styles.bar}>
@@ -117,7 +127,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',

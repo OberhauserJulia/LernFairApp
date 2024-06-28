@@ -207,14 +207,12 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
 
 const styles = StyleSheet.create({
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#121212',
     marginBottom: 16,
   },
   labeling: {
-    fontFamily: 'Montserrat-Regular',
     fontSize: 16,
     color: '#2B4B51',
     marginBottom: 8,

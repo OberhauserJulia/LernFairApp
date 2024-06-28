@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 // import components
 import Search from '../components/searchbar';
@@ -11,7 +13,7 @@ import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import FileOverviewChat from '../components/FileOverviewChat'; 
 import FileOverviewBacklog from '../components/FileOverViewBacklog';
-import { useNavigation } from '@react-navigation/native';
+import NotificationModal from '../components/popUp_notification';
 
 const initialAttributes = {
   Fächer: ['Englisch', 'Mathe', 'Deutsch', 'Informatik', 'Unknown'],
@@ -29,6 +31,7 @@ export default function Backlog() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterQuery, setFilterQuery] = useState<string[]>([]);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getSubjectEntries(setFiles, studentName, subjectName);
@@ -70,10 +73,15 @@ export default function Backlog() {
           <Image style={styles.icon_top_bar} source={require('../assets/icons/back_arrow.svg')} resizeMode="contain" />
         </TouchableOpacity>
         <Text style={styles.headline}> Backlog </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
         </TouchableOpacity>
       </View>
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
         <View style={styles.bar}>
@@ -123,7 +131,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',
@@ -146,6 +153,12 @@ const styles = StyleSheet.create({
   bar: {
     flexDirection: 'row',
     width: '100%',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

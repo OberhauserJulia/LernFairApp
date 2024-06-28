@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+import { Image } from 'expo-image';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import PopUpCompleteFile from './popUp_completeBacklog';
 
 interface FileOverviewBacklogProps { 
   dateiname: string; 
@@ -17,6 +21,9 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
   const selfID = _id;
   const chunkID = file_id;
   const fileName = filename;
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const deleteFile = async () => {
     try {
@@ -41,25 +48,37 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
   }, []);
 
   return (
-    <View style={styles.file_overview}>
-      <View style={[styles.file, styles.shadowProp]}>
+    <View style={styles.file_overview} >
+      <TouchableOpacity style={[styles.file, styles.shadowProp]} onPress={() => setIsModalVisible(true)}>
         <View style={styles.file_image}>
-          <Image source={require('../assets/icons/file_icon.svg')} />
+          <AntDesign name="filetext1" size={20} color="#FEDA50" />
         </View>
         <View style={styles.file_info}>
           <Text style={styles.headline}>{dateiname}</Text>
           <Text style={styles.text}>{subject} | {topic} </Text>
         </View>
-        <View style={styles.file_actions}>
+        {/* <View style={styles.file_actions}>
           <Image source={require('../assets/icons/file_actions.svg')} />
-        </View>
+        </View> */}
         <View>
           <TouchableOpacity onPress={deleteFile}>
-            <Image source={require('../assets/icons/delete.svg')} style={styles.icon} />
+          <AntDesign name="closecircle" size={20} color="#2B4B51" />
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
+
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <PopUpCompleteFile file_id='666be4e873fe1303f9bceaa4' filename='IMG_20240603_140500.jpg' visible={isModalVisible} hideModal={() => setIsModalVisible(false)} />
+        </View>
+      </Modal>
     </View>
+    
   );
 }
 
@@ -82,31 +101,29 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   file_image: {
-    width: 20,
     marginRight: 16, 
   },
   file_info: {
     flex: 1,
   },
   headline: {
-    fontFamily: 'Montserrat-Medium',
     fontWeight: 'medium',
     fontSize: 12,
     color: '#2B4B51',
   },
   text: {
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
     marginTop: 8,
   },
   file_actions: {
-    height: 16,
     marginLeft: 16,
   },
-  icon: {
-    width: 16,
-    height: 16,
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

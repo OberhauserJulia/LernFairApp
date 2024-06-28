@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Image, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { useNavigation } from '@react-navigation/native';
 import ChatCard from '../components/ChatCard'; // Passe den Importpfad an
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -80,7 +81,9 @@ const ChatScreen: React.FC = () => {
         <Text style={styles.headline}> Chat </Text>
         <View style={styles.top_bar_groupe}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/search.svg')} resizeMode="contain" />
-          <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
+          <TouchableOpacity onPress={() => navigation.navigate('BacklogScreen')}>
+            <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -125,7 +128,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',

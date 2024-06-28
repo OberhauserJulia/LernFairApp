@@ -4,7 +4,6 @@ import { PaperProvider, Portal, Modal, Text, TextInput } from "react-native-pape
 import DropdownComponent from "./DropdownComponent";
 import ImagePickerComponent from "./ImagePickerComponent";
 import UploadButtonComponent from "./UploadButtonComponent";
-import SubButtonComponent from "./SubButtonComponent";
 import axios from 'axios';
 import * as DocumentPicker from 'expo-document-picker';
 import type { DocumentPickerResult } from 'expo-document-picker';
@@ -147,7 +146,6 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
                 zIndexInverse={3000}
               />
               <UploadButtonComponent handleButtonClick={uploadFile} text="Datei speichern" />
-              <SubButtonComponent hideModal={hideModal} />
             </ScrollView>
           </Modal>
         </Portal>
@@ -158,14 +156,12 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
 
 const styles = StyleSheet.create({
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#121212',
     marginBottom: 16,
   },
   labeling: {
-    fontFamily: 'Montserrat-Regular',
     fontSize: 16,
     color: '#2B4B51',
     marginBottom: 8,

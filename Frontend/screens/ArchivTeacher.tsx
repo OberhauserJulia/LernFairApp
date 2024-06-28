@@ -1,18 +1,26 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 // import components
 import FileOverview from '../components/file_overview';
 import { ArchiveFile } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import Search from '../components/searchbar';
+import PopUpCompleteFileArchive from '../components/popUp_uploadToArchive';
+import NotificationModal from '../components/popUp_notification';
 
 export default function Archiv_Teacher() {
   const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
   const [workshopFiles, setWorkshopFiles] = useState<ArchiveFile[]>([]);
   const [tests, setTests] = useState<ArchiveFile[]>([]);
   const databaseName = "Archiv";
+  const navigation = useNavigation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getSubjectEntries(setWorksheets, databaseName, "Uebung");
@@ -20,26 +28,26 @@ export default function Archiv_Teacher() {
     getSubjectEntries(setWorkshopFiles, databaseName, "Workshop");
   }, []);
 
-  const showMore = (fileType: string) => {
-    console.log('Show more ' + fileType);
-  };
-
   return (
     <View style={styles.screen}>
       <View style={styles.top_bar}>
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Archiv </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
         </TouchableOpacity>
       </View>
-      
-      <View style={styles.content}>
 
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+
+      <View style={styles.content}>
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Übungsblätter</Text>
-            <TouchableOpacity onPress={() => showMore('Uebung')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ArchivCategory', { filtype: "Uebung" })}>
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
@@ -60,7 +68,7 @@ export default function Archiv_Teacher() {
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Probeklausuren</Text>
-            <TouchableOpacity onPress={() => showMore('Pruefungen')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ArchivCategory', { filtype: "Pruefungen" })}>
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
@@ -81,7 +89,7 @@ export default function Archiv_Teacher() {
         <View style={styles.category}>
           <View style={styles.text_container}>
             <Text style={styles.category_name}>Workshop Unterlagen</Text>
-            <TouchableOpacity onPress={() => showMore('Workshop')}>
+            <TouchableOpacity onPress={() => navigation.navigate('ArchivCategory', { filtype: "Workshop" })}>
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
@@ -100,10 +108,20 @@ export default function Archiv_Teacher() {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.bottom_button} onPress={() => console.log('Button Pressed')}>
-        <Image source={require('../assets/icons/plus.svg')} />
+      <TouchableOpacity style={styles.bottom_button} onPress={() => setIsModalVisible(true)}>
+        <FontAwesome5 name="plus-circle" size={20} color="#FFFFFF" />
       </TouchableOpacity>
 
+      <Modal
+        visible={isModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setIsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <PopUpCompleteFileArchive visible={isModalVisible} hideModal={() => setIsModalVisible(false)} />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -123,26 +141,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
-
   icon_top_bar: {
     height: 24,
     width: 24,
-    color: '#ffffff',
+    tintColor: '#ffffff',
   },
-
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16,
     color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
-  },
-
-  top_bar_groupe: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: 16,
   },
   content: {
     width: '100%',
@@ -159,14 +168,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   category_name: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 12,
     color: '#2B4B51',
   },
   more: {
-    fontFamily: 'Montserrat-Regular',
-    fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
   },
@@ -179,6 +185,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#2B4B51',
     padding: 10,
     borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },

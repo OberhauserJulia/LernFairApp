@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
+import { useNavigation } from '@react-navigation/native';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
+
 
 interface FileOverviewChatProps { 
   studentname: string; 
@@ -8,26 +13,32 @@ interface FileOverviewChatProps {
 }
 
 export default function FileOverViewTeacherCart({studentname, classNumber, countryname}: FileOverviewChatProps) {
-  
+  const navigation = useNavigation();
 
 
   return (
-    <View style={styles.file_overview}>
-      <View style={[styles.file, styles.shadowProp]}>
-        <View style={styles.file_image}>
-          <Image source={require('../assets/icons/file_icon.svg')} />
-        </View>
+    <TouchableOpacity onPress={() => navigation.navigate('FileOverviewTeacherCategory', {
+      studentName: studentname,
+      classNumber: classNumber,
+      countryname: countryname,
+    })}>
+      <View style={styles.file_overview}>
+        <View style={[styles.file, styles.shadowProp]}>
+          <View style={styles.file_image}>
+            <AntDesign name="filetext1" size={24} color="#FEDA50" />
+          </View>
 
-        <View style={styles.file_info}>
-          <Text style={styles.headline}>{studentname}</Text>
-          <Text style={styles.text}>{countryname} | Klassenstufe {classNumber} </Text>
-        </View>
+          <View style={styles.file_info}>
+            <Text style={styles.headline}>{studentname}</Text>
+            <Text style={styles.text}>{countryname} | Klassenstufe {classNumber} </Text>
+          </View>
 
-        <View style={styles.file_actions}>
-          <Image source={require('../assets/icons/file_actions.svg')} />
+          <View style={styles.file_actions}>
+            <Entypo name="dots-three-vertical" size={20} color="#2B4B51" />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -50,27 +61,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   file_image: {
-    width: 20,
     marginRight: 16, 
   },
   file_info: {
     flex: 1,
   },
   headline: {
-    fontFamily: 'Montserrat-Medium',
     fontWeight: 'medium',
     fontSize: 12,
     color: '#2B4B51',
   },
   text: {
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
     marginTop: 8,
   },
   file_actions: {
-    height: 16,
     marginLeft: 16,
   },
 });

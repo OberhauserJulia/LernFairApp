@@ -16,7 +16,6 @@ export default function DropdownComponent({ open, value, items, setOpen, setValu
       placeholderStyle={{
         color: '#121212',
         fontSize: 12,
-        fontFamily: 'Montserrat_Regular',
         fontWeight: 'regular',
       }}
       zIndex={zIndex}

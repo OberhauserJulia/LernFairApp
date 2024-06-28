@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     },
     searchbar_input: {
         fontSize: 12,
-        fontFamily: 'Montserrat-Regular',
         fontWeight: 'regular',
         color: '#2B4B51',
         paddingBottom: 15,

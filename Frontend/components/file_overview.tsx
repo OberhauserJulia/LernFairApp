@@ -1,5 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
 
 interface FileOverviewProps { 
   dateiname: string; 
@@ -20,7 +23,7 @@ export default function FileOverview({dateiname, subject, topic, _id, file_id, f
     <View style={styles.file_overview}>
       <View style={[styles.file, styles.shadowProp]}>
         <View style={styles.file_image}>
-          <Image source={require('../assets/icons/file_icon.svg')} />
+          <AntDesign name="filetext1" size={20} color="#FEDA50" />
         </View>
 
         <View style={styles.file_info}>
@@ -29,7 +32,7 @@ export default function FileOverview({dateiname, subject, topic, _id, file_id, f
         </View>
 
         <View style={styles.file_actions}>
-          <Image source={require('../assets/icons/file_actions.svg')} />
+          <Entypo name="dots-three-vertical" size={20} color="#2B4B51" />
         </View>
       </View>
     </View>
@@ -55,27 +58,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   file_image: {
-    width: 20,
     marginRight: 16, 
   },
   file_info: {
     flex: 1,
   },
   headline: {
-    fontFamily: 'Montserrat-Medium',
     fontWeight: 'medium',
     fontSize: 12,
     color: '#2B4B51',
   },
   text: {
-    fontFamily: 'Montserrat-Regular',
     fontWeight: 'regular',
     fontSize: 12,
     color: '#2B4B51',
     marginTop: 8,
   },
   file_actions: {
-    height: 16,
     marginLeft: 16,
   },
 });

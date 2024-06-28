@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 // import components
 import Search from '../components/searchbar';
@@ -8,6 +10,7 @@ import FileOverview from '../components/file_overview';
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import FileOverviewChat from '../components/FileOverviewChat';
+import NotificationModal from '../components/popUp_notification';
 
 export default function FileOverviewStudent() {
   const [files, setFiles] = useState<File[]>([]);
@@ -16,6 +19,8 @@ export default function FileOverviewStudent() {
   const [german, setGerman] = useState<File[]>([]);
   const [english, setEnglish] = useState<File[]>([]);
   const [computerscience, setComputerscience] = useState<File[]>([]);
+  const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getSubjectEntries(setMath, "Elias", "Mathe");
@@ -42,14 +47,19 @@ export default function FileOverviewStudent() {
         <Image style={styles.icon_top_bar} source={require('../assets/icons/menu.svg')} resizeMode="contain" />
         <Text style={styles.headline}> Dateiübersicht </Text>
         <View style={styles.top_bar_groupe}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('BacklogScreen')}>
             <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
             <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
           </TouchableOpacity>
         </View>
       </View>	
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
         <View>
@@ -96,7 +106,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16, // Adjust font size to fit better in the top bar
     color: '#FFFFFF',

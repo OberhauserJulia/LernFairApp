@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import Filter from '../components/filter';
 import FileOverview from '../components/file_overview';
 import { File } from '../interfaces/Backendfile';
 import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
+import NotificationModal from '../components/popUp_notification';
 
 interface File_Overview_CategoryProps {
   subjectname: string;
@@ -21,6 +23,7 @@ export default function File_Overview_Category_Student({ subjectname, studentnam
   const [files, setFiles] = useState<File[]>([]);
   const subjectName: string = subjectname;
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const searchbarfunction = (query: string) => { 
     setSearchQuery(query);
@@ -47,9 +50,16 @@ export default function File_Overview_Category_Student({ subjectname, studentnam
         <Text style={styles.headline}> {subjectname} </Text>
         <View style={styles.top_bar_groupe}>
           <Image style={styles.icon_top_bar} source={require('../assets/icons/menu_2.svg')} resizeMode="contain" />
-          <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
+          </TouchableOpacity>
         </View>
       </View>	
+
+      <NotificationModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
 
       <View style={styles.content}>
         <View style={styles.bar}>
@@ -95,7 +105,6 @@ const styles = StyleSheet.create({
   },
 
   headline: {
-    fontFamily: 'Montserrat-Bold',
     fontWeight: 'bold',
     fontSize: 16, // Adjust font size to fit better in the top bar
     color: '#FFFFFF',
