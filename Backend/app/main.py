@@ -161,7 +161,7 @@ async def update_file(student_name: str, file_id: str, documentname: str = Form(
         safe_tags(db, subjectname, {"subject": subjectname, "file_id": str(file_id), "name": filename, "documentname": documentname, "topic": topic})
         
         # File aus dem Backlog löschen
-        deletefile(student_name, "Backlog", file_id)
+        db["Backlog"].delete_one({"file_id": file_id})
         
         return JSONResponse(content={"message": "File updated successfully"}, status_code=200)
     

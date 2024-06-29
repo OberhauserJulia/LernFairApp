@@ -12,11 +12,11 @@ import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import { useNavigation } from '@react-navigation/native';
 
 const initialAttributes = {
-  Fächer: ['Mathematik', 'Englisch', 'Deutsch', 'Informatik'],
+  Fächer: ['Mathe', 'Englisch', 'Deutsch', 'Informatik'],
 };
 
 const initialChipsState = {
-  Mathematik: false, Englisch: false, Deutsch: false, Informatik: false,
+  Mathe: false, Englisch: false, Deutsch: false, Informatik: false,
 };
 
 export default function File_Overview_Chat() {

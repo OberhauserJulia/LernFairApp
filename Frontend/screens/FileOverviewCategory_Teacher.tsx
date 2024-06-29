@@ -13,11 +13,11 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import NotificationModal from '../components/popUp_notification';
 
 const initialAttributes = {
-  Fächer: ['Mathematik', 'Englisch', 'Deutsch', 'Informatik'],
+  Fächer: ['Mathe', 'Englisch', 'Deutsch', 'Informatik'],
 };
 
 const initialChipsState = {
-  Mathematik: false, Englisch: false, Deutsch: false, Informatik: false,
+  Mathe: false, Englisch: false, Deutsch: false, Informatik: false,
 };
 
 interface File_Overview_CategoryProps {

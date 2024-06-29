@@ -1,33 +1,43 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { Image } from 'expo-image';
+import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native'; // Add useIsFocused hook
 
-// import components
+// Import components
 import Search from '../components/searchbar';
-import FileOverview from '../components/file_overview';
-import { File } from '../interfaces/Backendfile';
-import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import FileOverviewChat from '../components/FileOverviewChat';
 import NotificationModal from '../components/popUp_notification';
+import { File } from '../interfaces/Backendfile';
+import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 
 export default function FileOverviewStudent() {
   const [files, setFiles] = useState<File[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [math, setMath] = useState<File[]>([]); 
+  const [math, setMath] = useState<File[]>([]);
   const [german, setGerman] = useState<File[]>([]);
   const [english, setEnglish] = useState<File[]>([]);
   const [computerscience, setComputerscience] = useState<File[]>([]);
   const navigation = useNavigation();
+  const isFocused = useIsFocused(); // Hook to determine if screen is focused
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
+    fetchData(); // Initial data fetch
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchData(); // Fetch data again when screen is focused
+    }
+  }, [isFocused]);
+
+  const fetchData = () => {
     getSubjectEntries(setMath, "Elias", "Mathe");
     getSubjectEntries(setGerman, "Elias", "Deutsch");
     getSubjectEntries(setEnglish, "Elias", "Englisch");
     getSubjectEntries(setComputerscience, "Elias", "Informatik");
-  }, []);
+  };
 
   const searchbarfunction = (query: string) => {
     setSearchQuery(query);
@@ -55,7 +65,7 @@ export default function FileOverviewStudent() {
             <Image style={styles.icon_top_bar} source={require('../assets/icons/notifications.svg')} resizeMode="contain" />
           </TouchableOpacity>
         </View>
-      </View>	
+      </View>
 
       <NotificationModal
         modalVisible={modalVisible}
@@ -104,40 +114,34 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
-
   icon_top_bar: {
     height: 24,
     width: 24,
     color: '#ffffff',
   },
-
   headline: {
     fontWeight: 'bold',
-    fontSize: 16, // Adjust font size to fit better in the top bar
+    fontSize: 16,
     color: '#FFFFFF',
     textAlign: 'center',
     flex: 1,
   },
-
   top_bar_groupe: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 16,
   },
-
   bar: {
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
   },
-
   content: {
     width: '100%',
     paddingRight: 16,
     paddingLeft: 16,
     paddingTop: 16,
   },
-
   scrollViewContent: {
     flexGrow: 1,
     paddingVertical: 8,

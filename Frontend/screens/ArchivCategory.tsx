@@ -18,13 +18,13 @@ interface File_Overview_CategoryProps {
 
 const initialAttributes = {
   Klassen: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-  Fächer: ['Mathematik', 'Englisch', 'Deutsch', 'Informatik'],
+  Fächer: ['Mathe', 'Englisch', 'Deutsch', 'Informatik'],
 };
 
 const initialChipsState = {
   1: false, 2: false, 3: false, 4: false, 5: false, 6: false,
   7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,
-  Mathematik: false, Englisch: false, Deutsch: false, Informatik: false,
+  Mathe: false, Englisch: false, Deutsch: false, Informatik: false,
 };
 
 export default function ArchivCategory() {
