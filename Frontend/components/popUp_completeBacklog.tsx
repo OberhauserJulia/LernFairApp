@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, StyleSheet, Text, StyleProp, ViewStyle } from "react-native";
 import { PaperProvider, Portal, Modal, TextInput } from "react-native-paper";
 import * as ImagePicker from 'expo-image-picker';
@@ -22,7 +22,9 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
   const [topic, settopic] = useState<string>('');
   const [subjectname, setsubjectname] = useState<string>('');
   
-  
+  useEffect(() => {
+    console.log('File ID:', fileID);
+  }, [fileID]);
   
   const completeBacklog = async () => {
     if (!documentname && !subjectname && !topic) {
@@ -50,6 +52,8 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
     } catch (error) {
       console.error('Error updating file:', error);
     }
+    hideModal(); 
+    setFileID('');  
   };
   
   

@@ -32,11 +32,20 @@ export default function Backlog() {
   const [filterQuery, setFilterQuery] = useState<string[]>([]);
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [updateCount, setUpdateCount] = useState<number>(0);
+  
   useEffect(() => {
     getSubjectEntries(setFiles, studentName, subjectName);
   }, []);
 
+  useEffect(() => {
+    console.log("Updating backlog...");
+    getSubjectEntries(setFiles, studentName, subjectName);
+  }, [updateCount]);
+
+  const updateBacklogFunction = () => {
+    setUpdateCount(prevCount => prevCount + 1);
+  }
   const handleDelete = () => {
     setFileDelete(true);
     console.log("Delete");
@@ -94,6 +103,7 @@ export default function Backlog() {
 
         {filteredFiles.map(file => (
           <FileOverviewBacklog
+            updateBacklogFunction={updateBacklogFunction} 
             handleDelete={handleDelete}
             key={file._id.$oid}
             _id={file._id.$oid}

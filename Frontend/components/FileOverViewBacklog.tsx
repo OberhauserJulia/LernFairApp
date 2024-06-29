@@ -15,9 +15,10 @@ interface FileOverviewBacklogProps {
   filename: string; 
   classNumber?: string; // Optionaler Parameter hinzugefügt
   handleDelete: () => void;
+  updateBacklogFunction: () => void;
 }
 
-export default function FileOverviewBacklog({ dateiname, subject, topic, _id, file_id, filename, classNumber, handleDelete }: FileOverviewBacklogProps) {
+export default function FileOverviewBacklog({ updateBacklogFunction, dateiname, subject, topic, _id, file_id, filename, classNumber, handleDelete }: FileOverviewBacklogProps) {
   const selfID = _id;
   const chunkID = file_id;
   const fileName = filename;
@@ -25,6 +26,7 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+ 
   const deleteFile = async () => {
     try {
       // Senden des POST-Requests an den Server
@@ -42,10 +44,8 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
   };
 
   React.useEffect(() => {
-    // Hier können Sie Initialisierungen vornehmen, die nur einmalig beim ersten Rendern ausgeführt werden sollen
-    // Beispiel: Laden von Daten vom Server
-    // getFiles();
-  }, []);
+   updateBacklogFunction(); 
+  }, [isModalVisible]);
 
   return (
     <View style={styles.file_overview} >
@@ -71,10 +71,14 @@ export default function FileOverviewBacklog({ dateiname, subject, topic, _id, fi
         visible={isModalVisible}
         transparent={true}
         animationType="fade"
-        onRequestClose={() => setIsModalVisible(false)}
-      >
+        onRequestClose={() => {
+          setIsModalVisible(false);
+          console.log('Modal has been closed.');
+          
+          
+        }}      >
         <View style={styles.modalContainer}>
-          <PopUpCompleteFile file_id='666be4e873fe1303f9bceaa4' filename='IMG_20240603_140500.jpg' visible={isModalVisible} hideModal={() => setIsModalVisible(false)} />
+          <PopUpCompleteFile file_id={file_id} filename={fileName} visible={isModalVisible} hideModal={() => setIsModalVisible(false)} />
         </View>
       </Modal>
     </View>
