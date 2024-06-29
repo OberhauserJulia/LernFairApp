@@ -12,7 +12,7 @@ import { getSubjectEntries } from '../Backendfunctions/getSubjectEntries';
 import Search from '../components/searchbar';
 import PopUpCompleteFileArchive from '../components/popUp_uploadToArchive';
 import NotificationModal from '../components/popUp_notification';
-
+import { useIsFocused } from '@react-navigation/native';
 export default function Archiv_Teacher() {
   const [worksheets, setWorksheets] = useState<ArchiveFile[]>([]);
   const [workshopFiles, setWorkshopFiles] = useState<ArchiveFile[]>([]);
@@ -21,12 +21,25 @@ export default function Archiv_Teacher() {
   const navigation = useNavigation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const isFocused = useIsFocused(); // Hook to determine if screen is focused
+
 
   useEffect(() => {
+    fetchData(); // Initial data fetch
+    
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchData(); // Fetch data again when screen is focused
+    }
+  }, [isFocused, modalVisible, isModalVisible]);
+
+  const fetchData = () => {
     getSubjectEntries(setWorksheets, databaseName, "Uebung");
     getSubjectEntries(setTests, databaseName, "Pruefungen");
     getSubjectEntries(setWorkshopFiles, databaseName, "Workshop");
-  }, []);
+  }
 
   return (
     <View style={styles.screen}>

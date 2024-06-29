@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
+import { useIsFocused } from '@react-navigation/native';
 // import components
 import FileOverview from '../components/file_overview';
 import { ArchiveFile } from '../interfaces/Backendfile';
@@ -18,12 +18,27 @@ export default function Archiv_Student() {
   const databaseName = "Archiv";
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
+  const isFocused = useIsFocused(); // Hook to determine if screen is focused
+
 
   useEffect(() => {
+    fetchData(); // Initial data fetch
+   
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      fetchData(); // Fetch data again when screen is focused
+    }
+  }, [isFocused]);
+
+  const fetchData = () => { 
+    console.log("Fetching Data")
     getSubjectEntries(setWorksheets, databaseName, "Uebung");
     getSubjectEntries(setTests, databaseName, "Pruefungen");
     getSubjectEntries(setWorkshopFiles, databaseName, "Workshop");
-  }, []);
+  } 
+
 
   const showMore = (fileType: string) => {
     console.log('Show more ' + fileType);
