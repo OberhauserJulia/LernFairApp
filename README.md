@@ -5,11 +5,11 @@
 ### Voraussetzungen
 
 Stellen Sie sicher, dass die folgenden Tools installiert sind:
-1. **Docker**: [Installationsanleitung](https://docs.docker.com/get-docker/)
+1. **Docker**
 2. **MongoDB**
-3. **Node.js und npm**: [Download](https://nodejs.org/)
-4. **Expo Go App**: Aus dem Google Play Store herunterladen
-5. **Optional: Python**: Zum lokalen Starten des Backends
+3. **Node.js und npm**
+4. **Expo Go App**
+5. **Optional: Python**
 
 ### Anleitung
 
