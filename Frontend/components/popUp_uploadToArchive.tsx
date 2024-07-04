@@ -196,7 +196,7 @@ const PopUpCompleteFileArchive: React.FC<PopUpCompleteFilePropsArchive> = ({ vis
                 zIndexInverse={4000}
               />
 
-              <UploadButtonComponent handleButtonClick={uploadArchive} text="Datei speichern" />
+              <UploadButtonComponent handleButtonClick={uploadArchive} text="Datei teilen" />
             </ScrollView>
           </Modal>
         </Portal>

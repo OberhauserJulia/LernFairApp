@@ -125,7 +125,7 @@ const PopUpCompleteFile: React.FC<PopUpCompleteFileProps> = ({ visible, hideModa
                 zIndex={1000}
                 zIndexInverse={3000}
               />
-              <UploadButtonComponent handleButtonClick={completeBacklog} text="Datei speichern" />
+              <UploadButtonComponent handleButtonClick={completeBacklog} text="Datei vervollständigen" />
             </ScrollView>
           </Modal>
         </Portal>

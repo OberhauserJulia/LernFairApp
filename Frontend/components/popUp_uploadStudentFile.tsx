@@ -145,7 +145,7 @@ const Popup_completeStudentFile: React.FC<UploadFileProp> = ({ visible, hideModa
                 zIndex={1000}
                 zIndexInverse={3000}
               />
-              <UploadButtonComponent handleButtonClick={uploadFile} text="Datei speichern" />
+              <UploadButtonComponent handleButtonClick={uploadFile} text="Datei teilen" />
             </ScrollView>
           </Modal>
         </Portal>
