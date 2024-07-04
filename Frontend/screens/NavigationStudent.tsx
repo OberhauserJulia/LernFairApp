@@ -108,7 +108,7 @@ const NavigationStudent = () => {
               iconName = focused ? 'archive' : 'archive-outline';
             } 
 
-            return <Ionicons name={iconName} size={size} color={color} />;
+            return <Ionicons name={iconName} size={24} color={'#2B4B51'} />;
           },
           tabBarActiveTintColor: '#2B4B51',
           tabBarInactiveTintColor: '#2B4B51',

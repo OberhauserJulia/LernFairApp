@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import NavigationStudent from './screens/NavigationStudent';
 import NavigationTeacher from './screens/NavigationTeacher';
 import { useNavigation } from '@react-navigation/native';
+import RoleSelectionButton from './components/RoleSelectionButton';
 
 const Stack = createStackNavigator();
 
@@ -42,17 +43,15 @@ const HomeScreen = () => {
         <Text style={styles.subHeaderText}>Melde dich hier mit deiner entsprechenden Rolle in der App an.</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('NavigationStudent')}>
-          <Text style={styles.buttonText}>Schüler</Text>
-        </TouchableOpacity>
+      <RoleSelectionButton
+        text="Schüler"
+        handleButtonClick={() => navigation.navigate('NavigationStudent')}
+      />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('NavigationTeacher')}>
-          <Text style={styles.buttonText}>Lehrer</Text>
-        </TouchableOpacity>
+      <RoleSelectionButton
+        text="Lehrer"
+        handleButtonClick={() => navigation.navigate('NavigationTeacher')}
+      />
       </View>
     </View>
   );
