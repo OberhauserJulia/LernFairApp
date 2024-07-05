@@ -65,7 +65,7 @@ export default function Archiv_Teacher() {
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
-          {worksheets.slice(0, 3).map(file => (
+          {worksheets.slice(0, 2).map(file => (
             <FileOverview
               key={file._id.$oid}
               _id={file._id.$oid}
@@ -86,7 +86,7 @@ export default function Archiv_Teacher() {
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
-          {tests.slice(0, 3).map(file => (
+          {tests.slice(0, 2).map(file => (
             <FileOverview
               key={file._id.$oid}
               _id={file._id.$oid}
@@ -107,7 +107,7 @@ export default function Archiv_Teacher() {
               <Text style={styles.more}>Alle anzeigen</Text>
             </TouchableOpacity>
           </View>
-          {workshopFiles.slice(0, 3).map(file => (
+          {workshopFiles.slice(0, 2).map(file => (
             <FileOverview
               key={file._id.$oid}
               _id={file._id.$oid}
